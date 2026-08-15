@@ -19,7 +19,7 @@
   font-synthesis: none;
 }
 
-.ui-locale-switcher { display: inline-flex; align-items: center; gap: 2px; padding: 2px; color: inherit; border: 1px solid currentColor; border-radius: 999px; font: 700 10px/1 var(--font-body); }
+.ui-locale-switcher { display: inline-flex; justify-self: end; align-items: center; width: max-content; gap: 2px; padding: 2px; color: inherit; border: 1px solid currentColor; border-radius: 999px; font: 700 10px/1 var(--font-body); }
 .ui-locale-switcher a { padding: 5px 8px; color: inherit; border-radius: 999px; text-decoration: none; opacity: .58; }
 .ui-locale-switcher a[aria-current="true"] { color: var(--paper); background: var(--ink); opacity: 1; }
 [data-app-mode="decks"] .ui-locale-switcher a[aria-current="true"] { color: var(--ink); background: var(--paper-bright); }
