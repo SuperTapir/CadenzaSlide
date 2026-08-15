@@ -13,8 +13,10 @@ describe('renderDeckLibrary', () => {
     expect(html).toContain('Product &amp; Story')
     expect(html).toContain('?view=studio&amp;deck=research-story')
     expect(html).toContain('?view=studio&amp;deck=product-story')
-    expect(html).toContain('data-testid="system-demo-deck"')
-    expect(html).toContain('?view=audience&amp;source=demo')
+    expect(html).toContain('data-testid="system-demo-deck-zh-CN"')
+    expect(html).toContain('data-testid="system-demo-deck-en"')
+    expect(html).toContain('?view=audience&amp;source=demo&amp;demo=zh-CN&amp;lang=zh-CN')
+    expect(html).toContain('?view=audience&amp;source=demo&amp;demo=en&amp;lang=zh-CN')
     expect(html).not.toContain('/talks/decks')
   })
 
@@ -22,7 +24,8 @@ describe('renderDeckLibrary', () => {
     const html = renderDeckLibrary([])
 
     expect(html).toContain('当前 workspace 还没有 deck')
-    expect(html).toContain('data-testid="system-demo-deck"')
+    expect(html).toContain('data-testid="system-demo-deck-zh-CN"')
+    expect(html).toContain('data-testid="system-demo-deck-en"')
   })
 
   it('renders English library copy and locale-preserving deck links', () => {
@@ -31,6 +34,8 @@ describe('renderDeckLibrary', () => {
     expect(html).toContain('Your decks')
     expect(html).toContain('Open in Studio')
     expect(html).toContain('?view=studio&amp;deck=demo&amp;lang=en')
+    expect(html).toContain('?view=audience&amp;source=demo&amp;demo=zh-CN&amp;lang=en')
+    expect(html).toContain('?view=audience&amp;source=demo&amp;demo=en&amp;lang=en')
     expect(html).toContain('data-ui-locale-switcher')
     expect(html).not.toContain('你的 Deck')
   })

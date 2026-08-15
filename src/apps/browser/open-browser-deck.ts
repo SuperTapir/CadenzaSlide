@@ -1,8 +1,8 @@
 import { BrowserDeckRepository } from '../../platform/browser/browser-deck-repository'
-import { resolveUiLocale } from '../../i18n/ui-locale'
+import { normalizeUiLocale, resolveUiLocale } from '../../i18n/ui-locale'
 
 export async function openBrowserDeck(currentUrl: URL, allowDevelopmentFallback = import.meta.env.DEV) {
-  if (currentUrl.searchParams.get('source') === 'demo') return openDemoDeck(resolveUiLocale(currentUrl))
+  if (currentUrl.searchParams.get('source') === 'demo') return openDemoDeck(normalizeUiLocale(currentUrl.searchParams.get('demo')) ?? resolveUiLocale(currentUrl))
   try {
     return await BrowserDeckRepository.open(currentUrl)
   } catch (error) {
