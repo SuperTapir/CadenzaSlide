@@ -27,8 +27,11 @@ import { hydrateOneBitVisuals } from '../../visual-assets/one-bit-visual'
 import { hydrateSmilVisuals } from '../../visual-assets/smil-visual'
 import { openBrowserDeck } from './open-browser-deck'
 import { buildStudioReloadUrl, clearStudioResume, isCurrentDeckFile, resolveStudioResume } from '../../studio/studio-deck-updates'
+import { resolveUiLocale, uiText } from '../../i18n/ui-locale'
 
 const appMode = resolveAppMode(location) as PresentationSessionMode
+const locale = resolveUiLocale(new URL(location.href), navigator.language)
+const ui = uiText(locale)
 const isStudio = appMode === 'studio'
 const repository = await openBrowserDeck(new URL(location.href))
 const initialDocument = repository.document
@@ -36,6 +39,7 @@ const deckId = initialDocument.id
 const sessionId = new URLSearchParams(location.search).get('session') ?? (isStudio ? crypto.randomUUID() : 'default')
 
 document.documentElement.dataset.appMode = appMode
+document.documentElement.lang = locale
 document.documentElement.toggleAttribute('data-reveal-receiver', appMode === 'receiver')
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = renderAppShell({
   mode: appMode,
@@ -44,8 +48,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = renderAppShell({
   environmentOptions: environmentPresetIds.map(id => `<option value="${id}">${environmentPresets[id].label}</option>`).join(''),
   fontThemeOptions: fontThemeIds.map(id => `<option value="${id}">${fontThemes[id].label}</option>`).join(''),
   designLibraryHtml: isStudio ? renderDeckMaster(initialDocument.master) : '',
-  mediaLightboxHtml: renderMediaLightbox(),
-  navigatorHtml: isStudio ? renderStudioNavigator(initialDocument) : '',
+  mediaLightboxHtml: renderMediaLightbox(locale),
+  navigatorHtml: isStudio ? renderStudioNavigator(initialDocument, locale) : '',
+  locale,
+  currentHref: location.href,
 })
 
 const app = document.querySelector<HTMLElement>('.app-shell')!
@@ -62,12 +68,12 @@ const motion = app.querySelector<HTMLButtonElement>('#motion')
 const fontTheme = app.querySelector<HTMLSelectElement>('#font-theme')
 const authoredSlides = [...app.querySelectorAll<HTMLElement>('[data-slide-id]')]
 
-if (workspaceStatus) workspaceStatus.textContent = repository.isConnected ? '已连接 deck 文件' : '未连接 workspace；更改无法写入项目'
+if (workspaceStatus) workspaceStatus.textContent = repository.isConnected ? ui.studio.connected : ui.studio.disconnected
 
 const documentStore = new DeckDocumentStore(initialDocument, document => repository.save(document), status => {
   if (!workspaceStatus) return
-  if (status.kind === 'persisted') workspaceStatus.textContent = '已保存到 deck 文件'
-  else if (status.kind === 'memory') workspaceStatus.textContent = '开发预览：更改仅保存在内存'
+  if (status.kind === 'persisted') workspaceStatus.textContent = ui.studio.persisted
+  else if (status.kind === 'memory') workspaceStatus.textContent = ui.studio.memoryOnly
   else workspaceStatus.textContent = status.message
 })
 
@@ -98,10 +104,10 @@ function updateMode() {
   const state = runtime.currentState
   if (environmentPreset) environmentPreset.value = state.scene
   if (motion) {
-    motion.textContent = state.environmentMode === 'loop' ? '环境 轻动' : '环境 静止'
+    motion.textContent = state.environmentMode === 'loop' ? ui.studio.environmentMoving : ui.studio.environmentStill
     motion.setAttribute('aria-pressed', String(state.environmentMode === 'loop'))
     motion.disabled = runtime.isReducedMotion
-    motion.title = runtime.isReducedMotion ? '系统已启用“减少动态效果”，背景保持静止' : ''
+    motion.title = runtime.isReducedMotion ? ui.studio.reducedMotion : ''
   }
 }
 
@@ -167,6 +173,7 @@ if (isStudio) {
     applyFontTheme,
     applyBackground,
     updateMode,
+    locale,
   })
 }
 
@@ -197,7 +204,7 @@ const handleWorkspaceChange = async (event: Event) => {
   if (!value.path || !isCurrentDeckFile(value.path, deckId)) return
   checkingDeckUpdate = true
   try { if (await repository.hasExternalChange()) deckUpdateNotice.hidden = false }
-  catch { if (workspaceStatus) workspaceStatus.textContent = '无法确认 deck 文件更新，请检查 workspace 连接' }
+  catch { if (workspaceStatus) workspaceStatus.textContent = ui.studio.updateUnknown }
   finally { checkingDeckUpdate = false }
 }
 const reloadDeck = async () => {
@@ -213,7 +220,7 @@ const reloadDeck = async () => {
   } catch (error) {
     reloadUpdatedDeck.disabled = false
     reloadUpdatedDeck.removeAttribute('aria-busy')
-    if (workspaceStatus) workspaceStatus.textContent = `重新载入已取消 · ${error instanceof Error ? error.message : String(error)}`
+    if (workspaceStatus) workspaceStatus.textContent = `${ui.studio.reloadCancelled} · ${error instanceof Error ? error.message : String(error)}`
   }
 }
 if (isStudio && repository.isConnected && deckUpdateNotice && reloadUpdatedDeck) {

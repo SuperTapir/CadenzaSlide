@@ -18,7 +18,7 @@ describe('renderAppShell', () => {
     expect(html).toContain(`<main class="app-shell" data-app-mode="${mode}">`)
     expect(html).toContain('data-font-theme="editorial"')
     expect(html).toContain('id="environment"')
-    expect(html).toContain('aria-label="CadenzaSlide presentation"')
+    expect(html).toContain('aria-label="CadenzaSlide 演示"')
     expect(html).toContain('<section>Slide</section>')
     expect(html).toContain(options.mediaLightboxHtml)
   })
@@ -27,7 +27,7 @@ describe('renderAppShell', () => {
     const html = renderAppShell({ ...options, mode: 'studio' })
 
     expect(html).toContain('class="app-header"')
-    expect(html).toContain('href="?view=decks"')
+    expect(html).toContain('href="?view=decks&amp;lang=zh-CN"')
     expect(html).toContain('>Decks</a>')
     expect(html).toContain('id="workspace-status"')
     expect(html).toContain('id="deck-update-notice"')
@@ -87,6 +87,18 @@ describe('renderAppShell', () => {
     expect(html).toContain('data-testid="studio-canvas-spec"')
     expect(html).toContain('CANVAS / 16:9')
     expect(html).toContain('1280 × 720')
+  })
+
+  it('renders English Studio chrome and keeps locale on project links', () => {
+    const html = renderAppShell({ ...options, mode: 'studio', locale: 'en' })
+
+    expect(html).toContain('End presentation')
+    expect(html).toContain('Open audience view')
+    expect(html).toContain('Speaker notes')
+    expect(html).toContain('aria-label="CadenzaSlide presentation"')
+    expect(html).toContain('?view=decks&amp;lang=en')
+    expect(html).toContain('data-ui-locale-switcher')
+    expect(html).not.toContain('结束放映')
   })
 
   it.each(['audience', 'receiver'] as const)('keeps Studio-only controls out of %s mode', (mode) => {

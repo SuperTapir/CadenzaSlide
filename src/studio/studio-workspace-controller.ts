@@ -16,6 +16,7 @@ import { createStudioWorkspaceState, reduceStudioWorkspace, STUDIO_ZOOM_STEP, ty
 import { changeSlideLayout, layoutInspectorView, reapplySlideLayout, setPlaceholderVisible } from './studio-layout-inspector'
 import { queryStudioWorkspaceElements, type StudioWorkspaceElements } from './studio-workspace-elements'
 import { StudioInspectController } from './studio-inspect'
+import { type UiLocale, uiText } from '../i18n/ui-locale'
 
 type StudioSlideChangedEvent = { currentSlide?: HTMLElement }
 
@@ -43,6 +44,7 @@ type StudioWorkspaceOptions = {
   applyFontTheme(id: FontThemeId): void
   applyBackground(id: SceneId): void
   updateMode(): void
+  locale?: UiLocale
 }
 
 export class StudioWorkspaceController {
@@ -51,6 +53,7 @@ export class StudioWorkspaceController {
   private readonly notesEditor: SpeakerNotesEditor
   private readonly inspectController: StudioInspectController
   private readonly preferenceKey: string
+  private readonly text: ReturnType<typeof uiText>['studio']
   private workspaceState: StudioWorkspaceState
   private readonly resizeObserver: ResizeObserver
   private restoreFocusTo: HTMLElement | null = null
@@ -62,6 +65,7 @@ export class StudioWorkspaceController {
 
   constructor(options: StudioWorkspaceOptions) {
     this.options = options
+    this.text = uiText(options.locale ?? 'zh-CN').studio
     this.elements = queryStudioWorkspaceElements(options.root)
     this.workspaceState = createStudioWorkspaceState(options.authoredSlides[0]?.dataset.slideId ?? '')
     const scheduleScale = createResizeFrameScheduler(() => this.applyStageScale())
@@ -77,7 +81,7 @@ export class StudioWorkspaceController {
       textarea: this.elements.notesTextarea,
       slideLabel: this.elements.notesSlideLabel,
       status: this.elements.notesStatus,
-    })
+    }, options.locale)
     this.inspectController = new StudioInspectController({
       root: options.root,
       deckRoot: options.deckRoot,
@@ -125,6 +129,7 @@ export class StudioWorkspaceController {
       deckId: this.options.deckId,
       document: this.options.documentStore.document,
       outline: structuredClone(this.options.documentStore.document.outline),
+      locale: this.options.locale,
       onOutlineChange: this.updateOutline,
     })
     this.elements.notesWorkspace.removeAttribute('inert')
@@ -140,8 +145,8 @@ export class StudioWorkspaceController {
   }
 
   participantReady(role: 'audience' | 'presenter') {
-    if (role === 'audience') this.elements.audienceStatus.textContent = '已连接'
-    else this.elements.presenterStatus.textContent = '已连接'
+    if (role === 'audience') this.elements.audienceStatus.textContent = this.text.connectedShort
+    else this.elements.presenterStatus.textContent = this.text.connectedShort
   }
 
   async flushPendingWrites() {
@@ -207,7 +212,7 @@ export class StudioWorkspaceController {
     if (isFontThemeId(this.elements.fontTheme.value)) this.options.applyFontTheme(this.elements.fontTheme.value)
   }
   private toggleScale = () => {
-    this.elements.scale.textContent = `点距 ${this.options.runtime.toggleScale()} PX`
+    this.elements.scale.textContent = `${this.text.dotPitch} ${this.options.runtime.toggleScale()} PX`
     this.options.updateMode()
   }
   private toggleMotion = () => {
@@ -217,7 +222,7 @@ export class StudioWorkspaceController {
   }
   private togglePlaying = () => {
     this.options.runtime.togglePlaying()
-    this.elements.play.textContent = this.options.runtime.currentState.playing ? '暂停环境' : '播放环境'
+    this.elements.play.textContent = this.options.runtime.currentState.playing ? this.text.pauseEnvironment : this.text.playEnvironment
   }
 
   private activateSession() {
@@ -227,21 +232,21 @@ export class StudioWorkspaceController {
 
   private openAudience = () => {
     this.activateSession()
-    this.elements.audienceStatus.textContent = '等待连接'
+    this.elements.audienceStatus.textContent = this.text.waitingConnection
     const url = new URL(this.options.audienceUrl)
     url.searchParams.set('session', this.options.sessionId)
     url.searchParams.set('deck', this.options.deckId)
     this.audienceWindow = window.open(url, 'cadenza-audience')
     if (!this.audienceWindow) {
-      this.elements.audienceStatus.textContent = '被拦截 · 可单独重试'
-      this.elements.workspaceStatus.textContent = '观众视图被浏览器拦截，请允许弹窗后重试'
+      this.elements.audienceStatus.textContent = this.text.popupBlocked
+      this.elements.workspaceStatus.textContent = this.text.audiencePopupBlocked
     } else this.setEditingLocked(true)
   }
 
   private openSpeaker = () => {
     this.activateSession()
-    this.elements.presenterStatus.textContent = '等待连接'
-    this.elements.workspaceStatus.textContent = '正在打开演讲者视图；若未出现，请允许弹窗后重试'
+    this.elements.presenterStatus.textContent = this.text.waitingConnection
+    this.elements.workspaceStatus.textContent = this.text.openingPresenter
     const notesPlugin = this.options.deck.getPlugin('notes') as { open(): void } | undefined
     notesPlugin?.open()
   }
@@ -255,7 +260,7 @@ export class StudioWorkspaceController {
     const report = verifyDeckValue(document)
     const brokenMedia = [...this.options.deckRoot.querySelectorAll<HTMLImageElement>('img')].filter(image => image.complete && image.naturalWidth === 0)
     if (!report.ok || document.status !== 'complete' || brokenMedia.length > 0) {
-      this.elements.workspaceStatus.textContent = `放映前检查未通过 · ${report.findings[0]?.ruleId ?? 'media.load'}`
+      this.elements.workspaceStatus.textContent = `${this.text.preflightFailed} · ${report.findings[0]?.ruleId ?? 'media.load'}`
       return
     }
     this.openAudience()
@@ -269,8 +274,8 @@ export class StudioWorkspaceController {
     this.options.session.end()
     this.audienceWindow?.close()
     this.audienceWindow = null
-    this.elements.audienceStatus.textContent = '已结束'
-    this.elements.presenterStatus.textContent = '已结束'
+    this.elements.audienceStatus.textContent = this.text.ended
+    this.elements.presenterStatus.textContent = this.text.ended
     this.setEditingLocked(false)
     this.elements.presentationOpen.disabled = false
   }
@@ -289,7 +294,7 @@ export class StudioWorkspaceController {
     if (event.origin !== location.origin || typeof event.data !== 'string') return
     try {
       const message = JSON.parse(event.data) as { namespace?: string, type?: string }
-      if (message.namespace === 'reveal-notes' && message.type === 'connected') this.elements.presenterStatus.textContent = '已连接'
+      if (message.namespace === 'reveal-notes' && message.type === 'connected') this.elements.presenterStatus.textContent = this.text.connectedShort
     } catch { /* Ignore unrelated window messages. */ }
   }
 
@@ -319,11 +324,11 @@ export class StudioWorkspaceController {
     this.elements.drawer.style.height = state.activePanel ? `${state.drawerExtent}px` : ''
     this.elements.drawerResizeHandle.setAttribute('aria-valuenow', String(state.drawerExtent))
     this.elements.rail.inert = state.railMode === 'collapsed'
-    if (state.railMode === 'overlay') { this.elements.rail.setAttribute('role', 'dialog'); this.elements.rail.setAttribute('aria-modal', 'true'); this.elements.rail.setAttribute('aria-label', '页面导航') }
+    if (state.railMode === 'overlay') { this.elements.rail.setAttribute('role', 'dialog'); this.elements.rail.setAttribute('aria-modal', 'true'); this.elements.rail.setAttribute('aria-label', this.text.pageNavigation) }
     else { this.elements.rail.removeAttribute('role'); this.elements.rail.removeAttribute('aria-modal'); this.elements.rail.removeAttribute('aria-label') }
     const narrowDrawer = matchMedia('(max-width: 760px)').matches && state.activePanel !== null
     this.elements.drawer.toggleAttribute('role', narrowDrawer)
-    if (narrowDrawer) { this.elements.drawer.setAttribute('aria-modal', 'true'); this.elements.drawer.setAttribute('aria-label', '页面工作区') }
+    if (narrowDrawer) { this.elements.drawer.setAttribute('aria-modal', 'true'); this.elements.drawer.setAttribute('aria-label', this.text.pageWorkspace) }
     else this.elements.drawer.removeAttribute('aria-modal')
     this.elements.drawerTabs.forEach(tab => tab.setAttribute('aria-expanded', String(tab.dataset.drawerPanel === state.activePanel)))
     this.elements.drawer.querySelectorAll<HTMLElement>('[data-panel]').forEach(panel => { panel.hidden = panel.dataset.panel !== state.activePanel })
@@ -407,7 +412,7 @@ export class StudioWorkspaceController {
     if (document.fullscreenElement === this.elements.stage) return document.exitFullscreen()
     try { await this.elements.stage.requestFullscreen() }
     catch {
-      this.elements.fullscreenStatus.textContent = '浏览器拒绝全屏请求，已保留当前视图'
+      this.elements.fullscreenStatus.textContent = this.text.fullscreenRejected
       this.setWorkspaceState(reduceStudioWorkspace(this.workspaceState, { type: 'fullscreen.set', value: false }))
     }
   }
@@ -432,11 +437,11 @@ export class StudioWorkspaceController {
     if (current?.layout === target) return
     const result = changeSlideLayout(this.options.documentStore.document, slideId, target as CoreLayoutId)
     if (!result.document) {
-      this.elements.layoutInspectorStatus.textContent = `无法切换：${result.diagnostics.map(item => item.tag || item.sourceSlot).join('、')} 没有目标位置`
+      this.elements.layoutInspectorStatus.textContent = `${this.text.layoutSwitchFailed}: ${result.diagnostics.map(item => item.tag || item.sourceSlot).join(', ')} ${this.text.noTargetPosition}`
       this.elements.layoutSelect.value = current?.layout ?? ''
       return
     }
-    this.commitSlideDocument(result.document, slideId, `已切换为 ${target}；内容与页面对象已保留`)
+    this.commitSlideDocument(result.document, slideId, `${this.text.layoutSwitched} ${target}; ${this.text.contentPreserved}`)
   }
 
   private changePlaceholderVisibility = (event: Event) => {
@@ -445,13 +450,13 @@ export class StudioWorkspaceController {
     const placeholderId = input?.dataset.placeholderVisibility
     if (!slideId || !placeholderId) return
     const next = setPlaceholderVisible(this.options.documentStore.document, slideId, placeholderId, input.checked)
-    this.commitSlideDocument(next, slideId, input.checked ? `已显示 ${placeholderId}` : `已隐藏 ${placeholderId}，内容仍保留`)
+    this.commitSlideDocument(next, slideId, input.checked ? `${this.text.shown} ${placeholderId}` : `${this.text.hidden} ${placeholderId}; ${this.text.contentStillPreserved}`)
   }
 
   private reapplyCurrentLayout = () => {
     const slideId = this.currentSlideId()
     if (!slideId) return
-    this.commitSlideDocument(reapplySlideLayout(this.options.documentStore.document, slideId), slideId, '已重新应用 Layout；页面内容与自由对象保持不变')
+    this.commitSlideDocument(reapplySlideLayout(this.options.documentStore.document, slideId), slideId, this.text.layoutReapplied)
   }
 
   private currentSlideId() {
@@ -491,8 +496,8 @@ export class StudioWorkspaceController {
     try {
       const view = layoutInspectorView(this.options.documentStore.document, slideId)
       this.elements.layoutSelect.innerHTML = view.layouts.map(layout => `<option value="${layout}"${layout === view.layout ? ' selected' : ''}>${layout}</option>`).join('')
-      this.elements.placeholderList.innerHTML = view.placeholders.map(item => `<label><input type="checkbox" data-placeholder-visibility="${escapeHtml(item.id)}" ${item.visible ? 'checked' : ''}><span><b>${escapeHtml(item.id)}</b><small>${escapeHtml(item.tag)} · ${item.hasContent ? '已有内容' : '未填，不会展示'}</small></span></label>`).join('')
-      this.elements.layoutInspectorStatus.textContent = `${view.layout} · ${view.placeholders.length} 个可选位置`
+      this.elements.placeholderList.innerHTML = view.placeholders.map(item => `<label><input type="checkbox" data-placeholder-visibility="${escapeHtml(item.id)}" ${item.visible ? 'checked' : ''}><span><b>${escapeHtml(item.id)}</b><small>${escapeHtml(item.tag)} · ${item.hasContent ? this.text.hasContent : this.text.emptyHidden}</small></span></label>`).join('')
+      this.elements.layoutInspectorStatus.textContent = `${view.layout} · ${this.text.optionalPositionCount(view.placeholders.length)}`
     } catch (error) {
       this.elements.layoutInspectorStatus.textContent = error instanceof Error ? error.message : String(error)
       this.elements.placeholderList.replaceChildren()

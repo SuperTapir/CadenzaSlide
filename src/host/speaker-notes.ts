@@ -54,6 +54,7 @@ export class SpeakerNotesEditor {
   private readonly deck: SpeakerNotesDeckLike
   private readonly repository: SpeakerNotesStore
   private readonly elements: SpeakerNotesEditorElements
+  private readonly text: ReturnType<typeof uiText>['studio']
   private activeSlide: HTMLElement | null = null
   private dirty = false
   private saveTimer: ReturnType<typeof setTimeout> | null = null
@@ -62,10 +63,12 @@ export class SpeakerNotesEditor {
     deck: SpeakerNotesDeckLike,
     repository: SpeakerNotesStore,
     elements: SpeakerNotesEditorElements,
+    locale: UiLocale = 'zh-CN',
   ) {
     this.deck = deck
     this.repository = repository
     this.elements = elements
+    this.text = uiText(locale).studio
   }
 
   hydrate(slides: Iterable<HTMLElement>) {
@@ -104,7 +107,7 @@ export class SpeakerNotesEditor {
     this.repository.save(slideId, note)
     this.writeSlideNote(this.activeSlide, note)
     this.dirty = false
-    this.elements.status.textContent = '已自动保存'
+    this.elements.status.textContent = this.text.notesSaved
   }
 
   private syncOpenEditor = () => {
@@ -116,7 +119,7 @@ export class SpeakerNotesEditor {
     if (!this.activeSlide) return
     this.writeSlideNote(this.activeSlide, this.elements.textarea.value.trim())
     this.dirty = true
-    this.elements.status.textContent = '正在自动保存…'
+    this.elements.status.textContent = this.text.notesSaving
     this.clearSaveTimer()
     this.saveTimer = setTimeout(() => this.persist(), 400)
   }
@@ -140,7 +143,7 @@ export class SpeakerNotesEditor {
     this.elements.textarea.value = resolveSpeakerNote(this.repository.load(slideId), authored)
     this.elements.slideLabel.textContent = slide.dataset.notesLabel ?? slideId
     this.dirty = false
-    this.elements.status.textContent = '已从 deck 文件载入'
+    this.elements.status.textContent = this.text.notesLoaded
   }
 
   private writeSlideNote(slide: HTMLElement, note: string) {
@@ -154,3 +157,4 @@ export class SpeakerNotesEditor {
   }
 
 }
+import { type UiLocale, uiText } from '../i18n/ui-locale'

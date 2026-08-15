@@ -14,6 +14,13 @@ describe('media lightbox contract', () => {
     expect(html).toContain('data-media-lightbox-reset')
   })
 
+  it('renders English media controls when requested', () => {
+    const html = renderMediaLightbox('en')
+    expect(html).toContain('aria-label="Enlarged media preview"')
+    expect(html).toContain('aria-label="Reset media zoom">Reset</button>')
+    expect(html).not.toContain('关闭媒体预览')
+  })
+
   it.each(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '])('blocks Reveal navigation key %s while open', (key) => {
     expect(isPresentationNavigationKey(key)).toBe(true)
   })

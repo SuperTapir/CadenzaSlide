@@ -24,4 +24,14 @@ describe('renderDeckLibrary', () => {
     expect(html).toContain('当前 workspace 还没有 deck')
     expect(html).toContain('data-testid="system-demo-deck"')
   })
+
+  it('renders English library copy and locale-preserving deck links', () => {
+    const html = renderDeckLibrary([{ id: 'demo', title: 'Demo', path: '/workspace/demo.json' }], undefined, 'en')
+
+    expect(html).toContain('Your decks')
+    expect(html).toContain('Open in Studio')
+    expect(html).toContain('?view=studio&amp;deck=demo&amp;lang=en')
+    expect(html).toContain('data-ui-locale-switcher')
+    expect(html).not.toContain('你的 Deck')
+  })
 })

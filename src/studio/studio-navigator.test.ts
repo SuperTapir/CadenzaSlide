@@ -37,12 +37,21 @@ describe('Studio Navigator renderer', () => {
     expect(html.match(/data-navigator-slide=/g)).toHaveLength(Object.keys(demoDeckDocument.slides).length)
     expect(html.match(/data-navigator-group=/g) ?? []).toHaveLength(1)
     expect(html).toContain('系统证明 / SYSTEM PROOF')
-    expect(html).toContain('aria-label="Slide Navigator"')
+    expect(html).toContain('aria-label="页面导航"')
     expect(html).toContain('data-navigator-drop-indicator')
     expect(html).toContain(`data-playback-index="${Object.keys(demoDeckDocument.slides).length - 1}"`)
     expect(html).toContain('title="包含演讲者注释"')
     expect(html.match(/draggable="true"/g)).toHaveLength(Object.keys(demoDeckDocument.slides).length + 1)
     expect(html).not.toContain('data-navigator-copy')
+  })
+
+  it('renders navigator controls in English when requested', () => {
+    const html = renderStudioNavigator(demoDeckDocument, 'en')
+    expect(html).toContain('+ Group')
+    expect(html).toContain('Overview ↗')
+    expect(html).toContain('aria-label="Slide navigation"')
+    expect(html).toContain('Select')
+    expect(html).not.toContain('重命名')
   })
 
   it('keeps a 200-slide rail within the 40-row DOM budget', () => {
