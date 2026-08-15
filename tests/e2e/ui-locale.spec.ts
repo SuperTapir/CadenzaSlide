@@ -5,6 +5,9 @@ test('keeps English UI chrome across Decks, Studio, Design Library, Overview, an
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   await expect(page.getByRole('heading', { name: 'Your decks' })).toBeVisible()
   expect((await page.locator('[data-ui-locale-switcher]').boundingBox())?.width).toBeLessThan(180)
+  await page.getByTestId('system-demo-deck').getByRole('link', { name: 'Preview demo' }).click()
+  await expect(page).toHaveURL(/view=audience.*source=demo.*lang=en/)
+  await expect(page.getByText('Compose With Intent', { exact: true })).toBeVisible()
 
   await page.goto('/?view=studio&deck=cadenza-demo&lang=en#/1')
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')

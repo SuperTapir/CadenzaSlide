@@ -15,6 +15,13 @@ describe('openBrowserDeck', () => {
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
+  it('loads the English bundled Demo for the English interface', async () => {
+    const repository = await openBrowserDeck(new URL('http://local/?view=audience&source=demo&lang=en'), false)
+
+    expect(repository.document.id).toBe('cadenza-demo-en')
+    expect(repository.document.slides.opening).toMatchObject({ label: 'Compose With Intent' })
+  })
+
   it('does not turn a production workspace failure into the Demo', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('workspace offline')))
 
