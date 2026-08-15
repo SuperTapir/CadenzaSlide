@@ -23,7 +23,7 @@ const copy = {
     library: {
       intro: '选择一份 deck 进入 Studio。其他 workspace 可通过 CLI 打开。', yourDecks: '你的 Deck', examples: '系统示例', empty: '当前 workspace 还没有 deck。你可以先预览系统 Demo，或使用 CLI 创建一份新 deck。', demoDescription: '了解 Cadenza 的核心 layout、组件、视觉环境与动效语言。', previewDemo: '预览 Demo', openStudio: '在 Studio 中打开',
     },
-    overview: { hasNotes: '包含演讲者注释', noNotes: '无演讲者注释', preview: '放大预览', copyId: '复制 ID', copied: '已复制', search: '搜索', searchLabel: '搜索 slide 标题或 ID', searchPlaceholder: '标题或 slide ID', group: 'Group', groupLabel: '按 group 筛选', allGroups: '全部', region: 'Slide Overview' },
+    overview: { hasNotes: '包含演讲者注释', noNotes: '无演讲者注释', preview: '放大预览', copyId: '复制 ID', copied: '已复制', search: '搜索', searchLabel: '搜索 slide 标题或 ID', searchPlaceholder: '标题或 slide ID', group: 'Group', groupLabel: '按 group 筛选', allGroups: '全部', region: 'Slide Overview', separator: '：', outlineCheckpoint: '大纲确认点', completeDeck: '完整 Deck', outlineSlides: '大纲页面', slides: '页面', closePreview: '关闭放大预览' },
   },
   en: {
     locale: { label: 'Interface language', chinese: '中文', english: 'English' },
@@ -47,7 +47,7 @@ const copy = {
     library: {
       intro: 'Choose a deck to open in Studio. Open other workspaces through the CLI.', yourDecks: 'Your decks', examples: 'Built-in examples', empty: 'This workspace has no decks yet. Preview the system demo or create a deck with the CLI.', demoDescription: 'Explore Cadenza layouts, components, visual environments, and motion language.', previewDemo: 'Preview demo', openStudio: 'Open in Studio',
     },
-    overview: { hasNotes: 'Includes speaker notes', noNotes: 'No speaker notes', preview: 'Open preview', copyId: 'Copy ID', copied: 'Copied', search: 'Search', searchLabel: 'Search slide title or ID', searchPlaceholder: 'Title or slide ID', group: 'Group', groupLabel: 'Filter by group', allGroups: 'All groups', region: 'Slide overview' },
+    overview: { hasNotes: 'Includes speaker notes', noNotes: 'No speaker notes', preview: 'Open preview', copyId: 'Copy ID', copied: 'Copied', search: 'Search', searchLabel: 'Search slide title or ID', searchPlaceholder: 'Title or slide ID', group: 'Group', groupLabel: 'Filter by group', allGroups: 'All groups', region: 'Slide overview', separator: ': ', outlineCheckpoint: 'OUTLINE CHECKPOINT', completeDeck: 'COMPLETE DECK', outlineSlides: 'OUTLINE SLIDES', slides: 'SLIDES', closePreview: 'Close enlarged preview' },
   },
 } as const
 

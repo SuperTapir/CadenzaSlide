@@ -1,0 +1,665 @@
+{
+  "version": 1,
+  "id": "cadenza-demo-en",
+  "title": "Cadenza — Compose with Intent",
+  "status": "outline",
+  "master": {
+    "typography": "industrial",
+    "slideTransition": "dissolve",
+    "layouts": {
+      "title": {
+        "background": "field",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 6,
+              "y": 43,
+              "width": 60,
+              "height": 38
+            },
+            "fontSize": 68
+          },
+          "subtitle": {
+            "tag": "subtitle",
+            "frame": {
+              "x": 6,
+              "y": 83,
+              "width": 48,
+              "height": 7
+            },
+            "fontSize": 18
+          },
+          "meta": {
+            "tag": "metadata",
+            "frame": {
+              "x": 6,
+              "y": 92,
+              "width": 32,
+              "height": 5
+            },
+            "fontSize": 14
+          }
+        }
+      },
+      "title-photo": {
+        "background": "black",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "media": {
+            "tag": "media",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            }
+          },
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 6,
+              "y": 55,
+              "width": 66,
+              "height": 32
+            },
+            "fontSize": 68
+          },
+          "subtitle": {
+            "tag": "subtitle",
+            "frame": {
+              "x": 6,
+              "y": 88,
+              "width": 50,
+              "height": 7
+            },
+            "fontSize": 18
+          }
+        }
+      },
+      "title-photo-alt": {
+        "background": "shutter",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 6,
+              "y": 24,
+              "width": 40,
+              "height": 44
+            },
+            "fontSize": 66
+          },
+          "subtitle": {
+            "tag": "subtitle",
+            "frame": {
+              "x": 6,
+              "y": 72,
+              "width": 38,
+              "height": 12
+            },
+            "fontSize": 18
+          },
+          "media": {
+            "tag": "media",
+            "frame": {
+              "x": 53,
+              "y": 11,
+              "width": 41,
+              "height": 78
+            }
+          }
+        }
+      },
+      "title-bullets": {
+        "background": "orbit",
+        "environmentMode": "loop",
+        "elementMotion": "accumulate",
+        "backgroundObjects": [],
+        "visualRegions": [
+          {
+            "tag": "orbit-scene",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            }
+          }
+        ],
+        "slots": {
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 6,
+              "y": 7,
+              "width": 58,
+              "height": 22
+            },
+            "fontSize": 46
+          },
+          "subtitle": {
+            "tag": "subtitle",
+            "frame": {
+              "x": 6,
+              "y": 30,
+              "width": 58,
+              "height": 7
+            },
+            "fontSize": 16
+          },
+          "body": {
+            "tag": "body",
+            "frame": {
+              "x": 6,
+              "y": 37,
+              "width": 44,
+              "height": 6
+            },
+            "fontSize": 14
+          },
+          "items": {
+            "tag": "list",
+            "frame": {
+              "x": 6,
+              "y": 43,
+              "width": 44,
+              "height": 48
+            }
+          }
+        }
+      },
+      "title-bullets-photo": {
+        "background": "contour",
+        "environmentMode": "loop",
+        "elementMotion": "accumulate",
+        "backgroundObjects": [],
+        "slots": {
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 6,
+              "y": 9,
+              "width": 41,
+              "height": 24
+            },
+            "fontSize": 48
+          },
+          "subtitle": {
+            "tag": "subtitle",
+            "frame": {
+              "x": 6,
+              "y": 34,
+              "width": 40,
+              "height": 10
+            },
+            "fontSize": 16
+          },
+          "items": {
+            "tag": "list",
+            "frame": {
+              "x": 6,
+              "y": 48,
+              "width": 41,
+              "height": 43
+            }
+          },
+          "media": {
+            "tag": "media",
+            "frame": {
+              "x": 53,
+              "y": 13,
+              "width": 41,
+              "height": 66
+            }
+          }
+        }
+      },
+      "section": {
+        "background": "beam",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 6,
+              "y": 48,
+              "width": 68,
+              "height": 34
+            },
+            "fontSize": 72
+          },
+          "subtitle": {
+            "tag": "subtitle",
+            "frame": {
+              "x": 6,
+              "y": 84,
+              "width": 28,
+              "height": 9
+            },
+            "fontSize": 18
+          },
+          "number": {
+            "tag": "section-number",
+            "frame": {
+              "x": 78,
+              "y": 7,
+              "width": 16,
+              "height": 24
+            },
+            "fontSize": 150
+          }
+        }
+      },
+      "title-only": {
+        "background": "white",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 6,
+              "y": 7,
+              "width": 58,
+              "height": 16
+            },
+            "fontSize": 44
+          },
+          "subtitle": {
+            "tag": "subtitle",
+            "frame": {
+              "x": 6,
+              "y": 25,
+              "width": 54,
+              "height": 6
+            },
+            "fontSize": 15
+          }
+        }
+      },
+      "agenda": {
+        "background": "orbit",
+        "environmentMode": "loop",
+        "elementMotion": "accumulate",
+        "backgroundObjects": [],
+        "visualRegions": [
+          {
+            "tag": "orbit-scene",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            }
+          }
+        ],
+        "slots": {
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 6,
+              "y": 8,
+              "width": 56,
+              "height": 20
+            },
+            "fontSize": 44
+          },
+          "subtitle": {
+            "tag": "subtitle",
+            "frame": {
+              "x": 6,
+              "y": 29,
+              "width": 44,
+              "height": 8
+            },
+            "fontSize": 16
+          },
+          "body": {
+            "tag": "body",
+            "frame": {
+              "x": 71,
+              "y": 84,
+              "width": 23,
+              "height": 7
+            },
+            "fontSize": 14
+          },
+          "items": {
+            "tag": "agenda",
+            "frame": {
+              "x": 6,
+              "y": 43,
+              "width": 44,
+              "height": 48
+            }
+          }
+        }
+      },
+      "statement": {
+        "background": "black",
+        "environmentMode": "loop",
+        "elementMotion": "focus",
+        "backgroundObjects": [],
+        "slots": {
+          "title": {
+            "tag": "statement",
+            "frame": {
+              "x": 8,
+              "y": 14,
+              "width": 84,
+              "height": 40
+            },
+            "fontSize": 68
+          },
+          "subtitle": {
+            "tag": "context",
+            "frame": {
+              "x": 8,
+              "y": 67,
+              "width": 60,
+              "height": 12
+            },
+            "fontSize": 17
+          }
+        }
+      },
+      "big-fact": {
+        "background": "halo",
+        "environmentMode": "loop",
+        "elementMotion": "count",
+        "backgroundObjects": [],
+        "slots": {
+          "value": {
+            "tag": "metric",
+            "frame": {
+              "x": 18,
+              "y": 8,
+              "width": 64,
+              "height": 62
+            },
+            "fontSize": 220
+          },
+          "label": {
+            "tag": "label",
+            "frame": {
+              "x": 8,
+              "y": 74,
+              "width": 84,
+              "height": 13
+            },
+            "fontSize": 28
+          }
+        }
+      },
+      "quote": {
+        "background": "black",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "quote": {
+            "tag": "quote",
+            "frame": {
+              "x": 8,
+              "y": 15,
+              "width": 84,
+              "height": 48
+            },
+            "fontSize": 72
+          },
+          "attribution": {
+            "tag": "attribution",
+            "frame": {
+              "x": 8,
+              "y": 72,
+              "width": 84,
+              "height": 14
+            },
+            "fontSize": 16
+          }
+        }
+      },
+      "gallery": {
+        "background": "white",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "title": {
+            "tag": "title",
+            "frame": {
+              "x": 4,
+              "y": 3,
+              "width": 92,
+              "height": 12
+            }
+          },
+          "media": {
+            "tag": "media",
+            "frame": {
+              "x": 4,
+              "y": 17,
+              "width": 92,
+              "height": 79
+            }
+          }
+        }
+      },
+      "photo": {
+        "background": "black",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "media": {
+            "tag": "media",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            }
+          }
+        }
+      },
+      "blank": {
+        "background": "white",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "backgroundObjects": [],
+        "slots": {
+          "canvas": {
+            "tag": "canvas",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            }
+          }
+        }
+      }
+    }
+  },
+  "slides": {
+    "opening": {
+      "id": "opening",
+      "role": "intro",
+      "layout": "title",
+      "label": "Compose With Intent",
+      "ariaLabel": "Compose With Intent",
+      "title": ["Compose With Intent"],
+      "subtitle": "Presentations should be composed, not filled in",
+      "meta": "CADENZA / ENGLISH DEMO OUTLINE",
+      "notes": "Narrative role: Establish the thesis and the standard for the story\nEvidence: CadenzaSlide product mission"
+    },
+    "template-problem": {
+      "id": "template-problem",
+      "role": "content",
+      "layout": "title-only",
+      "label": "The Template Problem",
+      "ariaLabel": "Templates preserve consistency and repeat the same answer",
+      "title": ["Templates Preserve Consistency—and Repeat the Same Answer"],
+      "subtitle": "When the content changes, a fixed page structure cannot change its reasoning",
+      "notes": "Narrative role: Define the failure mode that Cadenza addresses\nEvidence: Existing Cadenza demo problem statement"
+    },
+    "system-thesis": {
+      "id": "system-thesis",
+      "role": "content",
+      "layout": "statement",
+      "label": "System Thesis",
+      "ariaLabel": "From content signals to visual relationships",
+      "title": ["From Content Signals to Visual Relationships"],
+      "subtitle": "Understand claims, evidence, order, and media before choosing form",
+      "notes": "Narrative role: Introduce the system-level answer\nEvidence: cadenza-presentations authoring workflow"
+    },
+    "three-layers": {
+      "id": "three-layers",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Three Layers",
+      "ariaLabel": "Structure content and relationship form the production language",
+      "title": ["Structure / Content / Relationship"],
+      "subtitle": "Nineteen production primitives form one controlled language",
+      "notes": "Narrative role: Explain the smallest reusable building blocks\nEvidence: 6 layout + 10 content + 3 relationship primitives in the production registry"
+    },
+    "composition-grammar": {
+      "id": "composition-grammar",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Composition Grammar",
+      "ariaLabel": "A grammar not a gallery",
+      "title": ["A Grammar, Not a Gallery"],
+      "subtitle": "Components combine around real semantics instead of visual preference",
+      "notes": "Narrative role: Differentiate Cadenza from a template or component gallery\nEvidence: Production component registry and authoring constraints"
+    },
+    "master-system": {
+      "id": "master-system",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Deck Master",
+      "ariaLabel": "The master protects the voice",
+      "title": ["The Master Protects the Voice"],
+      "subtitle": "Typography, environments, regions, and safe boundaries stay coherent across the deck",
+      "notes": "Narrative role: Show where consistency comes from\nEvidence: Deck Master layout and token contracts"
+    },
+    "composer": {
+      "id": "composer",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Composer",
+      "ariaLabel": "Generate candidates and reject invalid ones",
+      "title": ["Generate Candidates / Reject Invalid Ones"],
+      "subtitle": "Only compositions that pass hard semantic and capacity constraints can be ranked",
+      "notes": "Narrative role: Explain generation without implying unconstrained AI layout\nEvidence: Composer preflight and candidate pipeline"
+    },
+    "verifier": {
+      "id": "verifier",
+      "role": "content",
+      "layout": "statement",
+      "label": "Verifier",
+      "ariaLabel": "Quality is a contract",
+      "title": ["Quality Is a Contract"],
+      "subtitle": "Readability, coverage, alignment, clipping, and evidence fidelity are testable",
+      "notes": "Narrative role: Establish engineering credibility\nEvidence: Static verifier and browser geometry rules"
+    },
+    "human-loop": {
+      "id": "human-loop",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Human Review",
+      "ariaLabel": "Agents build and humans review the story",
+      "title": ["Agents Build / Humans Review the Story"],
+      "subtitle": "Overview reveals narrative rhythm; Audience decides whether the full-size page is finished",
+      "notes": "Narrative role: Define the collaboration boundary\nEvidence: Studio, Overview, and Audience review workflow"
+    },
+    "workflow": {
+      "id": "workflow",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Workflow",
+      "ariaLabel": "Brief outline build verify",
+      "title": ["Brief → Outline → Build → Verify"],
+      "subtitle": "Every new deck passes explicit review checkpoints before presentation",
+      "notes": "Narrative role: Make the operating model concrete\nEvidence: cadenza-presentations creation workflow"
+    },
+    "studio-proof": {
+      "id": "studio-proof",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Studio Proof",
+      "ariaLabel": "A real workspace not a render export",
+      "title": ["A Real Workspace, Not a Render Export"],
+      "subtitle": "Reorder slides, edit notes, inspect layouts, queue Agent changes, and present from one document",
+      "notes": "Narrative role: Prove that the workflow exists in the product\nEvidence: Live CadenzaSlide Studio capture"
+    },
+    "cross-content-proof": {
+      "id": "cross-content-proof",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Cross-content Proof",
+      "ariaLabel": "One system supports different narrative shapes",
+      "title": ["One System, Different Narrative Shapes"],
+      "subtitle": "Summaries, comparisons, steps, people, systems, quotations, and media share the same contracts",
+      "notes": "Narrative role: Demonstrate reuse beyond one polished demo\nEvidence: Composition evaluation corpus"
+    },
+    "open-source": {
+      "id": "open-source",
+      "role": "content",
+      "layout": "title-only",
+      "label": "Open Source",
+      "ariaLabel": "Inspectable by design",
+      "title": ["Inspectable by Design"],
+      "subtitle": "The Skill, JSON document, component contracts, renderer, and verifier can all be audited and extended",
+      "notes": "Narrative role: Connect the architecture to the open-source proposition\nEvidence: Public repository structure and MIT license"
+    },
+    "closing": {
+      "id": "closing",
+      "role": "content",
+      "layout": "statement",
+      "label": "Closing",
+      "ariaLabel": "Start with intent and end with evidence",
+      "title": ["Start With Intent / End With Evidence"],
+      "subtitle": "Create presentations that are not only beautiful, but explainable and verifiable",
+      "notes": "Narrative role: Close with the product promise and call to action\nEvidence: Cadenza CLI and GitHub repository"
+    }
+  },
+  "outline": [
+    {
+      "kind": "group",
+      "id": "thesis",
+      "title": "01 / Thesis",
+      "slideIds": ["opening", "template-problem", "system-thesis"]
+    },
+    {
+      "kind": "group",
+      "id": "system",
+      "title": "02 / System",
+      "slideIds": ["three-layers", "composition-grammar", "master-system", "composer", "verifier"]
+    },
+    {
+      "kind": "group",
+      "id": "workflow",
+      "title": "03 / Workflow",
+      "slideIds": ["human-loop", "workflow", "studio-proof"]
+    },
+    {
+      "kind": "group",
+      "id": "proof",
+      "title": "04 / Proof & Open Source",
+      "slideIds": ["cross-content-proof", "open-source", "closing"]
+    }
+  ]
+}

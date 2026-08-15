@@ -20,17 +20,17 @@ export function renderDeckOverview(deck: Readonly<DeckDocument>, locale: UiLocal
     const slide = deck.slides[slideId]
     const group = groupBySlide.get(slideId) ?? ''
     return `<article class="overview-card" data-overview-card data-slide-id="${slide.id}" data-group-id="${group}">
-      <button class="overview-preview" type="button" data-design-library-preview="slide:${slide.id}" data-design-library-preview-label="${escapeHtml(slide.label)} · ${slide.id}" data-design-library-preview-description="${escapeHtml(slide.notes ? text.hasNotes : text.noNotes)}" aria-label="${text.preview}：${escapeHtml(slide.label)}">
+      <button class="overview-preview" type="button" data-design-library-preview="slide:${slide.id}" data-design-library-preview-label="${escapeHtml(slide.label)} · ${slide.id}" data-design-library-preview-description="${escapeHtml(slide.notes ? text.hasNotes : text.noNotes)}" aria-label="${text.preview}${text.separator}${escapeHtml(slide.label)}">
         <div class="gallery-live-preview" data-gallery-slide-preview="${slide.layout}" data-gallery-preview-background="${deck.master.layouts[slide.layout in deck.master.layouts ? slide.layout as keyof typeof deck.master.layouts : 'blank'].background}"><div class="gallery-preview-content"></div><template data-gallery-preview-template>${renderDeckSlides([slide], deck.master)}</template></div>
       </button>
-      <footer><span class="overview-number">${String(index + 1).padStart(2, '0')}</span><div><strong>${escapeHtml(slide.label)}</strong><code>${slide.id}</code></div><button type="button" data-copy-slide-id="${slide.id}" aria-label="${text.copyId}：${slide.id}">${text.copyId}</button></footer>
+      <footer><span class="overview-number">${String(index + 1).padStart(2, '0')}</span><div><strong>${escapeHtml(slide.label)}</strong><code>${slide.id}</code></div><button type="button" data-copy-slide-id="${slide.id}" aria-label="${text.copyId}${text.separator}${slide.id}">${text.copyId}</button></footer>
     </article>`
   }).join('')
   return `<main class="deck-overview" data-testid="deck-overview">
-    <header class="overview-header"><div><p>CADENZA / OVERVIEW · ${deck.status === 'outline' ? 'OUTLINE CHECKPOINT' : 'COMPLETE DECK'}</p><h1>${escapeHtml(deck.title)}</h1></div>${renderUiLocaleSwitcher(locale, currentHref)}<div class="overview-summary"><strong>${flattenOutline(deck.outline).length}</strong><span>${deck.status === 'outline' ? 'OUTLINE SLIDES' : 'SLIDES'}</span></div></header>
+    <header class="overview-header"><div><p>CADENZA / OVERVIEW · ${deck.status === 'outline' ? text.outlineCheckpoint : text.completeDeck}</p><h1>${escapeHtml(deck.title)}</h1></div>${renderUiLocaleSwitcher(locale, currentHref)}<div class="overview-summary"><strong>${flattenOutline(deck.outline).length}</strong><span>${deck.status === 'outline' ? text.outlineSlides : text.slides}</span></div></header>
     <div class="overview-tools"><label>${text.search}<input type="search" data-overview-search aria-label="${text.searchLabel}" placeholder="${text.searchPlaceholder}"></label><label>${text.group}<select data-overview-group aria-label="${text.groupLabel}"><option value="">${text.allGroups}</option>${groups.map(group => `<option value="${group.id}">${escapeHtml(group.title)}</option>`).join('')}</select></label><span data-overview-status role="status"></span></div>
     <section class="overview-grid" aria-label="${text.region}">${cards}</section>
-    ${renderDesignLibraryPreview()}
+    ${renderDesignLibraryPreview(locale)}
   </main>`
 }
 

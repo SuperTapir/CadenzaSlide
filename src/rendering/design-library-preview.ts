@@ -1,10 +1,12 @@
 import { visualAssetById } from '../visual-assets/catalog.ts'
+import { type UiLocale, uiText } from '../i18n/ui-locale'
 
-export function renderDesignLibraryPreview() {
+export function renderDesignLibraryPreview(locale: UiLocale = 'zh-CN') {
+  const text = uiText(locale).overview
   return `<dialog class="design-library-preview" data-testid="design-library-preview" aria-labelledby="design-library-preview-title">
       <header>
         <div><p>DESIGN LIBRARY PREVIEW</p><h2 id="design-library-preview-title"></h2></div>
-        <div class="design-library-preview-actions"><button type="button" data-design-library-preview-poster hidden>Poster</button><button type="button" data-design-library-preview-one-bit hidden>1-bit</button><button type="button" data-design-library-preview-replay hidden>Replay</button><button type="button" data-design-library-preview-close aria-label="关闭放大预览">×</button></div>
+        <div class="design-library-preview-actions"><button type="button" data-design-library-preview-poster hidden>Poster</button><button type="button" data-design-library-preview-one-bit hidden>1-bit</button><button type="button" data-design-library-preview-replay hidden>Replay</button><button type="button" data-design-library-preview-close aria-label="${text.closePreview}">×</button></div>
       </header>
       <div class="design-library-preview-stage" data-design-library-preview-content></div>
       <p class="design-library-preview-description" data-design-library-preview-description></p>
