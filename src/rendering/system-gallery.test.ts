@@ -32,6 +32,16 @@ describe('read-only Design Library', () => {
     expect(html.match(/data-gallery-preview-variant="composed"/g)).toHaveLength(14)
     expect(html).not.toContain('class="gallery-preview-variants"')
   })
+  it('localizes Design Library controls without changing catalog fixtures', () => {
+    const html = renderSystemGallery('en', '?view=library&lang=en')
+    expect(html).toContain('Layouts and component reference')
+    expect(html).toContain('Browse system capabilities')
+    expect(html).toContain('aria-label="Search Design Library"')
+    expect(html).toContain('Copy composition tree')
+    expect(html).toContain('Open preview: Title / Cover')
+    expect(html).toContain('data-ui-locale-switcher')
+    expect(html).not.toContain('>关闭</button>')
+  })
   it('marks curated native enter, loop and hero sources without legacy originals', () => {
     const html = renderSystemGallery()
     expect(html).toContain('data-gallery-visual="icon:line-md-bell-loop" data-visual-kind="icon" data-visual-status="production" data-visual-quality="hero" data-visual-motion="loop" data-visual-motion-mode="loop"')

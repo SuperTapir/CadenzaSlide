@@ -49,7 +49,7 @@ export function renderAppShell(options: AppShellOptions): string {
         <label class="environment-picker" hidden>${studio.background}
           <select id="environment-preset" data-testid="environment-preset" aria-label="${studio.backgroundEnvironment}" disabled>${options.environmentOptions}</select>
         </label>
-        <button id="scale" type="button" hidden disabled>点距 3 PX</button>
+        <button id="scale" type="button" hidden disabled>${studio.dotPitch} 3 PX</button>
         <button id="motion" type="button" hidden aria-pressed="false" disabled>${studio.environmentStill}</button>
         <button id="play" type="button" hidden disabled>${studio.pauseEnvironment}</button>
       </div>

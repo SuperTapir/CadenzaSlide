@@ -47,7 +47,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = renderAppShell({
   slidesHtml: renderDeckSlides(flattenOutline(initialDocument.outline).map(id => initialDocument.slides[id]), initialDocument.master),
   environmentOptions: environmentPresetIds.map(id => `<option value="${id}">${environmentPresets[id].label}</option>`).join(''),
   fontThemeOptions: fontThemeIds.map(id => `<option value="${id}">${fontThemes[id].label}</option>`).join(''),
-  designLibraryHtml: isStudio ? renderDeckMaster(initialDocument.master) : '',
+  designLibraryHtml: isStudio ? renderDeckMaster(initialDocument.master, locale) : '',
   mediaLightboxHtml: renderMediaLightbox(locale),
   navigatorHtml: isStudio ? renderStudioNavigator(initialDocument, locale) : '',
   locale,

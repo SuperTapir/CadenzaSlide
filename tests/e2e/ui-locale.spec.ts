@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-test('keeps English UI chrome across Decks, Studio, Overview, and Audience', async ({ page }) => {
+test('keeps English UI chrome across Decks, Studio, Design Library, Overview, and Audience', async ({ page }) => {
   await page.goto('/?view=decks&lang=en')
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   await expect(page.getByRole('heading', { name: 'Your decks' })).toBeVisible()
@@ -10,6 +10,12 @@ test('keeps English UI chrome across Decks, Studio, Overview, and Audience', asy
   await expect(page.locator('#presentation-end')).toHaveText('End presentation')
   await expect(page.locator('#audience-open')).toHaveText('Open audience view')
   await expect(page.locator('[data-ui-locale-switcher] a[lang="zh-CN"]')).toHaveAttribute('href', /view=studio.*deck=cadenza-demo.*lang=zh-CN/)
+
+  await page.goto('/?view=library&deck=cadenza-demo&lang=en')
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await expect(page.getByRole('heading', { name: 'Layouts and component reference' })).toBeVisible()
+  await expect(page.getByLabel('Search Design Library')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Close', exact: true })).toBeVisible()
 
   await page.goto('/?view=overview&deck=cadenza-demo&lang=en')
   await expect(page.getByLabel('Search slide title or ID')).toBeVisible()

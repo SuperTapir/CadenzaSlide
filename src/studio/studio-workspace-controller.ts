@@ -87,6 +87,7 @@ export class StudioWorkspaceController {
       deckRoot: options.deckRoot,
       deckId: options.deckId,
       authoritativeFile: `decks/${options.deckId}/deck.cadenza.json`,
+      locale: options.locale,
     })
   }
 

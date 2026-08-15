@@ -61,5 +61,6 @@ describe('Studio inspect feedback', () => {
       { ...title, slideId: 'evidence', instruction: 'verify' },
     ]
     expect(summarizeInspectSlides(edits)).toEqual({ slideIds: ['intro', 'evidence'], label: '2 个页面 · intro、evidence' })
+    expect(summarizeInspectSlides(edits, 'en')).toEqual({ slideIds: ['intro', 'evidence'], label: '2 slides · intro, evidence' })
   })
 })

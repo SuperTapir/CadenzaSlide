@@ -12,6 +12,7 @@ import { composeSlideCandidates, describeCompositionRhythm, type SlideCompositio
 import { numberedSeriesScenarioCatalog } from '../authoring/numbered-series-scenarios'
 import { productionVisualAssets, visualAssetCatalog, type VisualAssetDefinition, type VisualBehavior } from '../visual-assets/catalog.ts'
 import { motionReadyVisualById, motionReadyVisuals } from '../visual-assets/motion'
+import { renderUiLocaleSwitcher, type UiLocale, uiText } from '../i18n/ui-locale'
 
 export interface CatalogEntry { id: string, label: string, description: string, previewLayout?: CoreLayoutId }
 export interface ComponentCatalogEntry extends CatalogEntry { category: ProductionComponentCategory, definition: ProductionComponentManifestEntry }
@@ -150,20 +151,21 @@ export const compositionCatalog: CompositionCatalogEntry[] = [
   }),
 ]
 
-export function renderSystemGallery() {
+export function renderSystemGallery(locale: UiLocale = 'zh-CN', currentHref = '?view=library') {
+  const text = uiText(locale).gallery
   const master = createDefaultDeckMaster()
-  const layouts = layoutCatalog.map((entry, index) => renderLayoutCard(entry, index, master)).join('')
+  const layouts = layoutCatalog.map((entry, index) => renderLayoutCard(entry, index, master, locale)).join('')
   const typographies = fontThemeIds.map(id => `<article class="gallery-card" data-gallery-typography="${id}"><div class="gallery-typography-preview" data-font-theme="${id}"><span>中英文 TYPOGRAPHY</span><strong>${fontThemes[id].sample}</strong><p>清晰的正文支持中文叙述与 English context。</p></div><div class="gallery-card-copy"><strong>${fontThemes[id].label}</strong><span>${fontThemes[id].description}</span></div></article>`).join('')
   const backgrounds = environmentPresetIds.map(id => `<article class="gallery-card" data-gallery-background="${id}"><div class="gallery-live-preview gallery-environment-only"><canvas data-gallery-environment-preview="${id}" width="320" height="180"></canvas></div><div class="gallery-card-copy"><strong>${environmentPresets[id].label}</strong><span>${environmentPresets[id].description}</span></div></article>`).join('')
   const slideTransitions = motionPresetIds.map(id => `<article class="gallery-card" data-gallery-slide-transition="${id}"><div class="gallery-live-preview gallery-slide-transition-preview" data-motion-preview="${id}"><span class="motion-preview-outgoing">A</span><span class="motion-preview-incoming">B</span></div><div class="gallery-card-copy"><strong>${motionPresets[id].label}</strong><span>${motionPresets[id].description}</span></div></article>`).join('')
   const elementTransitions = elementMotionIds.map(id => `<article class="gallery-card" data-gallery-element-transition="${id}"><div class="gallery-live-preview gallery-element-transition-preview" data-element-motion-preview="${id}"><strong>元素</strong></div><div class="gallery-card-copy"><strong>${elementMotions[id].label}</strong><span>${elementMotions[id].description}</span></div></article>`).join('')
-  const components = Object.fromEntries((['layout', 'content', 'relationship'] as const).map(category => [category, componentCatalog.filter(entry => entry.category === category).map(renderComponentCard).join('')])) as Record<ProductionComponentCategory, string>
-  const compositions = compositionCatalog.map(renderCompositionCard).join('')
-  const visuals = visualAssetCatalog.map(renderVisualCard).join('')
+  const components = Object.fromEntries((['layout', 'content', 'relationship'] as const).map(category => [category, componentCatalog.filter(entry => entry.category === category).map(entry => renderComponentCard(entry, locale)).join('')])) as Record<ProductionComponentCategory, string>
+  const compositions = compositionCatalog.map(entry => renderCompositionCard(entry, locale)).join('')
+  const visuals = visualAssetCatalog.map(asset => renderVisualCard(asset, locale)).join('')
 
   return `<section class="system-gallery" id="system-gallery" data-testid="system-gallery" aria-label="Cadenza Design Library" hidden>
-    <header class="gallery-header"><div><p>DESIGN LIBRARY / READ ONLY</p><h2>版式与组件参考</h2></div><p>这里用于查看能力，不会把视觉选择写入 deck。</p><button type="button" data-gallery-close>关闭</button></header>
-    <label class="gallery-search">搜索<input type="search" data-gallery-search aria-label="搜索 Gallery"></label>
+    <header class="gallery-header"><div><p>DESIGN LIBRARY / READ ONLY</p><h2>${text.title}</h2></div><p>${text.intro}</p>${renderUiLocaleSwitcher(locale, currentHref)}<button type="button" data-gallery-close>${text.close}</button></header>
+    <label class="gallery-search">${text.search}<input type="search" data-gallery-search aria-label="${text.searchLabel}"></label>
     <details class="gallery-section" data-gallery-section="visuals"><summary>Visual assets / ${visualAssetCatalog.length}</summary><div class="visual-gallery-tools"><label>Status<select data-visual-status-filter><option value="">All</option><option value="production">Production</option></select></label><label>Kind<select data-visual-kind-filter><option value="">All</option><option value="icon">Icon</option><option value="logo">Logo</option></select></label><label>Quality<select data-visual-quality-filter><option value="hero" selected>Hero 12</option><option value="animated">Animated 48</option><option value="">All</option></select></label><label>Motion<select data-visual-motion-filter><option value="">All</option><option value="animated">Animated</option><option value="static">Static</option></select></label><label>Mode<select data-visual-motion-mode-filter><option value="">All</option><option value="enter">Enter</option><option value="loop">Loop</option></select></label><span>${productionVisualAssets.filter(asset => asset.kind === 'icon').length} production icons · 12 hero · ${motionReadyVisuals.length} animated</span></div><div class="gallery-grid-list gallery-visuals" data-visual-gallery-host></div><template data-visual-gallery-template>${visuals}</template></details>
     <details class="gallery-section" data-gallery-section="templates" open><summary>Layouts / 14</summary><div class="gallery-grid-list">${layouts}</div></details>
     ${renderComponentSection('layout', 'Layout primitives', components.layout)}
@@ -173,11 +175,12 @@ export function renderSystemGallery() {
     <details class="gallery-section" data-gallery-section="typography"><summary>Typography / ${fontThemeIds.length}</summary><div class="gallery-grid-list gallery-typographies">${typographies}</div></details>
     <details class="gallery-section" data-gallery-section="backgrounds"><summary>Backgrounds / ${environmentPresetIds.length}</summary><div class="gallery-grid-list gallery-backgrounds">${backgrounds}</div></details>
     <details class="gallery-section" data-gallery-section="motion"><summary>Motion / ${motionPresetIds.length + elementMotionIds.length}</summary><div class="gallery-grid-list">${slideTransitions}${elementTransitions}</div></details>
-    ${renderDesignLibraryPreview()}
+    ${renderDesignLibraryPreview(locale)}
   </section>`
 }
 
-function renderVisualCard(asset: VisualAssetDefinition) {
+function renderVisualCard(asset: VisualAssetDefinition, locale: UiLocale) {
+  const text = uiText(locale).gallery
   const behavior: VisualBehavior = motionReadyVisualById[asset.id]?.verb ?? 'none'
   const motionMode = motionReadyVisualById[asset.id]?.mode ?? 'none'
   const state = asset.poster.state
@@ -190,14 +193,15 @@ function renderVisualCard(asset: VisualAssetDefinition) {
   const quality = asset.qualityTier ?? (behavior === 'none' ? 'core' : 'production')
   const rendered = asset.status === 'production' ? renderComposition(tree) : renderVisualAssetPreview(asset, tree)
   const search = [asset.id, asset.label, ...asset.purposes, ...asset.aliases, asset.family ?? '', asset.status, asset.kind].join(' ')
-  return `<article class="gallery-card gallery-visual-card" data-gallery-visual="${escapeHtml(asset.id)}" data-visual-kind="${asset.kind}" data-visual-status="${asset.status}" data-visual-quality="${quality}" data-visual-motion="${behavior}" data-visual-motion-mode="${motionMode}" data-visual-search="${escapeHtml(search)}"><button class="gallery-preview-button" type="button" data-design-library-preview="visual:${escapeHtml(asset.id)}" data-design-library-preview-label="${escapeHtml(asset.label)}" data-design-library-preview-description="${escapeHtml(`${asset.status} · ${asset.purposes.join(' · ')} · ${asset.provenance.origin} ${asset.provenance.version} · ${asset.provenance.license}`)}" aria-label="放大预览 ${escapeHtml(asset.label)}"><div class="gallery-live-preview visual-gallery-preview">${rendered}</div></button><div class="gallery-card-copy"><strong>${escapeHtml(asset.label)}</strong><span>${escapeHtml(asset.id)} · ${asset.status} · ${quality}${motionMode === 'none' ? '' : ` · ${motionMode}`}</span></div></article>`
+  return `<article class="gallery-card gallery-visual-card" data-gallery-visual="${escapeHtml(asset.id)}" data-visual-kind="${asset.kind}" data-visual-status="${asset.status}" data-visual-quality="${quality}" data-visual-motion="${behavior}" data-visual-motion-mode="${motionMode}" data-visual-search="${escapeHtml(search)}"><button class="gallery-preview-button" type="button" data-design-library-preview="visual:${escapeHtml(asset.id)}" data-design-library-preview-label="${escapeHtml(asset.label)}" data-design-library-preview-description="${escapeHtml(`${asset.status} · ${asset.purposes.join(' · ')} · ${asset.provenance.origin} ${asset.provenance.version} · ${asset.provenance.license}`)}" aria-label="${escapeHtml(text.openPreview(asset.label))}"><div class="gallery-live-preview visual-gallery-preview">${rendered}</div></button><div class="gallery-card-copy"><strong>${escapeHtml(asset.label)}</strong><span>${escapeHtml(asset.id)} · ${asset.status} · ${quality}${motionMode === 'none' ? '' : ` · ${motionMode}`}</span></div></article>`
 }
 
-function renderCompositionCard(entry: CompositionCatalogEntry) {
+function renderCompositionCard(entry: CompositionCatalogEntry, locale: UiLocale) {
+  const text = uiText(locale).gallery
   const slide = `<section data-slide-id="gallery-composition-${entry.id}" data-layout="blank" data-slide-role="content" data-cadenza-scene="white" data-environment-mode="static" aria-label="${escapeHtml(entry.label)}"><div class="slide-chrome template-blank cadenza-gallery-canvas">${renderComposition(entry.tree)}</div></section>`
   const preview = previewHost(`composition-${entry.id}`, slide)
   const composition = escapeHtml(JSON.stringify(entry.tree, null, 2))
-  return `<article class="gallery-card gallery-component-card gallery-composition-card" data-gallery-composition="${entry.id}" data-composition-narrative="${entry.narrative}"><button class="gallery-preview-button" type="button" data-design-library-preview="composition:${entry.id}" data-design-library-preview-label="${escapeHtml(entry.label)}" data-design-library-preview-description="${escapeHtml(entry.description)}" aria-label="放大预览 ${escapeHtml(entry.label)}">${preview}</button><div class="gallery-card-copy"><strong>${escapeHtml(entry.label)}</strong><span>${escapeHtml(entry.description)}</span></div><details class="gallery-component-contract"><summary>Composition</summary><dl><div><dt>Signals</dt><dd>${entry.signalIds.length}</dd></div><div><dt>Root</dt><dd>${escapeHtml(entry.tree.component)}</dd></div><div><dt>Fingerprint</dt><dd>${escapeHtml(entry.fingerprint)}</dd></div></dl></details><template data-component-composition-json>${composition}</template><button class="gallery-copy-composition" type="button" data-copy-composition>复制 composition tree</button></article>`
+  return `<article class="gallery-card gallery-component-card gallery-composition-card" data-gallery-composition="${entry.id}" data-composition-narrative="${entry.narrative}"><button class="gallery-preview-button" type="button" data-design-library-preview="composition:${entry.id}" data-design-library-preview-label="${escapeHtml(entry.label)}" data-design-library-preview-description="${escapeHtml(entry.description)}" aria-label="${escapeHtml(text.openPreview(entry.label))}">${preview}</button><div class="gallery-card-copy"><strong>${escapeHtml(entry.label)}</strong><span>${escapeHtml(entry.description)}</span></div><details class="gallery-component-contract"><summary>Composition</summary><dl><div><dt>Signals</dt><dd>${entry.signalIds.length}</dd></div><div><dt>Root</dt><dd>${escapeHtml(entry.tree.component)}</dd></div><div><dt>Fingerprint</dt><dd>${escapeHtml(entry.fingerprint)}</dd></div></dl></details><template data-component-composition-json>${composition}</template><button class="gallery-copy-composition" type="button" data-copy-composition>${text.copyComposition}</button></article>`
 }
 
 function renderComponentSection(category: ProductionComponentCategory, label: string, cards: string) {
@@ -205,11 +209,12 @@ function renderComponentSection(category: ProductionComponentCategory, label: st
   return `<details class="gallery-section" data-gallery-section="components-${category}"><summary>${label} / ${count}</summary><div class="gallery-grid-list">${cards}</div></details>`
 }
 
-function renderComponentCard(entry: ComponentCatalogEntry) {
+function renderComponentCard(entry: ComponentCatalogEntry, locale: UiLocale) {
+  const text = uiText(locale).gallery
   const fixture = componentPreviewFixtures[entry.id] ?? productionComponentQualificationFixtures[entry.id].compositions[0].tree
   const slide = `<section data-slide-id="gallery-component-${entry.id}" data-layout="blank" data-slide-role="content" data-cadenza-scene="white" data-environment-mode="static" aria-label="${escapeHtml(entry.label)}"><div class="slide-chrome template-blank cadenza-gallery-canvas">${renderComposition(fixture)}</div></section>`
   const preview = previewHost(`component-${entry.id}`, slide)
-  return `<article class="gallery-card gallery-component-card" data-gallery-component="${entry.id}" data-component-category="${entry.category}"><button class="gallery-preview-button" type="button" data-design-library-preview="component:${entry.id}" data-design-library-preview-label="${escapeHtml(entry.label)}" data-design-library-preview-description="${escapeHtml(entry.description)}" aria-label="放大预览 ${escapeHtml(entry.label)}">${preview}</button><div class="gallery-card-copy"><strong>${escapeHtml(entry.label)}</strong><span>${escapeHtml(entry.description)}</span></div>${renderComponentContract(entry)}</article>`
+  return `<article class="gallery-card gallery-component-card" data-gallery-component="${entry.id}" data-component-category="${entry.category}"><button class="gallery-preview-button" type="button" data-design-library-preview="component:${entry.id}" data-design-library-preview-label="${escapeHtml(entry.label)}" data-design-library-preview-description="${escapeHtml(entry.description)}" aria-label="${escapeHtml(text.openPreview(entry.label))}">${preview}</button><div class="gallery-card-copy"><strong>${escapeHtml(entry.label)}</strong><span>${escapeHtml(entry.description)}</span></div>${renderComponentContract(entry)}</article>`
 }
 
 function renderComponentContract(entry: ComponentCatalogEntry) {
@@ -217,10 +222,11 @@ function renderComponentContract(entry: ComponentCatalogEntry) {
   return `<details class="gallery-component-contract" data-component-contract="${entry.id}"><summary>Contract</summary><dl><div><dt>Props</dt><dd>${escapeHtml(keys(entry.definition.props))}</dd></div><div><dt>Slots</dt><dd>${escapeHtml(keys(entry.definition.slots))}</dd></div><div><dt>Axes</dt><dd>${escapeHtml(keys(entry.definition.axes))}</dd></div></dl></details>`
 }
 
-function renderLayoutCard(entry: CatalogEntry, index: number, master: Readonly<DeckMaster>) {
+function renderLayoutCard(entry: CatalogEntry, index: number, master: Readonly<DeckMaster>, locale: UiLocale) {
+  const text = uiText(locale).gallery
   const layout = entry.id as CoreLayoutId
-  const copy = `<div class="gallery-card-copy"><span class="gallery-card-index">${String(index + 1).padStart(2, '0')}</span><strong>${entry.label}</strong><span>${entry.description}</span></div><footer class="gallery-card-status"><span>三层母板</span><span>放大预览 ↗</span></footer>`
-  return `<article class="gallery-card gallery-layout-card gallery-startup-card" data-gallery-layout="${layout}"><div class="gallery-startup-preview"><button class="gallery-preview-button" type="button" data-design-library-preview="layout:${layout}:composed" data-design-library-preview-label="${entry.label}" data-design-library-preview-description="同一页面同时展示固定元素、已填占位符与自由对象" data-gallery-preview-variant="composed" aria-label="放大预览 ${entry.label}">${previewHost(layout, renderDesignLibraryFixture(layout, master))}</button></div>${copy}</article>`
+  const copy = `<div class="gallery-card-copy"><span class="gallery-card-index">${String(index + 1).padStart(2, '0')}</span><strong>${entry.label}</strong><span>${entry.description}</span></div><footer class="gallery-card-status"><span>${text.masterStatus}</span><span>${text.masterPreview}</span></footer>`
+  return `<article class="gallery-card gallery-layout-card gallery-startup-card" data-gallery-layout="${layout}"><div class="gallery-startup-preview"><button class="gallery-preview-button" type="button" data-design-library-preview="layout:${layout}:composed" data-design-library-preview-label="${entry.label}" data-design-library-preview-description="${text.masterComposition}" data-gallery-preview-variant="composed" aria-label="${escapeHtml(text.openPreview(entry.label))}">${previewHost(layout, renderDesignLibraryFixture(layout, master))}</button></div>${copy}</article>`
 }
 
 function previewHost(id: string, content: string) {
