@@ -9,6 +9,8 @@ export interface DeckLibraryEntry {
 
 export function renderDeckLibrary(decks: readonly DeckLibraryEntry[], error?: string, locale: UiLocale = 'zh-CN', currentHref = '?view=decks') {
   const text = uiText(locale).library
+  const chineseDemoHref = escapeHtml(localizeHref('?view=audience&source=demo&demo=zh-CN', locale))
+  const englishDemoHref = escapeHtml(localizeHref('?view=audience&source=demo&demo=en', locale))
   const workspaceDecks = error
     ? `<p class="deck-library-empty" role="alert">${escapeHtml(error)}</p>`
     : decks.length
@@ -26,13 +28,19 @@ export function renderDeckLibrary(decks: readonly DeckLibraryEntry[], error?: st
       ${workspaceDecks}
     </section>
     <section class="deck-library-section" aria-labelledby="example-decks-title">
-      <div class="deck-library-section-heading"><span>02</span><div><p>BUILT-IN EXAMPLE</p><h2 id="example-decks-title">${text.examples}</h2></div><strong>1</strong></div>
+      <div class="deck-library-section-heading"><span>02</span><div><p>BUILT-IN EXAMPLE</p><h2 id="example-decks-title">${text.examples}</h2></div><strong>2</strong></div>
       <div class="deck-library-grid">
-        <article class="deck-library-card deck-library-demo" data-testid="system-demo-deck">
+        <article class="deck-library-card deck-library-demo" data-testid="system-demo-deck-zh-CN">
           <span class="deck-library-card-kind">READ-ONLY / AUDIENCE</span>
-          <h3>Cadenza Demo</h3>
-          <p>${text.demoDescription}</p>
-          <a href="${escapeHtml(localizeHref('?view=audience&source=demo', locale))}">${text.previewDemo} <span aria-hidden="true">↗</span></a>
+          <h3>${text.chineseDemo}</h3>
+          <p>${text.chineseDemoDescription}</p>
+          <a href="${chineseDemoHref}">${text.previewChineseDemo} <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="deck-library-card deck-library-demo" data-testid="system-demo-deck-en">
+          <span class="deck-library-card-kind">READ-ONLY / OUTLINE</span>
+          <h3>${text.englishDemo}</h3>
+          <p>${text.englishDemoDescription}</p>
+          <a href="${englishDemoHref}">${text.previewEnglishDemo} <span aria-hidden="true">↗</span></a>
         </article>
       </div>
     </section>

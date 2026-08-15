@@ -1,10 +1,12 @@
 import deckSource from '../../decks/cadenza-demo/deck.cadenza.json' with { type: 'json' }
+import englishDeckSource from '../../decks/cadenza-demo-en/deck.cadenza.json' with { type: 'json' }
 import type { RenderableDeckSlide } from '../rendering/core-templates'
 import { parseDeckDocument, type DeckDocument } from '../core/deck-document'
 
 const resolvedSource = resolveBundledAssets(deckSource)
 
 export const demoDeckDocument: DeckDocument = parseDeckDocument(resolvedSource)
+export const englishDemoDeckDocument: DeckDocument = parseDeckDocument(englishDeckSource)
 
 export const demoDeck: readonly RenderableDeckSlide[] = demoDeckDocument.outline.flatMap(item => (
   item.kind === 'slide'
