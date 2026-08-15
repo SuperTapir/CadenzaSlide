@@ -1,0 +1,6 @@
+{
+  "$schema": "./cadenza.schema.json#/$defs/workspaceConfig",
+  "version": 1,
+  "decksDirectory": "decks",
+  "defaultDeck": "cadenza-demo"
+}

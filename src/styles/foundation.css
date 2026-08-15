@@ -1,0 +1,55 @@
+:root {
+  --paper: #c6c5b6;
+  --paper-bright: #e8e6d2;
+  --ink: #25251f;
+  --page: #1c1d18;
+  --accent: var(--ink);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --motion-fast: 160ms;
+  --motion-standard: 240ms;
+  --font-display: "Archivo Variable", "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-body: "IBM Plex Sans Variable", "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "IBM Plex Mono", "Noto Sans SC Variable", "PingFang SC", monospace;
+  --display-tracking: -.07em;
+  --display-case: uppercase;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--paper);
+  background: var(--page);
+  font-synthesis: none;
+}
+
+[data-font-theme="industrial"] {
+  --font-display: "Archivo Variable", "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-body: "IBM Plex Sans Variable", "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "IBM Plex Mono", "Noto Sans SC Variable", "PingFang SC", monospace;
+  --display-tracking: -.065em;
+  --display-case: uppercase;
+}
+[data-font-theme="technical"] {
+  --font-display: "IBM Plex Sans Variable", "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-body: "IBM Plex Sans Variable", "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "IBM Plex Mono", "Noto Sans SC Variable", "PingFang SC", monospace;
+  --display-tracking: -.045em;
+  --display-case: uppercase;
+}
+[data-font-theme="editorial"] {
+  --font-display: "Source Serif 4 Variable", "Noto Serif SC Variable", "Songti SC", "SimSun", serif;
+  --font-body: "Source Serif 4 Variable", "Noto Serif SC Variable", "Songti SC", "SimSun", serif;
+  --font-mono: "IBM Plex Mono", "Noto Sans SC Variable", "PingFang SC", monospace;
+  --display-tracking: -.035em;
+  --display-case: none;
+}
+
+* { box-sizing: border-box; }
+html, body, #app { min-width: 320px; min-height: 100%; }
+html, body { overflow-x: hidden; overflow-y: auto; }
+body { margin: 0; background: radial-gradient(circle at 50% 30%, #303128 0, var(--page) 55%); }
+button { font: inherit; }
+
+html[data-app-mode="audience"], html[data-app-mode="receiver"],
+html[data-app-mode="audience"] body, html[data-app-mode="receiver"] body,
+html[data-app-mode="audience"] #app, html[data-app-mode="receiver"] #app { width: 100%; height: 100%; overflow: hidden; }
+html[data-app-mode="audience"] body, html[data-app-mode="receiver"] body { background: var(--ink); }
+html[data-app-mode="audience"] .app-shell, html[data-app-mode="receiver"] .app-shell { display: grid; place-items: center; width: 100vw; height: 100vh; margin: 0; }
+html[data-app-mode="audience"] .deck-frame, html[data-app-mode="receiver"] .deck-frame { width: min(100vw, calc(100vh * 16 / 9)); height: min(100vh, calc(100vw * 9 / 16)); aspect-ratio: 16 / 9; border: 0; box-shadow: none; }

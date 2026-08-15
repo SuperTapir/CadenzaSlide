@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "custom:architecture-map",
+      "kind": "layout",
+      "label": "Architecture Map",
+      "description": "展示一个中心判断与三到五个有向关系节点。",
+      "renderer": "builtin:architecture-map",
+      "fixture": {
+        "title": ["Systems cross", "a boundary."],
+        "body": "关系比单个模块更值得解释。",
+        "nodes": [
+          { "label": "USER", "detail": "intent" },
+          { "label": "AGENT", "detail": "reasoning" },
+          { "label": "SYSTEM", "detail": "constraints" }
+        ]
+      }
+    },
+    {
+      "id": "custom:numbered-series",
+      "kind": "layout",
+      "label": "Numbered Series",
+      "description": "固定章节标签、连续编号、主标题和副标题；下方安全区允许图片、流程、代码与对照等可变内容。",
+      "renderer": "builtin:numbered-series",
+      "fixture": {
+        "title": ["先定义方向"],
+        "subtitle": "让连续方法页共享一条稳定阅读路径",
+        "seriesNumber": "01",
+        "seriesLabel": "AI 协作方法",
+        "contentFrame": { "x": 6, "y": 35, "width": 88, "height": 49 },
+        "scenarios": [
+          "series-peer-panels",
+          "series-ordered-gates",
+          "series-evidence-split",
+          "series-asymmetric-evidence",
+          "series-code-contract"
+        ]
+      }
+    }
+  ]
+}

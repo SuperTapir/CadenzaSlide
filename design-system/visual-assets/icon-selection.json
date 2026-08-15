@@ -1,0 +1,22 @@
+{
+  "source": "lucide-static",
+  "version": "1.31.0",
+  "groups": [
+    { "id": "communication", "label": "沟通协作", "aliases": ["communication", "collaboration", "message", "沟通", "协作"], "icons": ["message-circle", "messages-square", "mail", "phone-call", "screen-share", "mic", "megaphone", "radio", "message-square-more", "users"] },
+    { "id": "creation", "label": "创建编辑", "aliases": ["create", "add", "edit", "author", "创建", "编辑"], "icons": ["plus", "circle-plus", "pencil", "notebook-pen", "wand-sparkles", "sparkles", "image-plus", "file-plus", "folder-plus", "paintbrush"] },
+    { "id": "discovery", "label": "搜索发现", "aliases": ["search", "discover", "focus", "filter", "搜索", "发现"], "icons": ["search", "zoom-in", "zoom-out", "file-search", "list-filter", "eye", "target", "filter", "compass", "binoculars"] },
+    { "id": "data", "label": "数据分析", "aliases": ["data", "analytics", "metric", "growth", "数据", "增长"], "icons": ["chart-bar", "chart-line", "chart-no-axes-combined", "chart-pie", "chart-scatter", "chart-network", "database", "table", "trending-up", "trending-down"] },
+    { "id": "technology", "label": "技术系统", "aliases": ["technology", "system", "development", "architecture", "技术", "架构"], "icons": ["cpu", "circuit-board", "terminal", "square-terminal", "code-xml", "braces", "monitor", "smartphone", "server", "binary"] },
+    { "id": "ai", "label": "AI 智能", "aliases": ["ai", "intelligence", "thinking", "automation", "人工智能", "智能"], "icons": ["brain", "bot", "brain-circuit", "atom", "bot-message-square", "scan-search", "zap", "audio-waveform", "activity", "orbit"] },
+    { "id": "process", "label": "流程编排", "aliases": ["process", "workflow", "orchestration", "sequence", "流程", "编排"], "icons": ["refresh-cw", "workflow", "route", "layers", "rows-3", "columns-3", "grid-3x3", "list-ordered", "network", "git-merge"] },
+    { "id": "status", "label": "状态反馈", "aliases": ["status", "feedback", "success", "warning", "状态", "成功", "警告"], "icons": ["check", "circle-check", "badge-check", "triangle-alert", "circle-alert", "info", "circle-help", "circle-x", "circle-check-big", "badge-alert"] },
+    { "id": "security", "label": "安全治理", "aliases": ["security", "privacy", "governance", "risk", "安全", "风险"], "icons": ["lock", "lock-open", "key-round", "key-square", "shield", "shield-check", "shield-alert", "fingerprint", "eye-off", "scan-face"] },
+    { "id": "documents", "label": "文档知识", "aliases": ["document", "file", "knowledge", "content", "文档", "知识"], "icons": ["file", "files", "folder", "folders", "file-text", "file-chart-column", "file-sliders", "file-spreadsheet", "file-image", "file-archive"] },
+    { "id": "cloud", "label": "云与连接", "aliases": ["cloud", "upload", "download", "connectivity", "云", "连接"], "icons": ["cloud", "cloud-upload", "cloud-download", "upload", "download", "wifi", "globe", "link", "plug-zap", "cloud-cog"] },
+    { "id": "business", "label": "商业组织", "aliases": ["business", "company", "finance", "strategy", "商业", "战略"], "icons": ["briefcase", "building-2", "factory", "store", "badge-dollar-sign", "wallet", "credit-card", "receipt", "handshake", "chart-spline"] },
+    { "id": "people", "label": "人物团队", "aliases": ["people", "team", "user", "culture", "人物", "团队", "文化"], "icons": ["user", "users-round", "user-check", "user-plus", "contact", "hand", "contact-round", "book-user", "user-round-search", "accessibility"] },
+    { "id": "time", "label": "时间计划", "aliases": ["time", "schedule", "plan", "deadline", "时间", "计划"], "icons": ["calendar", "calendar-check", "calendar-plus", "clock", "timer", "hourglass", "bell", "flag", "alarm-clock", "calendar-clock"] },
+    { "id": "media", "label": "媒体演示", "aliases": ["media", "presentation", "video", "image", "媒体", "演示"], "icons": ["image", "images", "play", "pause", "video", "camera", "projector", "music", "mic-vocal", "panels-top-left"] },
+    { "id": "direction", "label": "方向与能量", "aliases": ["direction", "movement", "energy", "change", "方向", "变化"], "icons": ["arrow-up", "arrow-right", "arrow-down", "arrow-left", "split", "merge", "rocket", "recycle", "move-right", "earth"] }
+  ]
+}

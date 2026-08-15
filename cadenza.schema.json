@@ -1,0 +1,525 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cadenza.local/schema/deck.json",
+  "title": "Cadenza DeckDocument",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "id",
+    "title",
+    "status",
+    "master",
+    "slides",
+    "outline"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "outline",
+        "complete"
+      ]
+    },
+    "outlineConfirmedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "master": {
+      "$ref": "#/$defs/master"
+    },
+    "slides": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/slide"
+      }
+    },
+    "outline": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/outlineSlide"
+          },
+          {
+            "$ref": "#/$defs/outlineGroup"
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "properties": {
+        "x": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "y": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "frame"
+      ],
+      "properties": {
+        "tag": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "frame": {
+          "$ref": "#/$defs/frame"
+        },
+        "fontSize": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "align": {
+          "enum": [
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "fit": {
+          "enum": [
+            "cover",
+            "contain"
+          ]
+        }
+      }
+    },
+    "layoutMaster": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "background",
+        "environmentMode",
+        "elementMotion",
+        "slots",
+        "backgroundObjects"
+      ],
+      "properties": {
+        "background": {
+          "type": "string"
+        },
+        "environmentMode": {
+          "enum": [
+            "static",
+            "loop"
+          ]
+        },
+        "elementMotion": {
+          "type": "string"
+        },
+        "slots": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/slot"
+          }
+        },
+        "backgroundObjects": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              { "$ref": "#/$defs/object" },
+              { "properties": { "kind": { "enum": ["text", "image", "shape", "table", "code", "chart"] } } }
+            ]
+          }
+        }
+      }
+    },
+    "master": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "typography",
+        "slideTransition",
+        "layouts"
+      ],
+      "properties": {
+        "typography": {
+          "type": "string"
+        },
+        "slideTransition": {
+          "type": "string"
+        },
+        "layouts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "title",
+            "title-photo",
+            "title-photo-alt",
+            "title-bullets",
+            "title-bullets-photo",
+            "section",
+            "title-only",
+            "agenda",
+            "statement",
+            "big-fact",
+            "quote",
+            "gallery",
+            "photo",
+            "blank"
+          ],
+          "properties": {
+            "title": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "title-photo": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "title-photo-alt": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "title-bullets": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "title-bullets-photo": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "section": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "title-only": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "agenda": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "statement": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "big-fact": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "quote": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "gallery": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "photo": {
+              "$ref": "#/$defs/layoutMaster"
+            },
+            "blank": {
+              "$ref": "#/$defs/layoutMaster"
+            }
+          }
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "src",
+        "alt"
+      ],
+      "properties": {
+        "src": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alt": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "fit": {
+          "enum": [
+            "cover",
+            "contain"
+          ]
+        },
+        "aspectRatio": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "focalPoint": {
+          "type": "object",
+          "required": [
+            "x",
+            "y"
+          ],
+          "properties": {
+            "x": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "y": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        }
+      }
+    },
+    "object": {
+      "type": "object",
+      "required": [
+        "kind",
+        "frame"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "text",
+            "image",
+            "shape",
+            "table",
+            "code",
+            "video",
+            "chart",
+            "html",
+            "composition"
+          ]
+        },
+        "compositionId": {
+          "$ref": "#/$defs/id"
+        },
+        "tree": {
+          "$ref": "#/$defs/compositionNode"
+        },
+        "frame": {
+          "$ref": "#/$defs/frame"
+        },
+        "src": {
+          "type": "string"
+        },
+        "external": {
+          "const": true
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "compositionNode": {
+      "type": "object",
+      "required": ["nodeId", "component", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "nodeId": { "$ref": "#/$defs/id" },
+        "component": {
+          "enum": ["stack", "cluster", "grid", "split", "inset", "overlay", "heading", "copy", "metric", "list", "card", "quote", "media", "profile", "logo", "caption", "divider", "connector", "progress"]
+        },
+        "version": { "const": 1 },
+        "props": { "type": "object" },
+        "axes": { "type": "object" },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/compositionNode" }
+        },
+        "slots": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/compositionNode" }
+          }
+        }
+      }
+    },
+    "slide": {
+      "type": "object",
+      "required": [
+        "id",
+        "layout",
+        "role",
+        "label"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "layout": {
+          "enum": [
+            "title",
+            "title-photo",
+            "title-photo-alt",
+            "title-bullets",
+            "title-bullets-photo",
+            "section",
+            "title-only",
+            "agenda",
+            "statement",
+            "big-fact",
+            "quote",
+            "gallery",
+            "photo",
+            "blank"
+          ]
+        },
+        "role": {
+          "enum": [
+            "intro",
+            "agenda",
+            "section",
+            "content",
+            "recap",
+            "summary",
+            "qa",
+            "thanks"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "subtitle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "body": {
+          "type": "string"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attribution": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/$defs/image"
+        },
+        "images": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/image"
+          }
+        },
+        "objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/object"
+          }
+        },
+        "hiddenPlaceholders": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        },
+        "slotOverrides": {
+          "type": "object",
+          "additionalProperties": { "type": "object" }
+        }
+      }
+    },
+    "outlineSlide": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "slideId"
+      ],
+      "properties": {
+        "kind": {
+          "const": "slide"
+        },
+        "slideId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "outlineGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id",
+        "title",
+        "slideIds"
+      ],
+      "properties": {
+        "kind": {
+          "const": "group"
+        },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slideIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    }
+  }
+}

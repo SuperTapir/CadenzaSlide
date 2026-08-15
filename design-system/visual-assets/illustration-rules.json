@@ -1,0 +1,124 @@
+{
+  "version": "1.0.0",
+  "defaultScope": "deck-local",
+  "useWhen": [
+    "页面解释抽象关系且没有更可信的照片、截图、图表或 diagram",
+    "一个具体动作或角色关系比另一组文字卡片更快被理解",
+    "章节页需要一个能够承担唯一主焦点的叙事画面"
+  ],
+  "avoidWhen": [
+    "页面已经有照片、产品截图、图表或其他强视觉证据",
+    "插画只负责填补空白而不增加理解",
+    "事实准确性要求高于风格表达，或无法可靠画出关键关系",
+    "相邻页面已经使用同 family、同构图或同 prominence 的插画"
+  ],
+  "requiredContractFields": [
+    "purpose",
+    "subject",
+    "figure",
+    "object",
+    "machine",
+    "annotation",
+    "focalPoint",
+    "negativeSpace",
+    "palette",
+    "source",
+    "oneBitCase",
+    "rejectionReasons"
+  ],
+  "compositionRoles": {
+    "figure": { "max": 3 },
+    "object": { "max": 5 },
+    "machine": { "max": 1 },
+    "annotation": { "max": 4 }
+  },
+  "palette": {
+    "roles": ["paper", "ink", "accent"],
+    "maxAccentCoverage": 0.12
+  },
+  "layout": {
+    "heroCount": 1,
+    "subjectCoverage": [0.28, 0.62],
+    "minimumNegativeSpace": 0.28,
+    "preferredView": ["profile", "three-quarter", "top-down"],
+    "avoidView": ["front-facing-symmetry", "centered-badge"]
+  },
+  "oneBitQualification": {
+    "minimumShortEdgePx": 320,
+    "gridScales": [1, 2, 3],
+    "rejectionChecks": [
+      "subject-silhouette-lost",
+      "semantic-object-merged",
+      "relationship-unreadable",
+      "accent-only-information",
+      "thin-line-disappeared",
+      "black-mass-over-45-percent"
+    ]
+  },
+  "forbiddenStyles": [
+    "generic-saas-blob-people",
+    "gradient-decoration",
+    "floating-ui-card-cloud",
+    "mascot-without-narrative-role",
+    "glossy-3d",
+    "random-particles-or-rings",
+    "fake-pixel-or-halftone-before-one-bit-render",
+    "text-inside-generated-image"
+  ],
+  "validationBriefs": [
+    {
+      "id": "strategy-choice",
+      "domain": "enterprise-strategy",
+      "contract": {
+        "purpose": "表现团队在三个选项中锁定唯一优先级",
+        "subject": "一只手把三块实体牌中的一块推入机械卡槽",
+        "figure": "仅出现手部，不画完整人物",
+        "object": "三块差异明确的实体牌",
+        "machine": "一个带单一确认灯的低矮卡槽",
+        "annotation": "一条短箭头标识进入方向",
+        "focalPoint": "牌与卡槽接触的位置",
+        "negativeSpace": "右侧至少 35% 留给结论文字",
+        "palette": "paper/ink；accent 只用于确认灯",
+        "source": "记录生成 prompt、模型或手绘作者与日期",
+        "oneBitCase": "短边 320px、gridScale 1/2/3，三块牌仍分离且插入关系可读",
+        "rejectionReasons": "选择关系不清、出现无关人物、accent 承担唯一信息或黑块超过 45%"
+      }
+    },
+    {
+      "id": "architecture-handoff",
+      "domain": "technical-architecture",
+      "contract": {
+        "purpose": "解释输入经过一个处理单元后分成两条确定输出",
+        "subject": "一条实体输入带进入单个处理机并分流",
+        "figure": "无人物",
+        "object": "一个输入容器与两个输出容器",
+        "machine": "一个有清晰入口、出口和内部节拍的处理单元",
+        "annotation": "最多三条连接路径，不画装饰流线",
+        "focalPoint": "处理单元内部的变换节点",
+        "negativeSpace": "左上或右上至少 30% 留给架构说明",
+        "palette": "paper/ink；accent 只标识被解释的输出",
+        "source": "记录生成 prompt、模型或手绘作者与日期",
+        "oneBitCase": "短边 320px、gridScale 1/2/3，入口、两个出口和方向均可辨识",
+        "rejectionReasons": "路径交叉、容器粘连、机器像通用 UI 卡片或需要颜色才能理解"
+      }
+    },
+    {
+      "id": "culture-listening",
+      "domain": "people-culture",
+      "contract": {
+        "purpose": "表现一人表达、两人倾听并形成共同记录",
+        "subject": "三人围绕一张窄桌，视线集中在共同纸面",
+        "figure": "三个人物使用不同姿态与视线，不画正面头像排队",
+        "object": "一张桌与一份共同记录",
+        "machine": "无机器",
+        "annotation": "一条短下划线标记共同记录，不添加对话气泡云",
+        "focalPoint": "三条视线汇聚的纸面",
+        "negativeSpace": "上方或左侧至少 32% 留给引语或结论",
+        "palette": "paper/ink；accent 只用于共同记录的一处标记",
+        "source": "记录生成 prompt、模型或手绘作者与日期",
+        "oneBitCase": "短边 320px、gridScale 1/2/3，三个人物不粘连且视线汇聚仍可读",
+        "rejectionReasons": "人物像通用 SaaS blob、姿态相同、共同记录消失或出现无语义装饰"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1933 @@
+{
+  "version": 1,
+  "id": "cadenza-demo",
+  "title": "Cadenza — 为内容重新作曲",
+  "status": "complete",
+  "master": {
+    "typography": "industrial",
+    "slideTransition": "dissolve",
+    "layouts": {
+      "title": {
+        "background": "field",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "title": {
+            "frame": {
+              "x": 6,
+              "y": 43,
+              "width": 60,
+              "height": 38
+            },
+            "fontSize": 68,
+            "tag": "title"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 6,
+              "y": 83,
+              "width": 48,
+              "height": 7
+            },
+            "fontSize": 18,
+            "tag": "subtitle"
+          },
+          "meta": {
+            "frame": {
+              "x": 6,
+              "y": 92,
+              "width": 32,
+              "height": 5
+            },
+            "fontSize": 14,
+            "tag": "metadata"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "title-photo": {
+        "background": "halo",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "media": {
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            },
+            "tag": "media"
+          },
+          "title": {
+            "frame": {
+              "x": 6,
+              "y": 55,
+              "width": 66,
+              "height": 32
+            },
+            "fontSize": 68,
+            "tag": "title"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 6,
+              "y": 88,
+              "width": 50,
+              "height": 7
+            },
+            "fontSize": 18,
+            "tag": "subtitle"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "title-photo-alt": {
+        "background": "strata",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "title": {
+            "frame": {
+              "x": 6,
+              "y": 24,
+              "width": 40,
+              "height": 44
+            },
+            "fontSize": 66,
+            "tag": "title"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 6,
+              "y": 72,
+              "width": 38,
+              "height": 12
+            },
+            "fontSize": 18,
+            "tag": "subtitle"
+          },
+          "media": {
+            "frame": {
+              "x": 53,
+              "y": 11,
+              "width": 41,
+              "height": 78
+            },
+            "tag": "media"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "title-bullets": {
+        "background": "orbit",
+        "environmentMode": "loop",
+        "elementMotion": "accumulate",
+        "slots": {
+          "title": {
+            "frame": {
+              "x": 6,
+              "y": 7,
+              "width": 58,
+              "height": 22
+            },
+            "fontSize": 46,
+            "tag": "title"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 6,
+              "y": 30,
+              "width": 58,
+              "height": 7
+            },
+            "fontSize": 16,
+            "tag": "subtitle"
+          },
+          "body": {
+            "frame": {
+              "x": 6,
+              "y": 37,
+              "width": 44,
+              "height": 6
+            },
+            "fontSize": 14,
+            "tag": "body"
+          },
+          "items": {
+            "frame": {
+              "x": 6,
+              "y": 43,
+              "width": 44,
+              "height": 48
+            },
+            "tag": "list"
+          }
+        },
+        "backgroundObjects": [],
+        "visualRegions": [
+          {
+            "tag": "orbit-scene",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            }
+          }
+        ]
+      },
+      "title-bullets-photo": {
+        "background": "contour",
+        "environmentMode": "loop",
+        "elementMotion": "accumulate",
+        "slots": {
+          "title": {
+            "frame": {
+              "x": 6,
+              "y": 9,
+              "width": 41,
+              "height": 24
+            },
+            "fontSize": 48,
+            "tag": "title"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 6,
+              "y": 34,
+              "width": 40,
+              "height": 10
+            },
+            "fontSize": 16,
+            "tag": "subtitle"
+          },
+          "items": {
+            "frame": {
+              "x": 6,
+              "y": 48,
+              "width": 41,
+              "height": 43
+            },
+            "tag": "list"
+          },
+          "media": {
+            "frame": {
+              "x": 53,
+              "y": 13,
+              "width": 41,
+              "height": 66
+            },
+            "tag": "media"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "section": {
+        "background": "beam",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "title": {
+            "frame": {
+              "x": 6,
+              "y": 48,
+              "width": 68,
+              "height": 34
+            },
+            "fontSize": 72,
+            "tag": "title"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 6,
+              "y": 84,
+              "width": 28,
+              "height": 9
+            },
+            "fontSize": 18,
+            "tag": "subtitle"
+          },
+          "number": {
+            "frame": {
+              "x": 78,
+              "y": 7,
+              "width": 16,
+              "height": 24
+            },
+            "fontSize": 150,
+            "tag": "section-number"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "title-only": {
+        "background": "white",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "title": {
+            "frame": {
+              "x": 6,
+              "y": 7,
+              "width": 58,
+              "height": 16
+            },
+            "fontSize": 44,
+            "tag": "title"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 6,
+              "y": 25,
+              "width": 54,
+              "height": 6
+            },
+            "fontSize": 15,
+            "tag": "subtitle"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "agenda": {
+        "background": "orbit",
+        "environmentMode": "loop",
+        "elementMotion": "accumulate",
+        "slots": {
+          "title": {
+            "frame": {
+              "x": 6,
+              "y": 8,
+              "width": 56,
+              "height": 20
+            },
+            "fontSize": 44,
+            "tag": "title"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 6,
+              "y": 29,
+              "width": 44,
+              "height": 8
+            },
+            "fontSize": 16,
+            "tag": "subtitle"
+          },
+          "body": {
+            "frame": {
+              "x": 71,
+              "y": 84,
+              "width": 23,
+              "height": 7
+            },
+            "fontSize": 14,
+            "tag": "body"
+          },
+          "items": {
+            "frame": {
+              "x": 6,
+              "y": 43,
+              "width": 44,
+              "height": 48
+            },
+            "tag": "agenda"
+          }
+        },
+        "backgroundObjects": [],
+        "visualRegions": [
+          {
+            "tag": "orbit-scene",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            }
+          }
+        ]
+      },
+      "statement": {
+        "background": "black",
+        "environmentMode": "loop",
+        "elementMotion": "focus",
+        "slots": {
+          "title": {
+            "frame": {
+              "x": 8,
+              "y": 14,
+              "width": 84,
+              "height": 40
+            },
+            "fontSize": 68,
+            "tag": "statement"
+          },
+          "subtitle": {
+            "frame": {
+              "x": 8,
+              "y": 67,
+              "width": 60,
+              "height": 12
+            },
+            "fontSize": 17,
+            "tag": "context"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "big-fact": {
+        "background": "halo",
+        "environmentMode": "loop",
+        "elementMotion": "count",
+        "slots": {
+          "value": {
+            "frame": {
+              "x": 18,
+              "y": 8,
+              "width": 64,
+              "height": 62
+            },
+            "fontSize": 220,
+            "tag": "metric"
+          },
+          "label": {
+            "frame": {
+              "x": 8,
+              "y": 74,
+              "width": 84,
+              "height": 13
+            },
+            "fontSize": 28,
+            "tag": "label"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "quote": {
+        "background": "black",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "quote": {
+            "frame": {
+              "x": 8,
+              "y": 15,
+              "width": 84,
+              "height": 48
+            },
+            "fontSize": 72,
+            "tag": "quote"
+          },
+          "attribution": {
+            "frame": {
+              "x": 8,
+              "y": 72,
+              "width": 84,
+              "height": 14
+            },
+            "fontSize": 16,
+            "tag": "attribution"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "gallery": {
+        "background": "white",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "media": {
+            "frame": {
+              "x": 4,
+              "y": 5,
+              "width": 92,
+              "height": 90
+            },
+            "tag": "media"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "photo": {
+        "background": "black",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "media": {
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            },
+            "tag": "media"
+          }
+        },
+        "backgroundObjects": []
+      },
+      "blank": {
+        "background": "white",
+        "environmentMode": "loop",
+        "elementMotion": "appear",
+        "slots": {
+          "canvas": {
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            },
+            "tag": "canvas"
+          }
+        },
+        "backgroundObjects": []
+      }
+    }
+  },
+  "slides": {
+    "intro": {
+      "id": "intro",
+      "role": "intro",
+      "layout": "title",
+      "label": "封面",
+      "title": [
+        "不是模板",
+        "是表达的乐器"
+      ],
+      "subtitle": "CADENZA / COMPOSE WITH INTENT",
+      "author": "Cadenza",
+      "date": "2026",
+      "notes": "开场先建立核心判断：Cadenza 不是让 AI 套模板，而是提供一套可以演奏的表达系统。"
+    },
+    "title-photo": {
+      "id": "title-photo",
+      "role": "content",
+      "layout": "title-photo",
+      "label": "问题",
+      "title": [
+        "模板保证一致",
+        "也消灭了理由"
+      ],
+      "subtitle": "当内容改变，版式却没有改变",
+      "image": {
+        "src": "assets/cadenza-hero-one-bit-source.png",
+        "alt": "人物穿行于现代主义建筑之间的双色影像",
+        "aspectRatio": 1.6
+      },
+      "notes": "模板的价值是稳定，但固定模板把内容差异抹平了。每页都正确，却没有一页真正属于它的内容。"
+    },
+    "title-photo-alt": {
+      "id": "title-photo-alt",
+      "role": "content",
+      "layout": "title-photo-alt",
+      "label": "转向",
+      "title": [
+        "从选择页面",
+        "到组织关系"
+      ],
+      "subtitle": "内容先被理解，版式才有资格出现",
+      "image": {
+        "src": "assets/cadenza-hero-one-bit-source.png",
+        "alt": "建筑体块形成清晰路径的双色影像",
+        "caption": "关系决定阅读路径",
+        "aspectRatio": 0.72
+      },
+      "notes": "Cadenza 的起点不是挑一张像样的页面，而是识别主张、证据、顺序、媒体与真实关系。"
+    },
+    "title-bullets": {
+      "id": "title-bullets",
+      "role": "content",
+      "layout": "title-bullets",
+      "label": "原则",
+      "title": [
+        "三条原则",
+        "守住表达"
+      ],
+      "subtitle": "CONTENT → RELATION → FORM",
+      "items": [
+        "内容先于版式",
+        "关系决定构图",
+        "品牌由系统守住"
+      ],
+      "notes": "这三条是整套系统的判断顺序。我们不从视觉偏好开始，也不让自由度逃出品牌边界。"
+    },
+    "title-bullets-photo": {
+      "id": "title-bullets-photo",
+      "role": "content",
+      "layout": "title-bullets-photo",
+      "label": "约束",
+      "title": [
+        "创意来自",
+        "可组合的约束"
+      ],
+      "subtitle": "有限原子，无限关系",
+      "items": [
+        "原子足够小",
+        "关系足够明确",
+        "变化仍然可验证"
+      ],
+      "image": {
+        "src": "assets/cadenza-hero-one-bit-source.png",
+        "alt": "人物在巨大建筑尺度中寻找路径",
+        "caption": "边界让选择变得有意义",
+        "aspectRatio": 1.6
+      },
+      "notes": "真正的自由不是任意坐标，而是在有限的结构、内容与关系原子之间做有意义的组合。"
+    },
+    "section": {
+      "id": "section",
+      "role": "section",
+      "layout": "section",
+      "label": "章节一",
+      "title": [
+        "一套语言",
+        "不是一套模板"
+      ],
+      "subtitle": "01 / THE LANGUAGE",
+      "sectionNumber": "01",
+      "notes": "进入系统语言：组件不是页面类型，而是可以反复组合的最小表达单位。"
+    },
+    "title-only": {
+      "id": "title-only",
+      "role": "content",
+      "layout": "title-only",
+      "label": "语法",
+      "title": [
+        "结构、内容、关系"
+      ],
+      "subtitle": "三层语法，组合出一张完整页面",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "language-three-layers",
+          "frame": { "x": 6, "y": 39, "width": 88, "height": 54 },
+          "tree": {
+            "nodeId": "language-grid",
+            "component": "grid",
+            "version": 1,
+            "axes": { "columns": "3", "gap": "normal" },
+            "children": [
+              {
+                "nodeId": "language-layout-stack", "component": "stack", "version": 1, "axes": { "gap": "compact", "density": "compact" },
+                "children": [
+                  { "nodeId": "language-layout", "component": "card", "version": 1, "props": { "meta": "01 / 06 ATOMS", "title": "结构", "body": "决定阅读路径" } },
+                  { "nodeId": "language-layout-tags", "component": "cluster", "version": 1, "axes": { "wrap": "wrap", "gap": "compact", "alignment": "start" }, "children": [
+                    { "nodeId": "language-tag-flow", "component": "caption", "version": 1, "props": { "text": "Flow · Stack / Cluster" } },
+                    { "nodeId": "language-tag-frame", "component": "caption", "version": 1, "props": { "text": "Frame · Grid / Split" } },
+                    { "nodeId": "language-tag-layer", "component": "caption", "version": 1, "props": { "text": "Layer · Inset / Overlay" } }
+                  ] }
+                ]
+              },
+              {
+                "nodeId": "language-content-stack", "component": "stack", "version": 1, "axes": { "gap": "compact", "density": "compact" },
+                "children": [
+                  { "nodeId": "language-content", "component": "card", "version": 1, "props": { "meta": "02 / 10 ATOMS", "title": "内容", "body": "保留事实角色" } },
+                  { "nodeId": "language-content-tags", "component": "cluster", "version": 1, "axes": { "wrap": "wrap", "gap": "compact", "alignment": "start" }, "children": [
+                    { "nodeId": "language-tag-type", "component": "caption", "version": 1, "props": { "text": "Type · Heading / Copy" } },
+                    { "nodeId": "language-tag-proof", "component": "caption", "version": 1, "props": { "text": "Proof · Metric / List" } },
+                    { "nodeId": "language-tag-surface", "component": "caption", "version": 1, "props": { "text": "Surface · Card / Quote" } },
+                    { "nodeId": "language-tag-media", "component": "caption", "version": 1, "props": { "text": "Media · Media / Profile" } },
+                    { "nodeId": "language-tag-identity", "component": "caption", "version": 1, "props": { "text": "Identity · Logo / Caption" } }
+                  ] }
+                ]
+              },
+              {
+                "nodeId": "language-relation-stack", "component": "stack", "version": 1, "axes": { "gap": "compact", "density": "compact" },
+                "children": [
+                  { "nodeId": "language-relation", "component": "card", "version": 1, "props": { "meta": "03 / 03 ATOMS", "title": "关系", "body": "只连接真实关系" } },
+                  { "nodeId": "language-relation-tags", "component": "cluster", "version": 1, "axes": { "wrap": "wrap", "gap": "compact", "alignment": "start" }, "children": [
+                    { "nodeId": "language-tag-divider", "component": "caption", "version": 1, "props": { "text": "Divider" } },
+                    { "nodeId": "language-tag-connector", "component": "caption", "version": 1, "props": { "text": "Connector" } },
+                    { "nodeId": "language-tag-progress", "component": "caption", "version": 1, "props": { "text": "Progress" } }
+                  ] }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "notes": "六个 layout 原子负责结构，十个 content 原子负责内容角色，三个 relationship 原子负责真实关系。"
+    },
+    "agenda": {
+      "id": "agenda",
+      "role": "agenda",
+      "layout": "agenda",
+      "label": "作曲过程",
+      "title": [
+        "一页如何被作曲"
+      ],
+      "subtitle": "先理解，再选择，最后证明",
+      "items": [
+        {
+          "number": "01",
+          "title": "读取内容信号"
+        },
+        {
+          "number": "02",
+          "title": "选择结构关系"
+        },
+        {
+          "number": "03",
+          "title": "渲染并复核"
+        }
+      ],
+      "notes": "AI 的工作不是装饰页面，而是把内容信号编译成合法 composition，再通过全尺寸复核证明它成立。"
+    },
+    "statement": {
+      "id": "statement",
+      "role": "content",
+      "layout": "statement",
+      "label": "核心判断",
+      "title": [
+        "一致性",
+        "不等于重复"
+      ],
+      "subtitle": "同一种声音，可以写出不同的句子",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "statement-semantic-visual",
+          "frame": {
+            "x": 75,
+            "y": 65,
+            "width": 16,
+            "height": 16
+          },
+          "tree": {
+            "nodeId": "statement-layers-icon",
+            "component": "visual",
+            "version": 1,
+            "props": {
+              "asset": "icon:lucide-layers",
+              "alt": "同一视觉语言形成不同层次"
+            },
+            "axes": {
+              "role": "icon",
+              "prominence": "support",
+              "treatment": "outline",
+              "state": "default",
+              "behavior": "none"
+            }
+          }
+        }
+      ],
+      "notes": "品牌调性来自共享的字阶、线条、纹理和运动，而不是来自所有页面长得一样。"
+    },
+    "big-fact": {
+      "id": "big-fact",
+      "role": "content",
+      "layout": "big-fact",
+      "label": "大数字",
+      "value": "19",
+      "factLabel": "个生产级原子组件，组合完整叙事",
+      "notes": "目前 registry 包含 6 个 layout、10 个 content、3 个 relationship 组件。数量有限，组合空间足够大。"
+    },
+    "quote": {
+      "id": "quote",
+      "role": "content",
+      "layout": "quote",
+      "label": "设计原则",
+      "quote": "约束不是创意的对立面。它是让选择变得有意义的边界。",
+      "attribution": "Cadenza",
+      "source": "Design Principle / 01",
+      "notes": "这句话概括 Cadenza 的审美观：不追求无边界的选择，而追求每一个选择都有原因。"
+    },
+    "gallery1": {
+      "id": "gallery1",
+      "role": "content",
+      "layout": "gallery",
+      "label": "视觉节奏一",
+      "images": [
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "横跨整页的现代主义建筑影像",
+          "caption": "01 / 一张图成为唯一证据",
+          "aspectRatio": 1.6
+        }
+      ],
+      "notes": "当视觉本身足够强，页面不需要额外 chrome。一张图、一个说明，读者自然知道该看哪里。"
+    },
+    "gallery2": {
+      "id": "gallery2",
+      "role": "content",
+      "layout": "gallery",
+      "label": "视觉节奏二",
+      "images": [
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "建筑体块的横向全景",
+          "caption": "02A / 全景建立语境",
+          "aspectRatio": 1.6
+        },
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "人物与建筑尺度的纵向局部",
+          "caption": "02B / 局部提供证据",
+          "aspectRatio": 0.7
+        }
+      ],
+      "notes": "同一素材可以通过全景与局部形成主次，而不是靠额外装饰制造差异。"
+    },
+    "gallery3": {
+      "id": "gallery3",
+      "role": "content",
+      "layout": "gallery",
+      "label": "视觉节奏三",
+      "images": [
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "作为主画面的建筑结构",
+          "caption": "主张 / 建立方向",
+          "aspectRatio": 1.6
+        },
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "作为细节的人物尺度",
+          "caption": "证据 / 放大细节",
+          "aspectRatio": 0.7
+        },
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "作为语境的建筑留白",
+          "caption": "语境 / 保留呼吸",
+          "aspectRatio": 1
+        }
+      ],
+      "notes": "三张图不是均分画布，而是分别承担主张、证据和语境。"
+    },
+    "gallery4": {
+      "id": "gallery4",
+      "role": "content",
+      "layout": "gallery",
+      "label": "视觉节奏四",
+      "images": [
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "建筑影像切片一",
+          "caption": "结构",
+          "aspectRatio": 1.6
+        },
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "建筑影像切片二",
+          "caption": "内容",
+          "aspectRatio": 0.7
+        },
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "建筑影像切片三",
+          "caption": "关系",
+          "aspectRatio": 1
+        },
+        {
+          "src": "assets/cadenza-hero-one-bit-source.png",
+          "alt": "建筑影像切片四",
+          "caption": "节奏",
+          "aspectRatio": 1.3
+        }
+      ],
+      "notes": "多图页面仍然由语义角色组织，每张图都有独立说明，不让图片退化成无意义填充。"
+    },
+    "photo": {
+      "id": "photo",
+      "role": "content",
+      "layout": "photo",
+      "label": "视觉停顿",
+      "image": {
+        "src": "assets/cadenza-hero-one-bit-source.png",
+        "alt": "人物穿过建筑边界的双色全景",
+        "caption": "规则存在，画面才敢留白",
+        "aspectRatio": 1.6
+      },
+      "notes": "在信息密集段落之后，用一张全图制造停顿。节奏本身也是信息设计。"
+    },
+    "blank": {
+      "id": "blank",
+      "role": "content",
+      "layout": "blank",
+      "label": "系统总览",
+      "ariaLabel": "Cadenza 从信号到页面的系统总览",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "cadenza-system-overview",
+          "frame": { "x": 6, "y": 7, "width": 88, "height": 86 },
+          "tree": {
+            "nodeId": "system-stack",
+            "component": "stack",
+            "version": 1,
+            "axes": { "gap": "normal" },
+            "children": [
+              { "nodeId": "system-heading", "component": "heading", "version": 1, "props": { "text": "从内容信号，到品牌页面" }, "axes": { "span": "section" } },
+              {
+                "nodeId": "system-flow",
+                "component": "cluster",
+                "version": 1,
+                "axes": { "distribution": "between", "gap": "compact", "density": "open" },
+                "children": [
+                  { "nodeId": "system-signals", "component": "card", "version": 1, "props": { "meta": "INPUT", "title": "内容信号", "body": "主张、证据、顺序、媒体与真实关系" }, "axes": { "emphasis": "strong" } },
+                  { "nodeId": "system-link-1", "component": "connector", "version": 1, "props": { "from": "system-signals", "to": "system-compose", "label": "COMPOSE" }, "axes": { "emphasis": "strong" } },
+                  { "nodeId": "system-compose", "component": "card", "version": 1, "props": { "meta": "SYSTEM", "title": "原子组合", "body": "结构、内容、关系在受控 axes 中重排" } },
+                  { "nodeId": "system-link-2", "component": "connector", "version": 1, "props": { "from": "system-compose", "to": "system-page", "label": "VERIFY" }, "axes": { "emphasis": "strong" } },
+                  { "nodeId": "system-page", "component": "card", "version": 1, "props": { "meta": "OUTPUT", "title": "品牌页面", "body": "可编辑、可验证，并保持 Cadenza 调性" }, "axes": { "emphasis": "strong" } }
+                ]
+              },
+              { "nodeId": "system-caption", "component": "caption", "version": 1, "props": { "text": "没有合法组合时，系统选择修复、简化或拆页，而不是输出半成品", "source": "Production contract" } }
+            ]
+          }
+        }
+      ],
+      "notes": "主叙事在这里收束：输入是内容信号，中间是受约束的原子组合，输出是可编辑、可验证的品牌页面。后面九页是系统证明附录。"
+    },
+    "atomic-business-summary": {
+      "id": "atomic-business-summary",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · Business Summary",
+      "ariaLabel": "经营摘要原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-business-summary-composition",
+          "frame": {
+            "x": 6,
+            "y": 7,
+            "width": 88,
+            "height": 86
+          },
+          "tree": {
+            "nodeId": "business-split",
+            "component": "split",
+            "version": 1,
+            "axes": {
+              "ratio": "2:1",
+              "gap": "open"
+            },
+            "slots": {
+              "primary": [
+                {
+                  "nodeId": "business-primary",
+                  "component": "stack",
+                  "version": 1,
+                  "axes": {
+                    "gap": "open"
+                  },
+                  "children": [
+                    {
+                      "nodeId": "business-heading",
+                      "component": "heading",
+                      "version": 1,
+                      "props": {
+                        "eyebrow": "SYSTEM SCALE",
+                        "text": "19 个原子组成表达语言"
+                      },
+                      "axes": {
+                        "span": "display"
+                      }
+                    },
+                    {
+                      "nodeId": "business-categories",
+                      "component": "list",
+                      "version": 1,
+                      "props": {
+                        "items": [
+                          "6 个 layout：组织阅读路径",
+                          "10 个 content：保留事实角色",
+                          "3 个 relationship：表达真实联系"
+                        ],
+                        "ordered": true
+                      },
+                      "axes": {
+                        "density": "open"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "secondary": [
+                {
+          "nodeId": "business-stack",
+          "component": "stack",
+          "version": 1,
+          "axes": {
+            "gap": "compact",
+            "density": "open"
+                  },
+                  "children": [
+                {
+                  "nodeId": "business-arr",
+                  "component": "metric",
+                      "version": 1,
+                      "props": {
+                        "label": "ATOMIC COMPONENTS",
+                        "value": "19",
+                        "source": "Production registry"
+                      },
+                  "axes": {
+                    "emphasis": "strong"
+                  }
+                },
+                {
+                  "nodeId": "business-migration-progress",
+                  "component": "progress",
+                  "version": 1,
+                  "props": {
+                    "label": "旧宏表达迁移",
+                    "value": 100,
+                    "target": "25 / 25"
+                  },
+                  "axes": {
+                    "density": "compact"
+                  }
+                },
+                {
+                  "nodeId": "business-evidence",
+                      "component": "card",
+                      "version": 1,
+                      "props": {
+                        "meta": "ONE CONTRACT",
+                        "title": "同一 registry",
+                        "body": "查询、渲染与验证共享一份组件契约"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "atomic-feature-explanation": {
+      "id": "atomic-feature-explanation",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · Feature",
+      "ariaLabel": "功能说明原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-feature-explanation-composition",
+          "frame": {
+            "x": 5,
+            "y": 6,
+            "width": 90,
+            "height": 88
+          },
+          "tree": {
+            "nodeId": "feature-split",
+            "component": "split",
+            "version": 1,
+            "axes": {
+              "ratio": "2:1",
+              "gap": "normal"
+            },
+            "slots": {
+              "primary": [
+                {
+                  "nodeId": "feature-overlay",
+                  "component": "overlay",
+                  "version": 1,
+                  "axes": {
+                    "position": "bottom",
+                    "emphasis": "strong"
+                  },
+                  "slots": {
+                    "base": [
+                      {
+                        "nodeId": "feature-media",
+                        "component": "media",
+                        "version": 1,
+                        "props": {
+                          "src": "assets/cadenza-hero-one-bit-source.png",
+                          "alt": "用于展示 Cadenza 组件关系的建筑影像",
+                          "caption": "同一 registry 驱动预览与渲染"
+                        }
+                      }
+                    ],
+                    "overlay": [
+                      {
+                        "nodeId": "feature-heading",
+                        "component": "heading",
+                        "version": 1,
+                        "props": {
+                          "text": "组件组合替代固定模板"
+                        },
+                        "axes": {
+                          "span": "section"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+          "secondary": [
+            {
+              "nodeId": "feature-copy-stack",
+              "component": "stack",
+              "version": 1,
+              "axes": {
+                "gap": "normal",
+                "density": "normal"
+              },
+              "children": [
+                {
+                  "nodeId": "feature-copy",
+                  "component": "copy",
+                  "version": 1,
+                  "props": {
+                    "text": "同一套构件，从内容信号走到合法页面"
+                  }
+                },
+                {
+                  "nodeId": "feature-stage-stack",
+                  "component": "stack",
+                  "version": 1,
+                  "axes": {
+                    "gap": "compact",
+                    "density": "open"
+                  },
+                  "children": [
+                    {
+                      "nodeId": "feature-signal",
+                      "component": "card",
+                      "version": 1,
+                      "props": {
+                        "meta": "01 SIGNAL",
+                        "title": "读取内容信号",
+                        "body": "主张、证据与关系"
+                      }
+                    },
+                    {
+                      "nodeId": "feature-registry",
+                      "component": "card",
+                      "version": 1,
+                      "props": {
+                        "meta": "02 COMPOSE",
+                        "title": "受控组合",
+                        "body": "registry 限定 props 与 axes"
+                      }
+                    },
+                    {
+                      "nodeId": "feature-verify",
+                      "component": "card",
+                      "version": 1,
+                      "props": {
+                        "meta": "03 VERIFY",
+                        "title": "验证闭环",
+                        "body": "非法树在渲染前被拒绝"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+      ]
+    },
+    "atomic-comparison": {
+      "id": "atomic-comparison",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · Comparison",
+      "ariaLabel": "方案对比原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-comparison-composition",
+          "frame": {
+            "x": 6,
+            "y": 8,
+            "width": 88,
+            "height": 84
+          },
+          "tree": {
+            "nodeId": "comparison-stack",
+            "component": "stack",
+            "version": 1,
+            "axes": { "gap": "normal" },
+            "children": [
+              {
+                "nodeId": "comparison-claim",
+                "component": "heading",
+                "version": 1,
+                "props": { "text": "从复制页面，转向组合关系" },
+                "axes": { "span": "section" }
+              },
+              {
+                "nodeId": "comparison-split",
+                "component": "split",
+                "version": 1,
+                "axes": { "ratio": "1:1", "gap": "normal", "alignment": "stretch" },
+                "slots": {
+                  "primary": [
+                    {
+                      "nodeId": "comparison-before-stack",
+                      "component": "stack",
+                      "version": 1,
+                      "axes": { "gap": "compact", "density": "open" },
+                      "children": [
+                        {
+                          "nodeId": "comparison-before",
+                          "component": "card",
+                          "version": 1,
+                          "props": {
+                            "meta": "BEFORE / COUPLED",
+                            "title": "内容 × Variant × Renderer",
+                            "body": "三层绑在一起；每新增一种表达，就复制一整套结构与样式"
+                          },
+                          "axes": { "emphasis": "quiet" }
+                        },
+                        {
+                          "nodeId": "comparison-before-coupling",
+                          "component": "cluster",
+                          "version": 1,
+                          "axes": { "gap": "compact", "density": "open", "alignment": "stretch" },
+                          "children": [
+                            { "nodeId": "comparison-before-content", "component": "card", "version": 1, "props": { "meta": "CONTENT", "title": "内容" } },
+                            { "nodeId": "comparison-before-variant", "component": "card", "version": 1, "props": { "meta": "VARIANT", "title": "页面" } },
+                            { "nodeId": "comparison-before-renderer", "component": "card", "version": 1, "props": { "meta": "RENDERER", "title": "渲染" } }
+                          ]
+                        },
+                        {
+                          "nodeId": "comparison-before-result",
+                          "component": "caption",
+                          "version": 1,
+                          "props": { "text": "1 CHANGE → 1 NEW VARIANT" }
+                        }
+                      ]
+                    }
+                  ],
+                  "secondary": [
+                    {
+                      "nodeId": "comparison-after-stack",
+                      "component": "stack",
+                      "version": 1,
+                      "axes": { "gap": "compact", "density": "open" },
+                      "children": [
+                        {
+                          "nodeId": "comparison-after",
+                          "component": "card",
+                          "version": 1,
+                          "props": {
+                            "meta": "AFTER / COMPOSABLE",
+                            "title": "内容 → 关系 → 输出",
+                            "body": "原子保持稳定，父级关系决定最终叙事"
+                          },
+                          "axes": { "emphasis": "strong" }
+                        },
+                        {
+                          "nodeId": "comparison-after-pipeline",
+                          "component": "cluster",
+                          "version": 1,
+                          "axes": { "gap": "compact", "density": "open", "alignment": "stretch", "distribution": "between" },
+                          "children": [
+                            {
+                              "nodeId": "comparison-after-signal",
+                              "component": "card",
+                              "version": 1,
+                              "props": { "meta": "INPUT", "title": "内容", "body": "信号 · 主张 / 证据" }
+                            },
+                            {
+                              "nodeId": "comparison-after-layout",
+                              "component": "card",
+                              "version": 1,
+                              "props": { "meta": "RELATION", "title": "关系", "body": "Layout 组合" }
+                            },
+                            {
+                              "nodeId": "comparison-after-renderer",
+                              "component": "card",
+                              "version": 1,
+                              "props": { "meta": "OUTPUT", "title": "输出", "body": "共享 Renderer" }
+                            }
+                          ]
+                        },
+                        {
+                          "nodeId": "comparison-after-result",
+                          "component": "caption",
+                          "version": 1,
+                          "props": { "text": "NEW EXPRESSION → NEW COMBINATION" }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "atomic-steps": {
+      "id": "atomic-steps",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · Steps",
+      "ariaLabel": "步骤原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-steps-composition",
+          "frame": {
+            "x": 9,
+            "y": 10,
+            "width": 82,
+            "height": 80
+          },
+          "tree": {
+            "nodeId": "steps-split",
+            "component": "split",
+            "version": 1,
+            "axes": {
+              "ratio": "1:1",
+              "gap": "open"
+            },
+            "slots": {
+              "primary": [
+                {
+        "nodeId": "steps-primary-stack",
+        "component": "stack",
+        "version": 1,
+        "axes": {
+          "gap": "normal",
+          "density": "open"
+                  },
+                  "children": [
+                    {
+                      "nodeId": "steps-heading",
+                      "component": "heading",
+                      "version": 1,
+                      "props": {
+                        "eyebrow": "FINITE FLOW",
+                        "text": "生成遵循可验证流程"
+                      },
+                      "axes": {
+                        "span": "section"
+                      }
+                    },
+                    {
+                      "nodeId": "steps-input",
+                      "component": "card",
+                      "version": 1,
+                      "props": {
+                        "meta": "INPUT",
+                        "title": "内容信号",
+                        "body": "输入包括主张、证据、媒体与关系"
+                      },
+                      "axes": {
+                        "emphasis": "strong"
+                      }
+                    }
+                  ]
+                }
+              ],
+          "secondary": [
+            {
+              "nodeId": "steps-stack",
+              "component": "stack",
+              "version": 1,
+              "axes": {
+                "gap": "normal"
+              },
+              "children": [
+                {
+                  "nodeId": "steps-list",
+                  "component": "list",
+                  "version": 1,
+                  "props": {
+                    "items": [
+                      "拆分内容信号",
+                      "查询 production registry",
+                      "生成合法候选",
+                      "运行静态 Verify",
+                      "全尺寸浏览器复核"
+                    ],
+                    "ordered": true
+                  },
+                  "axes": {
+                    "density": "open"
+                  }
+                },
+                {
+                  "nodeId": "steps-caption",
+                  "component": "caption",
+                  "version": 1,
+                  "props": {
+                    "text": "任何 finding 都回到内容或系统层修复",
+                    "source": "BUILD LOOP"
+                  }
+                }
+              ]
+            }
+          ]
+            }
+          }
+        }
+      ]
+    },
+    "atomic-timeline": {
+      "id": "atomic-timeline",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · Timeline",
+      "ariaLabel": "时间推进原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-timeline-composition",
+          "frame": {
+            "x": 6,
+            "y": 7,
+            "width": 88,
+            "height": 86
+          },
+          "tree": {
+            "nodeId": "timeline-stack",
+            "component": "stack",
+            "version": 1,
+            "axes": {
+              "gap": "normal"
+            },
+            "children": [
+              {
+                "nodeId": "timeline-heading",
+                "component": "heading",
+                "version": 1,
+                "props": {
+                  "text": "交付按阶段推进"
+                },
+                "axes": {
+                  "span": "section"
+                }
+              },
+              {
+                "nodeId": "timeline-inset",
+                "component": "inset",
+                "version": 1,
+                "axes": {
+                  "position": "bottom-right",
+                  "span": "large"
+                },
+                "slots": {
+                  "base": [
+                    {
+                      "nodeId": "timeline-media",
+                      "component": "media",
+                      "version": 1,
+                      "props": {
+                        "src": "assets/cadenza-hero-one-bit-source.png",
+                        "alt": "层叠建筑空间中的交付路径示意"
+                      }
+                    }
+                  ],
+                  "inset": [
+                    {
+                      "nodeId": "timeline-list",
+                      "component": "list",
+                      "version": 1,
+                      "props": {
+                        "items": [
+                          "研究",
+                          "组件基线",
+                          "Composer",
+                          "发布门槛"
+                        ],
+                        "ordered": true
+                      },
+                      "axes": {
+                        "density": "compact",
+                        "emphasis": "strong"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "nodeId": "timeline-caption",
+                "component": "caption",
+                "version": 1,
+                "props": {
+                  "text": "阶段顺序",
+                  "source": "项目计划"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "atomic-people": {
+      "id": "atomic-people",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · People",
+      "ariaLabel": "人物原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-people-composition",
+          "frame": {
+            "x": 7,
+            "y": 9,
+            "width": 86,
+            "height": 82
+          },
+          "tree": {
+            "nodeId": "people-stack",
+            "component": "stack",
+            "version": 1,
+            "axes": {
+              "gap": "open"
+            },
+            "children": [
+          {
+            "nodeId": "people-heading",
+                "component": "heading",
+                "version": 1,
+                "props": {
+              "text": "跨职能团队维护表达系统"
+                },
+                "axes": {
+              "span": "section"
+            }
+          },
+          {
+            "nodeId": "people-split",
+            "component": "split",
+            "version": 1,
+            "axes": {
+              "ratio": "1:2",
+              "gap": "open"
+            },
+            "slots": {
+              "primary": [
+                {
+                  "nodeId": "people-media",
+                  "component": "media",
+                  "version": 1,
+                  "props": {
+                    "src": "assets/cadenza-hero-one-bit-source.png",
+                    "alt": "建筑空间中的协作关系",
+                    "caption": "同一系统，由不同专业共同维护"
+                  }
+                }
+              ],
+              "secondary": [
+                {
+                  "nodeId": "people-team-stack",
+                  "component": "stack",
+                  "version": 1,
+                  "axes": { "gap": "normal" },
+                  "children": [
+                    {
+                      "nodeId": "people-cadenza-logo",
+                      "component": "logo",
+                      "version": 1,
+                      "props": { "name": "Cadenza" },
+                      "axes": { "alignment": "start", "emphasis": "quiet", "span": "large" }
+                    },
+                    {
+                      "nodeId": "people-shared-work",
+                      "component": "list",
+                      "version": 1,
+                      "props": { "items": ["共同维护 registry", "共同复核 Audience", "共同修复系统问题"] },
+                      "axes": { "density": "open" }
+                    },
+                    {
+                      "nodeId": "people-grid",
+                      "component": "grid",
+                      "version": 1,
+                      "axes": { "columns": "2", "gap": "normal" },
+                      "children": [
+                        {
+                          "nodeId": "people-design",
+                          "component": "profile",
+                          "version": 1,
+                          "props": { "name": "Mina", "role": "Design", "bio": "定义内容角色与视觉约束" }
+                        },
+                        {
+                          "nodeId": "people-engineering",
+                          "component": "profile",
+                          "version": 1,
+                          "props": { "name": "Kai", "role": "Engineering", "bio": "实现 renderer、Verify 与回归测试" }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+            ]
+          }
+        }
+      ]
+    },
+    "atomic-system-relationship": {
+      "id": "atomic-system-relationship",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · System",
+      "ariaLabel": "系统关系原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-system-relationship-composition",
+          "frame": {
+            "x": 6,
+            "y": 9,
+            "width": 88,
+            "height": 82
+          },
+          "tree": {
+            "nodeId": "system-stack",
+            "component": "stack",
+            "version": 1,
+            "axes": {
+              "gap": "open"
+            },
+            "children": [
+              {
+                "nodeId": "system-claim",
+                "component": "heading",
+                "version": 1,
+                "props": {
+                  "text": "Registry 贯通生成与验证"
+                },
+                "axes": {
+                  "span": "section"
+                }
+              },
+              {
+                "nodeId": "system-cluster",
+                "component": "cluster",
+                "version": 1,
+                "axes": {
+                  "distribution": "between",
+                  "gap": "normal",
+                  "density": "open"
+                },
+                "children": [
+                  {
+                    "nodeId": "system-registry",
+                    "component": "card",
+                    "version": 1,
+                    "props": {
+                      "title": "Registry",
+                      "body": "统一契约"
+                    },
+                    "axes": {
+                      "emphasis": "strong"
+                    }
+                  },
+                  {
+                    "nodeId": "system-edge-one",
+                    "component": "connector",
+                    "version": 1,
+                    "props": {
+                      "from": "system-registry",
+                      "to": "system-renderer",
+                      "label": "驱动"
+                    }
+                  },
+                  {
+                    "nodeId": "system-renderer",
+                    "component": "card",
+                    "version": 1,
+                    "props": {
+                      "title": "Renderer",
+                      "body": "真实输出"
+                    }
+                  },
+                  {
+                    "nodeId": "system-edge-two",
+                    "component": "connector",
+                    "version": 1,
+                    "props": {
+                      "from": "system-renderer",
+                      "to": "system-verify",
+                      "label": "校验"
+                    }
+                  },
+                  {
+                    "nodeId": "system-verify",
+                    "component": "card",
+                    "version": 1,
+                    "props": {
+                      "title": "Verify",
+                      "body": "发布门槛"
+                    }
+                  }
+                ]
+              },
+              {
+                "nodeId": "system-proof-boundary",
+                "component": "divider",
+                "version": 1
+              },
+              {
+                "nodeId": "system-proof-grid",
+                "component": "grid",
+                "version": 1,
+                "axes": { "columns": "3", "gap": "normal", "density": "open" },
+                "children": [
+                  {
+                    "nodeId": "system-input-proof",
+                    "component": "card",
+                    "version": 1,
+                    "props": { "meta": "输入 INPUT", "title": "内容信号", "body": "主张、证据与真实关系先于版式" }
+                  },
+                  {
+                    "nodeId": "system-output-proof",
+                    "component": "card",
+                    "version": 1,
+                    "props": { "meta": "输出 OUTPUT", "title": "合法页面", "body": "同一 renderer 输出不同但一致的结构" },
+                    "axes": { "emphasis": "strong" }
+                  },
+                  {
+                    "nodeId": "system-failure-proof",
+                    "component": "card",
+                    "version": 1,
+                    "props": { "meta": "失败 FAILURE", "title": "结构化返工", "body": "空洞、裁切与孤行不能进入交付" }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "atomic-quote": {
+      "id": "atomic-quote",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · Quote",
+      "ariaLabel": "引语原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-quote-composition",
+          "frame": {
+            "x": 8,
+            "y": 10,
+            "width": 84,
+            "height": 80
+          },
+          "tree": {
+            "nodeId": "quote-overlay",
+            "component": "overlay",
+            "version": 1,
+            "axes": {
+              "position": "center",
+              "emphasis": "strong"
+            },
+            "slots": {
+              "base": [
+                {
+                  "nodeId": "quote-media",
+                  "component": "media",
+                  "version": 1,
+                  "props": {
+                    "src": "assets/cadenza-hero-one-bit-source.png",
+                    "alt": "现代主义建筑与人物形成的双色空间",
+                    "caption": "形式必须服务内容"
+                  },
+                  "axes": {
+                    "span": "cover"
+                  }
+                }
+              ],
+              "overlay": [
+                {
+                  "nodeId": "quote-source",
+                  "component": "quote",
+                  "version": 1,
+                  "props": {
+                    "text": "Design is how it works.",
+                    "author": "Steve Jobs",
+                    "source": "Interview"
+                  },
+                  "axes": {
+                    "emphasis": "strong"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "atomic-media-narrative": {
+      "id": "atomic-media-narrative",
+      "role": "content",
+      "layout": "blank",
+      "label": "Atomic · Media",
+      "ariaLabel": "媒体叙事原子组合",
+      "objects": [
+        {
+          "kind": "composition",
+          "compositionId": "atomic-media-narrative-composition",
+          "frame": {
+            "x": 5,
+            "y": 5,
+            "width": 90,
+            "height": 90
+          },
+          "tree": {
+            "nodeId": "media-stack",
+            "component": "stack",
+            "version": 1,
+            "axes": {
+              "gap": "normal"
+            },
+            "children": [
+              {
+                "nodeId": "media-overlay",
+                "component": "overlay",
+                "version": 1,
+                "axes": {
+                  "position": "bottom",
+                  "emphasis": "strong"
+                },
+                "slots": {
+                  "base": [
+                    {
+                      "nodeId": "media-product",
+                      "component": "media",
+                      "version": 1,
+                      "props": {
+                        "src": "assets/cadenza-hero-one-bit-source.png",
+                        "alt": "用于演示视觉证据的建筑影像",
+                        "caption": "原子组件在画布内组合"
+                      }
+                    }
+                  ],
+                  "overlay": [
+                    {
+                      "nodeId": "media-claim",
+                      "component": "heading",
+                      "version": 1,
+                      "props": {
+                      "text": "视觉证据与主张共用路径"
+                      },
+                      "axes": {
+                        "span": "section"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "nodeId": "media-proof",
+                "component": "card",
+                "version": 1,
+                "props": {
+                  "meta": "PROOF",
+                  "title": "同一 renderer 跨 layout 复用"
+                }
+              },
+              {
+                "nodeId": "media-caption",
+                "component": "caption",
+                "version": 1,
+                "props": {
+                  "text": "Product capture",
+                  "source": "Cadenza"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "outline": [
+    {
+      "kind": "slide",
+      "slideId": "intro"
+    },
+    {
+      "kind": "slide",
+      "slideId": "title-photo"
+    },
+    {
+      "kind": "slide",
+      "slideId": "title-photo-alt"
+    },
+    {
+      "kind": "slide",
+      "slideId": "title-bullets"
+    },
+    {
+      "kind": "slide",
+      "slideId": "title-bullets-photo"
+    },
+    {
+      "kind": "slide",
+      "slideId": "section"
+    },
+    {
+      "kind": "slide",
+      "slideId": "title-only"
+    },
+    {
+      "kind": "slide",
+      "slideId": "agenda"
+    },
+    {
+      "kind": "slide",
+      "slideId": "statement"
+    },
+    {
+      "kind": "slide",
+      "slideId": "big-fact"
+    },
+    {
+      "kind": "slide",
+      "slideId": "quote"
+    },
+    {
+      "kind": "slide",
+      "slideId": "gallery1"
+    },
+    {
+      "kind": "slide",
+      "slideId": "gallery2"
+    },
+    {
+      "kind": "slide",
+      "slideId": "gallery3"
+    },
+    {
+      "kind": "slide",
+      "slideId": "gallery4"
+    },
+    {
+      "kind": "slide",
+      "slideId": "photo"
+    },
+    {
+      "kind": "slide",
+      "slideId": "blank"
+    },
+    {
+      "kind": "group",
+      "id": "atomic-component-showcase",
+      "title": "系统证明 / SYSTEM PROOF",
+      "slideIds": [
+        "atomic-business-summary",
+        "atomic-feature-explanation",
+        "atomic-comparison",
+        "atomic-steps",
+        "atomic-timeline",
+        "atomic-people",
+        "atomic-system-relationship",
+        "atomic-quote",
+        "atomic-media-narrative"
+      ]
+    }
+  ]
+}
