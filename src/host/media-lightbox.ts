@@ -5,15 +5,16 @@ export function isPresentationNavigationKey(key: string) {
   return navigationKeys.has(key)
 }
 
-export function renderMediaLightbox() {
-  return `<dialog class="media-lightbox" data-testid="media-lightbox" aria-label="媒体放大预览">
-      <div class="media-lightbox-toolbar" aria-label="媒体缩放控制">
-        <button type="button" data-media-lightbox-zoom-out aria-label="缩小媒体">−</button>
+export function renderMediaLightbox(locale: UiLocale = 'zh-CN') {
+  const text = uiText(locale).studio
+  return `<dialog class="media-lightbox" data-testid="media-lightbox" aria-label="${text.mediaPreview}">
+      <div class="media-lightbox-toolbar" aria-label="${text.mediaControls}">
+        <button type="button" data-media-lightbox-zoom-out aria-label="${text.zoomMediaOut}">−</button>
         <output data-media-lightbox-zoom-value aria-live="polite">100%</output>
-        <button type="button" data-media-lightbox-zoom-in aria-label="放大媒体">+</button>
-        <button type="button" data-media-lightbox-reset aria-label="重置媒体缩放">重置</button>
+        <button type="button" data-media-lightbox-zoom-in aria-label="${text.zoomMediaIn}">+</button>
+        <button type="button" data-media-lightbox-reset aria-label="${text.resetMediaZoom}">${text.reset}</button>
       </div>
-      <button class="media-lightbox-close" type="button" data-media-lightbox-close aria-label="关闭媒体预览">×</button>
+      <button class="media-lightbox-close" type="button" data-media-lightbox-close aria-label="${text.closeMediaPreview}">×</button>
       <div class="media-lightbox-content" data-media-lightbox-content></div>
     </dialog>`
 }
@@ -237,3 +238,4 @@ export class MediaLightbox {
     this.resetZoom()
   }
 }
+import { type UiLocale, uiText } from '../i18n/ui-locale'

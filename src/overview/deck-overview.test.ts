@@ -15,4 +15,19 @@ describe('deck Overview renderer', () => {
     expect(html).not.toContain('notes-textarea')
     expect(html).not.toContain('draggable="true"')
   })
+
+  it('renders English overview controls without changing deck content', () => {
+    const html = renderDeckOverview(demoDeckDocument, 'en')
+
+    expect(html).toContain('Search')
+    expect(html).toContain('All groups')
+    expect(html).toContain('Copy ID')
+    expect(html).toContain('aria-label="Open preview: ')
+    expect(html).toContain('aria-label="Copy ID: ')
+    expect(html).toContain('aria-label="Close enlarged preview"')
+    expect(html).toContain(demoDeckDocument.title)
+    expect(html).toContain('data-ui-locale-switcher')
+    expect(html).not.toContain('复制 ID')
+    expect(html).not.toContain('Open preview：')
+  })
 })

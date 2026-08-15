@@ -4,9 +4,13 @@ import { renderSystemGallery } from '../../rendering/system-gallery'
 import { hydrateOneBitImages } from '../../rendering/media-one-bit'
 import { hydrateOneBitVisuals } from '../../visual-assets/one-bit-visual'
 import { hydrateSmilVisuals } from '../../visual-assets/smil-visual'
+import { resolveUiLocale, uiText } from '../../i18n/ui-locale'
 
+const locale = resolveUiLocale(new URL(location.href), navigator.language)
+const ui = uiText(locale)
 document.documentElement.dataset.appMode = 'library'
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `<main class="design-library-page">${renderSystemGallery()}</main>`
+document.documentElement.lang = locale
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = `<main class="design-library-page">${renderSystemGallery(locale, location.href)}</main>`
 
 const gallery = document.querySelector<HTMLElement>('#system-gallery')!
 const disposeOneBitImages = hydrateOneBitImages(gallery)
@@ -79,9 +83,9 @@ const handleClick = async (event: MouseEvent) => {
     const value = template.content.textContent ?? ''
     try {
       await navigator.clipboard.writeText(value)
-      button.textContent = '已复制 composition tree'
+      button.textContent = ui.gallery.copiedComposition
     } catch {
-      button.textContent = '复制失败'
+      button.textContent = ui.gallery.copyFailed
     }
   }
 }

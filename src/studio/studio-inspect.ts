@@ -1,3 +1,5 @@
+import { type UiLocale, uiText } from '../i18n/ui-locale'
+
 export type StudioInspectTarget = {
   slideId: string
   path: string
@@ -20,9 +22,9 @@ export function addInspectTarget(edits: StudioInspectEdit[], target: StudioInspe
   return edits.map((edit, index) => index === existing ? { ...edit, ...target, instruction: edit.instruction } : edit)
 }
 
-export function summarizeInspectSlides(edits: readonly StudioInspectEdit[]) {
+export function summarizeInspectSlides(edits: readonly StudioInspectEdit[], locale: UiLocale = 'zh-CN') {
   const slideIds = [...new Set(edits.map(edit => edit.slideId))]
-  return { slideIds, label: `${slideIds.length} 个页面${slideIds.length ? ` · ${slideIds.join('、')}` : ''}` }
+  return { slideIds, label: uiText(locale).studio.inspectSummary(slideIds.length, slideIds) }
 }
 
 export function buildStudioEditPrompt(deckId: string, authoritativeFile: string, edits: readonly StudioInspectEdit[]) {
@@ -74,16 +76,10 @@ type StudioInspectControllerOptions = {
   deckRoot: HTMLElement
   deckId: string
   authoritativeFile: string
+  locale?: UiLocale
 }
 
 type ActiveInspectDraft = { target: StudioInspectTarget, element: HTMLElement }
-
-const inspectSuggestions: Record<string, string> = {
-  polish: '润色这个元素，使表达更自然、准确，并保持原有语气。',
-  longer: '让这个元素更详细，补充必要信息但不要改变核心意思。',
-  shorter: '让这个元素更精简，保留核心信息和原有语气。',
-  verify: '核实这个元素中的事实、数字和表述，并修正不准确之处。',
-}
 
 export class StudioInspectController {
   private readonly options: StudioInspectControllerOptions
@@ -107,9 +103,13 @@ export class StudioInspectController {
   private readonly draft: HTMLTextAreaElement
   private readonly confirmButton: HTMLButtonElement
   private readonly cancelButton: HTMLButtonElement
+  private readonly text: ReturnType<typeof uiText>['studio']
+  private readonly locale: UiLocale
 
   constructor(options: StudioInspectControllerOptions) {
     this.options = options
+    this.locale = options.locale ?? 'zh-CN'
+    this.text = uiText(this.locale).studio
     const query = <T extends Element>(selector: string) => options.root.querySelector<T>(selector)!
     this.toggle = query('#inspect-toggle')
     this.count = query('#studio-edit-count')
@@ -187,7 +187,7 @@ export class StudioInspectController {
     this.toggle.textContent = this.enabled ? 'Inspect On' : 'Inspect'
     if (!this.enabled) this.closeEditor(false)
     this.syncInteractiveTargets()
-    if (this.enabled) this.status.textContent = 'Inspect 已开启 · 点击画布中的元素'
+    if (this.enabled) this.status.textContent = this.text.inspectEnabled
   }
 
   private selectFromCanvas = (event: Event) => {
@@ -235,11 +235,11 @@ export class StudioInspectController {
   private openEditor(target: StudioInspectTarget, element: HTMLElement) {
     const existing = this.edits.find(edit => inspectTargetKey(edit) === inspectTargetKey(target))
     this.activeDraft = { target, element }
-    this.editorTitle.textContent = `修改 ${target.label}`
+    this.editorTitle.textContent = this.text.editTarget(target.label)
     this.editorTarget.textContent = `${target.slideId} · ${target.nodeId ?? target.path}`
     this.draft.value = existing?.instruction ?? ''
-    this.confirmButton.textContent = existing ? '更新' : '确认'
-    this.confirmButton.setAttribute('aria-label', existing ? '更新修改队列' : '加入修改队列')
+    this.confirmButton.textContent = existing ? this.text.update : this.text.confirm
+    this.confirmButton.setAttribute('aria-label', existing ? this.text.updateQueue : this.text.addQueue)
     this.confirmButton.disabled = !this.draft.value.trim()
     this.editor.hidden = false
     this.syncMarkers()
@@ -279,7 +279,8 @@ export class StudioInspectController {
 
   private chooseSuggestion = (event: Event) => {
     const button = event.target instanceof Element ? event.target.closest<HTMLButtonElement>('[data-inspect-suggestion]') : null
-    const suggestion = button?.dataset.inspectSuggestion ? inspectSuggestions[button.dataset.inspectSuggestion] : undefined
+    const suggestions: Record<string, string> = { polish: this.text.inspectPolish, longer: this.text.inspectLonger, shorter: this.text.inspectShorter, verify: this.text.inspectVerify }
+    const suggestion = button?.dataset.inspectSuggestion ? suggestions[button.dataset.inspectSuggestion] : undefined
     if (!suggestion) return
     this.draft.value = suggestion
     this.updateDraftState()
@@ -329,7 +330,7 @@ export class StudioInspectController {
     const edit = this.edits.find(item => inspectTargetKey(item) === key)
     if (edit) edit.instruction = textarea.value
     this.copyButton.disabled = this.locked || !this.hasActionableEdits()
-    this.status.textContent = `${summarizeInspectSlides(this.edits).label} · ${this.hasActionableEdits() ? '可以复制给 Agent' : '请填写修改要求'}`
+    this.status.textContent = `${summarizeInspectSlides(this.edits, this.locale).label} · ${this.hasActionableEdits() ? this.text.canCopy : this.text.fillRequest}`
   }
 
   private removeEdit = (event: Event) => {
@@ -343,28 +344,28 @@ export class StudioInspectController {
   private clearEdits = () => {
     this.edits = []
     this.render()
-    this.status.textContent = '修改队列已清空'
+    this.status.textContent = this.text.queueCleared
   }
 
   private copyPrompt = async () => {
     const prompt = buildStudioEditPrompt(this.options.deckId, this.options.authoritativeFile, this.edits)
     const result = await copyStudioEditPrompt(prompt)
     const copiedCount = this.edits.filter(edit => edit.instruction.trim()).length
-    this.status.textContent = result === 'copied' ? `已复制 ${copiedCount} 条修改请求。回到 Codex 粘贴，Agent 修改完成后这里会通知你重新载入` : result === 'empty' ? '请先填写至少一条修改要求' : '复制失败，请检查浏览器剪贴板权限'
+    this.status.textContent = result === 'copied' ? this.text.copiedEdits(copiedCount) : result === 'empty' ? this.text.emptyEdits : this.text.clipboardFailed
   }
 
   private hasActionableEdits() { return this.edits.some(edit => edit.instruction.trim()) }
 
   private render() {
     this.list.replaceChildren(...this.edits.map(edit => this.renderEdit(edit)))
-    const summary = summarizeInspectSlides(this.edits)
+    const summary = summarizeInspectSlides(this.edits, this.locale)
     this.count.textContent = String(summary.slideIds.length)
-    this.queueToggle.setAttribute('aria-label', `修改队列：${summary.label}`)
+    this.queueToggle.setAttribute('aria-label', this.text.editQueueLabel(summary.label))
     this.queueToggle.title = summary.label
     this.empty.hidden = this.edits.length > 0
     this.clearButton.disabled = this.locked || !this.edits.length
     this.copyButton.disabled = this.locked || !this.hasActionableEdits()
-    if (this.edits.length) this.status.textContent = `${summary.label} · ${this.hasActionableEdits() ? '可以复制给 Agent' : '请填写修改要求'}`
+    if (this.edits.length) this.status.textContent = `${summary.label} · ${this.hasActionableEdits() ? this.text.canCopy : this.text.fillRequest}`
     this.syncMarkers()
   }
 
@@ -382,16 +383,16 @@ export class StudioInspectController {
     const remove = document.createElement('button')
     remove.type = 'button'
     remove.dataset.removeEdit = key
-    remove.setAttribute('aria-label', `移除 ${edit.label}`)
-    remove.textContent = '移除'
+    remove.setAttribute('aria-label', this.text.removeEdit(edit.label))
+    remove.textContent = this.text.remove
     header.append(label, remove)
     const snapshot = document.createElement('p')
-    snapshot.textContent = edit.snapshot || '非文本元素'
+    snapshot.textContent = edit.snapshot || this.text.nonTextElement
     const textarea = document.createElement('textarea')
     textarea.dataset.editKey = key
     textarea.value = edit.instruction
-    textarea.placeholder = '告诉 Agent 这个元素需要怎样调整……'
-    textarea.setAttribute('aria-label', `${edit.label} 的修改要求`)
+    textarea.placeholder = this.text.agentInstructionPlaceholder
+    textarea.setAttribute('aria-label', this.text.agentInstructionLabel(edit.label))
     textarea.disabled = this.locked
     article.append(header, snapshot, textarea)
     return article
