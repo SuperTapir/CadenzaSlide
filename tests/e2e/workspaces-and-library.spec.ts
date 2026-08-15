@@ -24,12 +24,14 @@ test('Studio renders the canvas-first shell and keeps the master library on dema
   for (const region of ['studio-topbar', 'studio-rail', 'studio-stage', 'studio-drawer', 'studio-view-controls']) {
     await expect(page.getByTestId(region)).toHaveCount(1)
   }
-  await expect(page.getByRole('button', { name: '打开页面导航' })).toBeHidden()
+  await expect(page.getByRole('button', { name: '页面导航' })).toBeHidden()
   await expect(page.getByTestId('deck-master')).toBeHidden()
   await expect(page.locator('[data-deck-master-layout]')).toHaveCount(14)
   await expect(page.locator('[data-deck-master-layout] [data-apply]')).toHaveCount(0)
   await expect(page.getByTestId('font-theme')).toBeHidden()
   await expect(page.getByTestId('environment-preset')).toBeHidden()
+  const stage = page.getByTestId('studio-stage')
+  expect(await stage.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(0)
   const iconTargets = await page.locator('.icon-control:visible').evaluateAll(elements => elements.map(element => {
     const box = element.getBoundingClientRect()
     return { width: box.width, height: box.height, label: element.getAttribute('aria-label'), title: element.getAttribute('title') }
@@ -114,6 +116,24 @@ test('Navigator and Overview replace executable media with static previews', asy
   await expect(overviewCard.locator('[data-media-preview="video"]')).toHaveCount(1)
 })
 
+test('Navigator preview images select slides instead of starting native image drag', async ({ page }) => {
+  await page.goto('/?deck=cadenza-demo')
+  const image = page.locator('.studio-navigator [data-navigator-select] img').first()
+  await expect(image).toHaveAttribute('draggable', 'false')
+  const button = image.locator('xpath=ancestor::button[@data-navigator-select]')
+  const slideId = await button.getAttribute('data-navigator-select')
+  const box = await image.boundingBox()
+  expect(slideId).toBeTruthy()
+  expect(box).not.toBeNull()
+
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2)
+  await page.mouse.down()
+  await page.mouse.move(box!.x + box!.width / 2 + 4, box!.y + box!.height / 2 + 4)
+  await page.mouse.up()
+
+  await expect(page.locator(`.deck-frame > .reveal > .slides > [data-slide-id="${slideId}"]`)).toHaveClass(/present/)
+})
+
 test('only the current slide activates external iframe and video sources', async ({ page }) => {
   const deck = JSON.parse(readFileSync(new URL('../../decks/cadenza-demo/deck.cadenza.json', import.meta.url), 'utf8'))
   deck.slides['title-photo'].objects = [{ kind: 'html', frame: { x: 10, y: 20, width: 40, height: 40 }, src: 'https://player.example.com/embed/lazy', external: true, title: 'Lazy player' }]
@@ -133,7 +153,15 @@ test('only the current slide activates external iframe and video sources', async
   expect(videoRequests).toBe(0)
   await expect(page.locator('.studio-navigator iframe, .studio-navigator video')).toHaveCount(0)
 
-  await page.locator('[data-navigator-select="title-photo"]').click()
+  const iframePreview = page.locator('[data-navigator-select="title-photo"]')
+  await iframePreview.scrollIntoViewIfNeeded()
+  const iframePreviewBox = await iframePreview.boundingBox()
+  expect(iframePreviewBox).not.toBeNull()
+  await page.mouse.move(iframePreviewBox!.x + iframePreviewBox!.width / 2, iframePreviewBox!.y + iframePreviewBox!.height / 2)
+  await page.mouse.down()
+  await page.mouse.move(iframePreviewBox!.x + iframePreviewBox!.width / 2 + 4, iframePreviewBox!.y + iframePreviewBox!.height / 2 + 4)
+  await page.mouse.up()
+  await expect(page.locator('.deck-frame > .reveal > .slides > [data-slide-id="title-photo"]')).toHaveClass(/present/)
   await expect.poll(() => iframeRequests).toBe(1)
   await expect(page.locator('.deck-frame .reveal > .slides > [data-slide-id="title-photo"] iframe')).toHaveAttribute('src', /player\.example\.com/)
 
@@ -209,7 +237,7 @@ test('Studio keeps one 1280×720 authoring canvas while fit and manual zoom chan
 })
 
 test('Studio drawer switches panels without losing the current note draft', async ({ page }) => {
-  await page.goto('/?deck=cadenza-demo')
+  await page.goto('/?deck=cadenza-demo&lang=zh-CN')
   const drawer = page.getByTestId('studio-drawer')
   const controls = page.getByTestId('studio-view-controls')
   const notes = controls.getByRole('button', { name: 'Notes' })
@@ -224,6 +252,13 @@ test('Studio drawer switches panels without losing the current note draft', asyn
   const editorBox = await editor.boundingBox()
   expect(editorBox!.height / drawerBox!.height).toBeGreaterThan(0.75)
   await expect(page.locator('#notes-status')).toHaveText('已自动保存')
+  await page.locator('#edit-queue-toggle').click()
+  await expect(editor).toBeHidden()
+  await expect(page.getByLabel('Agent 修改队列')).toBeVisible()
+  await expect(drawer.locator('[data-panel]:visible')).toHaveCount(1)
+  await notes.click()
+  await expect(editor).toBeVisible()
+  await expect(page.getByLabel('Agent 修改队列')).toBeHidden()
   await notes.click()
   await expect(drawer).toBeHidden()
   await notes.click()
@@ -325,12 +360,12 @@ test('narrow Studio uses a dismissible rail overlay and restores trigger focus',
   await page.goto('/?deck=cadenza-demo')
   const shell = page.locator('main[data-app-mode="studio"]')
   await expect(shell).toHaveAttribute('data-rail-mode', 'collapsed')
-  await page.getByRole('button', { name: '打开页面导航' }).click()
+  await page.getByRole('button', { name: '页面导航' }).click()
   await expect(shell).toHaveAttribute('data-rail-mode', 'overlay')
   await expect(page.getByTestId('studio-rail')).toBeVisible()
   await page.keyboard.press('Escape')
   await expect(shell).toHaveAttribute('data-rail-mode', 'collapsed')
-  await expect(page.getByRole('button', { name: '打开页面导航' })).toBeFocused()
+  await expect(page.getByRole('button', { name: '页面导航' })).toBeFocused()
   await page.getByRole('button', { name: 'Notes' }).click()
   await expect(page.getByLabel('当前页面的演讲者注释')).toBeFocused()
   await page.keyboard.press('Escape')
@@ -338,6 +373,19 @@ test('narrow Studio uses a dismissible rail overlay and restores trigger focus',
   const slide = page.locator('.studio-canvas-transform')
   const ratio = await slide.evaluate(element => Number.parseFloat(getComputedStyle(element).width) / Number.parseFloat(getComputedStyle(element).height))
   expect(ratio).toBeCloseTo(16 / 9, 4)
+})
+
+test('Studio Escape closes its surface without opening Reveal overview', async ({ page }) => {
+  await page.goto('/?view=studio&deck=cadenza-demo&lang=zh-CN#/10')
+  await page.getByRole('button', { name: 'Notes' }).click()
+  await expect(page.getByTestId('studio-drawer')).toHaveAttribute('data-open', 'true')
+
+  await page.keyboard.press('Escape')
+  await expect(page.getByTestId('studio-drawer')).toHaveAttribute('data-open', 'false')
+  await page.keyboard.press('Escape')
+
+  await expect(page.locator('.deck-frame .reveal')).not.toHaveClass(/overview/)
+  await expect(page.locator('.deck-frame section.present')).toHaveCount(1)
 })
 
 test('rail keyboard navigation moves focus and selects by stable slide order', async ({ page }) => {
@@ -396,7 +444,7 @@ test('reduced-motion removes Studio surface movement while keeping controls oper
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 760, height: 900 })
   await page.goto('/?deck=cadenza-demo')
-  await page.getByRole('button', { name: '打开页面导航' }).click()
+  await page.getByRole('button', { name: '页面导航' }).click()
   const transition = await page.getByTestId('studio-rail').evaluate(element => getComputedStyle(element).transitionDuration)
   expect(transition.split(',').every(value => value.trim() === '0s')).toBe(true)
   await expect(page.getByTestId('studio-rail')).toBeVisible()
@@ -438,6 +486,36 @@ test('Present opens only the audience view while speaker view remains optional',
   await page.getByRole('button', { name: 'Present' }).click()
   await expect.poll(() => page.evaluate(() => (window as unknown as { __openedWindows: string[] }).__openedWindows)).toEqual(['cadenza-audience'])
   await expect(page.locator('[data-presenter-status]')).toHaveText('未开始')
+  await expect(page.getByRole('button', { name: 'Present' })).toBeHidden()
+  await expect(page.getByRole('button', { name: '结束放映' })).toBeVisible()
+  await expect(page.getByRole('button', { name: '结束放映' })).toBeFocused()
+
+  await page.getByRole('button', { name: '结束放映' }).click()
+  await expect(page.getByRole('button', { name: '结束放映' })).toBeHidden()
+  await expect(page.getByRole('button', { name: 'Present' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Present' })).toBeFocused()
+})
+
+test('Audience offers a locale-aware return to Studio on the current slide', async ({ page }) => {
+  await page.goto('/?view=audience&deck=cadenza-demo&lang=zh-CN#/10')
+
+  const back = page.getByRole('link', { name: '返回 Studio' })
+  await expect(back).toHaveAttribute('href', /view=studio/)
+  await expect(back).toHaveAttribute('href', /deck=cadenza-demo/)
+  await expect(back).toHaveAttribute('href', /lang=zh-CN/)
+  await expect(back).toHaveAttribute('href', /#\/10$/)
+})
+
+test('Audience Escape returns a directly opened presentation to Studio', async ({ page }) => {
+  await page.goto('/?view=audience&deck=cadenza-demo&lang=zh-CN#/10')
+  await expect(page.locator('.deck-frame section.present')).toHaveCount(1)
+
+  await page.keyboard.press('Escape')
+
+  await expect(page).toHaveURL(/view=studio/)
+  await expect(page).toHaveURL(/deck=cadenza-demo/)
+  await expect(page).toHaveURL(/#\/10$/)
+  await expect(page.locator('.deck-frame .reveal')).not.toHaveClass(/overview/)
 })
 
 test('all masters expose one composed read-only example', async ({ page }) => {

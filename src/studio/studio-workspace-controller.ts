@@ -278,7 +278,6 @@ export class StudioWorkspaceController {
     this.elements.audienceStatus.textContent = this.text.ended
     this.elements.presenterStatus.textContent = this.text.ended
     this.setEditingLocked(false)
-    this.elements.presentationOpen.disabled = false
   }
 
   private setEditingLocked(locked: boolean) {
@@ -287,8 +286,11 @@ export class StudioWorkspaceController {
     this.options.root.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLButtonElement>('[data-panel="layout"] input, [data-panel="layout"] select, [data-panel="layout"] button').forEach(element => { element.disabled = locked })
     this.inspectController.setLocked(locked)
     this.options.root.querySelectorAll<HTMLElement>('[data-navigator-slide]').forEach(element => { element.draggable = !locked })
+    this.elements.presentationOpen.hidden = locked
+    this.elements.presentationOpen.disabled = locked
     this.elements.presentationEnd.hidden = !locked
     this.elements.presentationEnd.disabled = !locked
+    ;(locked ? this.elements.presentationEnd : this.elements.presentationOpen).focus()
   }
 
   private handleRevealNotesConnection = (event: MessageEvent) => {
@@ -338,8 +340,10 @@ export class StudioWorkspaceController {
 
   private applyStageScale() {
     const rect = this.elements.stage.getBoundingClientRect()
+    const stageStyle = getComputedStyle(this.elements.stage)
+    const horizontalPadding = Number.parseFloat(stageStyle.paddingLeft) + Number.parseFloat(stageStyle.paddingRight)
     const scale = this.workspaceState.zoomMode === 'fit'
-      ? computeFitScale({ width: 1280, height: 720 }, { width: Math.max(0, rect.width - 32), height: Math.max(0, rect.height - 32) })
+      ? computeFitScale({ width: 1280, height: 720 }, { width: Math.max(0, rect.width - horizontalPadding), height: Math.max(0, rect.height - 32) })
       : this.workspaceState.zoomPercent / 100
     this.elements.canvasViewport.style.width = `${1280 * scale}px`
     this.elements.canvasViewport.style.height = `${720 * scale}px`

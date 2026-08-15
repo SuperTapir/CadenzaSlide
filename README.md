@@ -76,7 +76,7 @@ the actual presentation instead of a separate export path.
 
 | Overview | Audience |
 | --- | --- |
-| ![CadenzaSlide Overview showing the English demo outline](docs/images/en/overview.jpg) | ![CadenzaSlide Audience view presenting the English demo](docs/images/en/audience.jpg) |
+| ![CadenzaSlide Overview showing the complete English demo](docs/images/en/overview.jpg) | ![CadenzaSlide Audience view presenting the English demo](docs/images/en/audience.jpg) |
 
 The deck content and application language are independent. A Chinese or
 English deck can therefore run inside either interface without duplicating the

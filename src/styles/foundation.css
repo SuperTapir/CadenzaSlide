@@ -58,3 +58,5 @@ html[data-app-mode="audience"] #app, html[data-app-mode="receiver"] #app { width
 html[data-app-mode="audience"] body, html[data-app-mode="receiver"] body { background: var(--ink); }
 html[data-app-mode="audience"] .app-shell, html[data-app-mode="receiver"] .app-shell { display: grid; place-items: center; width: 100vw; height: 100vh; margin: 0; }
 html[data-app-mode="audience"] .deck-frame, html[data-app-mode="receiver"] .deck-frame { width: min(100vw, calc(100vh * 16 / 9)); height: min(100vh, calc(100vw * 9 / 16)); aspect-ratio: 16 / 9; border: 0; box-shadow: none; }
+.audience-back-link { position: fixed; z-index: 30; top: 14px; left: 14px; padding: 9px 12px; color: var(--paper-bright); background: color-mix(in srgb, var(--ink) 78%, transparent); border: 1px solid rgba(232, 230, 210, .42); text-decoration: none; font: 700 12px/1 var(--font-mono); letter-spacing: .02em; opacity: .46; transition: opacity var(--motion-fast) ease, background var(--motion-fast) ease; }
+.audience-back-link:hover, .audience-back-link:focus-visible { background: var(--ink); opacity: 1; }

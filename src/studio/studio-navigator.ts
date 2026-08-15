@@ -94,11 +94,22 @@ export function startStudioNavigator(root: HTMLElement, deck: StudioNavigatorDec
     if (button) button.tabIndex = current ? 0 : -1
     })
   }
+  let suppressPointerClickUntil = 0
+  const selectIndex = (select: Element) => Number(select.closest<HTMLElement>('[data-playback-index]')?.dataset.playbackIndex)
+  const pointerDown = (event: PointerEvent) => {
+    if (event.button !== 0 || event.pointerType !== 'mouse') return
+    const select = event.target instanceof Element ? event.target.closest('[data-navigator-select]') : null
+    const index = select ? selectIndex(select) : -1
+    if (!Number.isInteger(index) || index < 0) return
+    suppressPointerClickUntil = performance.now() + 500
+    deck.slide(index)
+  }
   const click = (event: MouseEvent) => {
     const target = event.target instanceof Element ? event.target : null
     const select = target?.closest<HTMLButtonElement>('[data-navigator-select]')
     if (select) {
-      const index = Number(select.closest<HTMLElement>('[data-playback-index]')?.dataset.playbackIndex)
+      if (event.detail > 0 && performance.now() < suppressPointerClickUntil) return
+      const index = selectIndex(select)
       if (Number.isInteger(index) && index >= 0) deck.slide(index)
       return
     }
@@ -169,6 +180,10 @@ export function startStudioNavigator(root: HTMLElement, deck: StudioNavigatorDec
   }
   const dragStart = (event: DragEvent) => {
     const target = event.target instanceof Element ? event.target : null
+    if (target?.closest('[data-navigator-select]')) {
+      event.preventDefault()
+      return
+    }
     const card = target?.closest<HTMLElement>('[data-navigator-slide]')
     const group = target?.closest<HTMLElement>('[data-navigator-group]')
     draggedSlide = card?.dataset.navigatorSlide ?? ''
@@ -237,6 +252,7 @@ export function startStudioNavigator(root: HTMLElement, deck: StudioNavigatorDec
   }
   const slideChanged = (event: { currentSlide?: HTMLElement }) => setCurrent(event.currentSlide?.dataset.slideId)
   navigator.addEventListener('click', click)
+  navigator.addEventListener('pointerdown', pointerDown)
   navigator.addEventListener('keydown', keydown)
   navigator.addEventListener('change', jump)
   window.addEventListener('cadenza-slide-status', slideStatus as EventListener)
@@ -247,7 +263,7 @@ export function startStudioNavigator(root: HTMLElement, deck: StudioNavigatorDec
   deck.on('slidechanged', slideChanged)
   setCurrent(cards[0]?.dataset.navigatorSlide)
   navigator.removeAttribute('inert')
-  return () => { navigator.removeEventListener('click', click); navigator.removeEventListener('keydown', keydown); navigator.removeEventListener('change', jump); navigator.removeEventListener('dragstart', dragStart); navigator.removeEventListener('dragover', dragOver); navigator.removeEventListener('drop', drop); navigator.removeEventListener('dragend', dragEnd); window.removeEventListener('cadenza-slide-status', slideStatus as EventListener); deck.off('slidechanged', slideChanged); disposePreviews() }
+  return () => { navigator.removeEventListener('click', click); navigator.removeEventListener('pointerdown', pointerDown); navigator.removeEventListener('keydown', keydown); navigator.removeEventListener('change', jump); navigator.removeEventListener('dragstart', dragStart); navigator.removeEventListener('dragover', dragOver); navigator.removeEventListener('drop', drop); navigator.removeEventListener('dragend', dragEnd); window.removeEventListener('cadenza-slide-status', slideStatus as EventListener); deck.off('slidechanged', slideChanged); disposePreviews() }
 }
 
 function navigatorCard(deck: Readonly<DeckDocument>, slideId: string, number: number, groupId = '', locale: UiLocale = 'zh-CN') {
@@ -255,7 +271,7 @@ function navigatorCard(deck: Readonly<DeckDocument>, slideId: string, number: nu
   const slide = deck.slides[slideId]
   const total = Object.keys(deck.slides).length
   return `<article class="navigator-card" role="option" aria-posinset="${number}" aria-setsize="${total}" data-navigator-slide="${slideId}" data-playback-index="${number - 1}" data-group-id="${groupId}" draggable="true">
-    <span class="navigator-number">${number}</span><button class="navigator-thumbnail" type="button" tabindex="${number === 1 ? 0 : -1}" data-navigator-select="${slideId}" aria-label="${escapeHtml(text.studio.selectSlide(slide.label, number, total))}"><div class="gallery-live-preview" data-gallery-slide-preview="${slide.layout}"><div class="gallery-preview-content"></div><template data-gallery-preview-template>${renderDeckSlides([slide], deck.master)}</template></div></button>
+    <span class="navigator-number">${number}</span><button class="navigator-thumbnail" type="button" tabindex="${number === 1 ? 0 : -1}" draggable="false" data-navigator-select="${slideId}" aria-label="${escapeHtml(text.studio.selectSlide(slide.label, number, total))}"><div class="gallery-live-preview" data-gallery-slide-preview="${slide.layout}"><div class="gallery-preview-content"></div><template data-gallery-preview-template>${renderDeckSlides([slide], deck.master)}</template></div></button>
     <footer><strong>${escapeHtml(slide.label)}</strong><span class="navigator-badges" data-navigator-badges></span>${slide.notes?.trim() ? `<span class="navigator-notes" title="${text.overview.hasNotes}">NOTES</span>` : ''}</footer>
   </article>`
 }

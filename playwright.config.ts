@@ -9,6 +9,7 @@ export default defineConfig({
   reporter: 'line',
   use: {
     baseURL: `http://127.0.0.1:${e2ePort}`,
+    locale: 'zh-CN',
     viewport: { width: 1280, height: 720 },
   },
   webServer: {

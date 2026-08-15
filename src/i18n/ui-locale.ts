@@ -3,10 +3,10 @@ export type UiLocale = 'zh-CN' | 'en'
 const copy = {
   'zh-CN': {
     locale: { label: '界面语言', chinese: '中文', english: 'English' },
-    common: { presentation: 'CadenzaSlide 演示', notStarted: '未开始' },
+    common: { presentation: 'CadenzaSlide 演示', notStarted: '未开始', backToStudio: '← 返回 Studio' },
     studio: {
       pageNavigation: '页面导航', projectActions: '项目操作', present: 'Present', endPresentation: '结束放映', moreActions: '更多项目操作',
-      designLibrary: 'Design Library', openAudience: '打开观众视图', openPresenter: '打开演讲者视图', keyboardHint: '方向键 / SPACE 翻页 · S 演讲者视图 · ESC 总览',
+      designLibrary: 'Design Library', openAudience: '打开观众视图', openPresenter: '打开演讲者视图', keyboardHint: '方向键 / SPACE 翻页 · S 演讲者视图 · ESC 关闭面板',
       font: '字体', typographyTheme: '中英文字体主题', background: '背景', backgroundEnvironment: '背景环境', environmentStill: '环境 静止', pauseEnvironment: '暂停环境',
       editSelected: '修改所选元素', editRequest: '元素修改要求', editPlaceholder: '这个元素需要怎么改？', quickEdits: '快捷修改指令', polish: '润色', longer: '更详细', shorter: '更精简', verify: '核实', cancel: '取消', confirm: '确认', cancelEdit: '取消修改', queueEdit: '加入修改队列',
       pageCanvasControls: '页面与画布控制', pageWorkspace: '页面工作区', resizeDrawer: '调整下栏高度', pageLayout: '页面 Layout', masterAndContent: '母板与页面内容', currentLayout: '当前页面 Layout', optionalPositions: '可选内容位置', reapplyLayout: '重新应用 Layout',
@@ -23,17 +23,17 @@ const copy = {
     },
     library: {
       intro: '选择一份 deck 进入 Studio。其他 workspace 可通过 CLI 打开。', yourDecks: '你的 Deck', examples: '系统示例', empty: '当前 workspace 还没有 deck。你可以先预览系统 Demo，或使用 CLI 创建一份新 deck。', openStudio: '在 Studio 中打开',
-      chineseDemo: 'Cadenza 中文 Demo', englishDemo: 'Cadenza English Demo · Outline', chineseDemoDescription: '完整展示 Cadenza 的 layout、组件、视觉环境与动效语言。', englishDemoDescription: '14 页英文叙事大纲；完整视觉创作尚待确认。', previewChineseDemo: '预览中文 Demo', previewEnglishDemo: '预览英文大纲',
+      chineseDemo: 'Cadenza 中文 Demo', englishDemo: 'Cadenza English Demo', chineseDemoDescription: '完整展示 Cadenza 的 layout、组件、视觉环境与动效语言。', englishDemoDescription: '14 页英文演示，讲清 Cadenza 的组合系统、工作流与开源方法。', previewChineseDemo: '预览中文 Demo', previewEnglishDemo: '预览英文 Demo',
     },
     overview: { hasNotes: '包含演讲者注释', noNotes: '无演讲者注释', preview: '放大预览', copyId: '复制 ID', copied: '已复制', search: '搜索', searchLabel: '搜索 slide 标题或 ID', searchPlaceholder: '标题或 slide ID', group: 'Group', groupLabel: '按 group 筛选', allGroups: '全部', region: 'Slide Overview', separator: '：', outlineCheckpoint: '大纲确认点', completeDeck: '完整 Deck', outlineSlides: '大纲页面', slides: '页面', closePreview: '关闭放大预览' },
     gallery: { title: '版式与组件参考', intro: '这里用于查看能力，不会把视觉选择写入 deck。', close: '关闭', search: '搜索', searchLabel: '搜索 Design Library', openPreview: (label: string) => `放大预览 ${label}`, copyComposition: '复制 composition tree', copiedComposition: '已复制 composition tree', copyFailed: '复制失败', masterEyebrow: 'DECK MASTER / 只读', masterTitle: '当前演示文稿母版', masterIntro: '修改请直接告诉 Agent；更新后会统一应用并复查所有页面。', masterAria: 'Deck Master', masterStatus: '三层母板', masterPreview: '放大预览 ↗', masterComposition: '同一页面同时展示固定元素、已填占位符与自由对象' },
   },
   en: {
     locale: { label: 'Interface language', chinese: '中文', english: 'English' },
-    common: { presentation: 'CadenzaSlide presentation', notStarted: 'Not started' },
+    common: { presentation: 'CadenzaSlide presentation', notStarted: 'Not started', backToStudio: '← Back to Studio' },
     studio: {
       pageNavigation: 'Slide navigation', projectActions: 'Project actions', present: 'Present', endPresentation: 'End presentation', moreActions: 'More project actions',
-      designLibrary: 'Design Library', openAudience: 'Open audience view', openPresenter: 'Open presenter view', keyboardHint: 'Arrow keys / SPACE to navigate · S presenter view · ESC overview',
+      designLibrary: 'Design Library', openAudience: 'Open audience view', openPresenter: 'Open presenter view', keyboardHint: 'Arrow keys / SPACE to navigate · S presenter view · ESC close panel',
       font: 'Type', typographyTheme: 'Bilingual type theme', background: 'Background', backgroundEnvironment: 'Background environment', environmentStill: 'Environment still', pauseEnvironment: 'Pause environment',
       editSelected: 'Edit selected element', editRequest: 'Element change request', editPlaceholder: 'What should change about this element?', quickEdits: 'Quick edit prompts', polish: 'Polish', longer: 'Add detail', shorter: 'Make concise', verify: 'Verify', cancel: 'Cancel', confirm: 'Confirm', cancelEdit: 'Cancel edit', queueEdit: 'Add to edit queue',
       pageCanvasControls: 'Slide and canvas controls', pageWorkspace: 'Slide workspace', resizeDrawer: 'Resize bottom panel', pageLayout: 'Slide layout', masterAndContent: 'Master and slide content', currentLayout: 'Current slide layout', optionalPositions: 'Optional content positions', reapplyLayout: 'Reapply layout',
@@ -50,7 +50,7 @@ const copy = {
     },
     library: {
       intro: 'Choose a deck to open in Studio. Open other workspaces through the CLI.', yourDecks: 'Your decks', examples: 'Built-in examples', empty: 'This workspace has no decks yet. Preview the system demo or create a deck with the CLI.', openStudio: 'Open in Studio',
-      chineseDemo: 'Cadenza Chinese Demo', englishDemo: 'Cadenza English Demo · Outline', chineseDemoDescription: 'A complete tour of Cadenza layouts, components, visual environments, and motion language.', englishDemoDescription: 'A 14-slide English narrative outline awaiting full visual authoring.', previewChineseDemo: 'Preview Chinese demo', previewEnglishDemo: 'Preview English outline',
+      chineseDemo: 'Cadenza Chinese Demo', englishDemo: 'Cadenza English Demo', chineseDemoDescription: 'A complete tour of Cadenza layouts, components, visual environments, and motion language.', englishDemoDescription: 'A 14-slide presentation about Cadenza’s composition system, workflow, and open-source approach.', previewChineseDemo: 'Preview Chinese demo', previewEnglishDemo: 'Preview English demo',
     },
     overview: { hasNotes: 'Includes speaker notes', noNotes: 'No speaker notes', preview: 'Open preview', copyId: 'Copy ID', copied: 'Copied', search: 'Search', searchLabel: 'Search slide title or ID', searchPlaceholder: 'Title or slide ID', group: 'Group', groupLabel: 'Filter by group', allGroups: 'All groups', region: 'Slide overview', separator: ': ', outlineCheckpoint: 'OUTLINE CHECKPOINT', completeDeck: 'COMPLETE DECK', outlineSlides: 'OUTLINE SLIDES', slides: 'SLIDES', closePreview: 'Close enlarged preview' },
     gallery: { title: 'Layouts and component reference', intro: 'Browse system capabilities without writing visual choices into the deck.', close: 'Close', search: 'Search', searchLabel: 'Search Design Library', openPreview: (label: string) => `Open preview: ${label}`, copyComposition: 'Copy composition tree', copiedComposition: 'Composition tree copied', copyFailed: 'Copy failed', masterEyebrow: 'DECK MASTER / READ ONLY', masterTitle: 'Current deck master', masterIntro: 'Ask the Agent to change the master; updates apply consistently and every slide is reviewed again.', masterAria: 'Deck Master', masterStatus: 'Three-layer master', masterPreview: 'Open preview ↗', masterComposition: 'One slide showing fixed elements, filled placeholders, and free objects together' },

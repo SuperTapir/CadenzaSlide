@@ -19,6 +19,7 @@ describe('openBrowserDeck', () => {
     const repository = await openBrowserDeck(new URL('http://local/?view=audience&source=demo&demo=en&lang=zh-CN'), false)
 
     expect(repository.document.id).toBe('cadenza-demo-en')
+    expect(repository.document.status).toBe('complete')
     expect(repository.document.slides.opening).toMatchObject({ label: 'Compose With Intent' })
   })
 
