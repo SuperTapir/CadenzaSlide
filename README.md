@@ -14,22 +14,81 @@ key.
 
 > Status: early-stage software. The document format and CLI may still change.
 
-### What it provides
+## Why CadenzaSlide
+
+Most presentation tools either give people a blank canvas or ask AI to emit a
+one-off result. CadenzaSlide separates creative reasoning from presentation
+infrastructure: the host Agent understands the material and authors a portable
+deck, while Cadenza supplies the design system, deterministic renderer,
+verification, and presentation runtime.
+
+The goal is not one polished demo. It is a reusable production system in which
+the Skill, Composer, component library, and Verifier turn repeated lessons into
+better defaults for the next deck—across different subjects, structures, and
+levels of information density.
+
+## The Cadenza aesthetic
+
+- **Editorial, not dashboard-like.** Strong typography, deliberate scale, and
+  clear visual hierarchy replace grids of interchangeable cards.
+- **A coherent monochrome image language.** One Bit and tonal treatments bring
+  photos, screenshots, diagrams, and illustrations from different sources into
+  the same visual world while preserving evidence that must remain legible.
+- **One claim, supported by evidence.** Real media, data, quotations, and
+  observable results take priority over decorative UI chrome.
+- **Designed for a stage.** Every slide is composed for a fixed audience
+  viewport; Overview controls rhythm, while full-size Audience review decides
+  whether the result is actually finished.
+- **Motion with restraint.** Low-amplitude environmental movement creates a
+  living canvas; transitions clarify narrative change instead of decorating
+  every element.
+- **Consistency without sameness.** Layouts and components enforce recognizable
+  Cadenza character while allowing compositions to vary with the content.
+
+## What it provides
 
 - A portable, JSON-based deck and workspace format.
 - Studio, Overview, Audience, and Speaker views.
+- Chinese and English application chrome with browser-language detection and an
+  explicit language switcher.
 - A fixed-stage renderer with layouts, components, media, notes, and motion.
 - Static and browser verification before presentation.
 - A `cadenza-presentations` Skill that teaches compatible agents the complete
   authoring and review workflow.
 
-### Requirements
+## Product tour
+
+Choose a workspace deck or open the built-in example from the local Deck
+Library. The interface can follow the browser language or be pinned with
+`?lang=en` and `?lang=zh-CN`.
+
+![CadenzaSlide Deck Library with English interface](docs/images/deck-library.jpg)
+
+Studio keeps the complete authoring loop in one workspace: reorder slides,
+manage groups, inspect the fixed 16:9 canvas, edit speaker notes, review layout
+slots, queue precise Agent edits, and launch a presentation.
+
+![CadenzaSlide Studio with slide navigation, canvas, and authoring controls](docs/images/studio.jpg)
+
+Overview shows the whole narrative in playback order for rhythm, repetition,
+and group review. Audience uses the same deterministic 1280×720 rendering for
+the actual presentation instead of a separate export path.
+
+| Overview | Audience |
+| --- | --- |
+| ![CadenzaSlide Overview showing the complete deck](docs/images/overview.jpg) | ![CadenzaSlide Audience presentation view](docs/images/audience.jpg) |
+
+The deck content and application language are independent. A Chinese or
+English deck can therefore run inside either interface without duplicating the
+renderer or presentation runtime.
+
+## Requirements
 
 - Node.js 22.18 or newer
 - npm
 - Chromium installed by Playwright for browser verification
 
-### Install from source
+## Install from source
 
 After cloning this repository:
 
@@ -48,7 +107,7 @@ To use the agent workflow, install the public Skill separately:
 npx skills@latest add SuperTapir/tapir-skills --skill cadenza-presentations
 ```
 
-### Quick start
+## Quick start
 
 ```bash
 cadenza init my-talk
@@ -69,7 +128,7 @@ cadenza overview product-launch
 cadenza present product-launch
 ```
 
-### CLI
+## CLI
 
 | Command | Purpose |
 | --- | --- |
@@ -86,7 +145,7 @@ cadenza present product-launch
 
 Run `cadenza --help` for the current command contract.
 
-### Workspace format
+## Workspace format
 
 ```text
 my-talk/
@@ -101,7 +160,7 @@ The deck JSON is the source of truth. The runtime and workspace are separate,
 so a deck can move between machines without copying Cadenza source or build
 artifacts.
 
-### Development
+## Development
 
 ```bash
 npm run dev       # Vite development server
@@ -112,13 +171,13 @@ npm run build     # Browser and CLI production builds
 
 Architecture details live in [`docs/architecture.md`](docs/architecture.md).
 
-### Privacy and security
+## Privacy and security
 
 The workspace server binds to `127.0.0.1` by default. Cadenza does not send
 deck content to a model provider; the host agent and its permissions determine
 how source material is accessed. Do not place private decks in this repository.
 
-### License
+## License
 
 CadenzaSlide is available under the [MIT License](LICENSE). Bundled icons and
 fonts retain their own licenses; see
