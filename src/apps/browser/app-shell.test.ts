@@ -114,4 +114,15 @@ describe('renderAppShell', () => {
     expect(html).not.toContain(options.environmentOptions)
     expect(html).not.toContain(options.fontThemeOptions)
   })
+
+  it('renders a return-to-Studio link only in Audience mode', () => {
+    const audience = renderAppShell({ ...options, mode: 'audience', currentHref: 'https://example.com/?view=audience&deck=demo&lang=en#/4', locale: 'en' })
+    const receiver = renderAppShell({ ...options, mode: 'receiver', currentHref: 'https://example.com/?receiver&deck=demo#/4' })
+
+    expect(audience).toContain('class="audience-back-link"')
+    expect(audience).toContain('Back to Studio')
+    expect(audience).toContain('view=studio')
+    expect(audience).toContain('#/4')
+    expect(receiver).not.toContain('audience-back-link')
+  })
 })

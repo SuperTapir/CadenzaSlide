@@ -3,7 +3,7 @@ import Highlight from 'reveal.js/plugin/highlight'
 import Notes from 'reveal.js/plugin/notes'
 import 'reveal.js/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
-import { audienceUrl, designLibraryUrl, resolveAppMode } from './app-mode'
+import { audienceUrl, designLibraryUrl, resolveAppMode, studioUrl } from './app-mode'
 import { renderAppShell } from './app-shell'
 import { renderDeckSlides } from '../../rendering/core-templates'
 import { hydrateOneBitImages } from '../../rendering/media-one-bit'
@@ -68,6 +68,29 @@ const motion = app.querySelector<HTMLButtonElement>('#motion')
 const fontTheme = app.querySelector<HTMLSelectElement>('#font-theme')
 const authoredSlides = [...app.querySelectorAll<HTMLElement>('[data-slide-id]')]
 
+function returnFromAudience() {
+  if (window.opener && !window.opener.closed) {
+    window.opener.focus()
+    window.close()
+    return
+  }
+  location.assign(studioUrl(location))
+}
+
+if (appMode === 'audience') {
+  app.querySelector<HTMLAnchorElement>('.audience-back-link')?.addEventListener('click', event => {
+    if (!window.opener || window.opener.closed) return
+    event.preventDefault()
+    returnFromAudience()
+  })
+  window.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || document.fullscreenElement || app.querySelector('dialog[open]')) return
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    returnFromAudience()
+  }, { capture: true })
+}
+
 if (workspaceStatus) workspaceStatus.textContent = repository.isConnected ? ui.studio.connected : ui.studio.disconnected
 
 const documentStore = new DeckDocumentStore(initialDocument, document => repository.save(document), status => {
@@ -86,6 +109,7 @@ runtime.setReducedMotion(motionPreference.reduced)
 const deck = new Reveal(deckRoot, {
   ...revealHostOptions,
   ...(appMode === 'audience' ? { keyboard: true, touch: true, controls: true, progress: false } : {}),
+  overview: false,
   plugins: [Highlight, Notes],
 })
 const elementMotionController = new ElementMotionController({

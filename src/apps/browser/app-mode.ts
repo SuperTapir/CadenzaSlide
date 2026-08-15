@@ -19,6 +19,16 @@ export function audienceUrl(current: string | HrefLocation): string {
   return url.href
 }
 
+export function studioUrl(current: string | HrefLocation): string {
+  const href = typeof current === 'string' ? current : current.href
+  const absolute = /^[a-z]+:/i.test(href)
+  const url = new URL(href, 'https://cadenza.local/')
+  url.searchParams.set('view', 'studio')
+  url.searchParams.delete('receiver')
+  if (absolute) return url.href
+  return `${url.pathname === '/' && href.startsWith('?') ? '' : url.pathname}${url.search}${url.hash}`
+}
+
 export function designLibraryUrl(current: string | HrefLocation): string {
   const url = new URL(typeof current === 'string' ? current : current.href)
   url.searchParams.set('view', 'library')

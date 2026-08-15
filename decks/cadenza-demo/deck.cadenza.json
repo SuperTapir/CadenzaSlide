@@ -683,34 +683,7 @@
         "不等于重复"
       ],
       "subtitle": "同一种声音，可以写出不同的句子",
-      "objects": [
-        {
-          "kind": "composition",
-          "compositionId": "statement-semantic-visual",
-          "frame": {
-            "x": 75,
-            "y": 65,
-            "width": 16,
-            "height": 16
-          },
-          "tree": {
-            "nodeId": "statement-layers-icon",
-            "component": "visual",
-            "version": 1,
-            "props": {
-              "asset": "icon:lucide-layers",
-              "alt": "同一视觉语言形成不同层次"
-            },
-            "axes": {
-              "role": "icon",
-              "prominence": "support",
-              "treatment": "outline",
-              "state": "default",
-              "behavior": "none"
-            }
-          }
-        }
-      ],
+      "objects": [],
       "notes": "品牌调性来自共享的字阶、线条、纹理和运动，而不是来自所有页面长得一样。"
     },
     "big-fact": {

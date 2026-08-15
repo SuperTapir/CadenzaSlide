@@ -1,4 +1,5 @@
 import type { AppMode } from './app-mode'
+import { studioUrl } from './app-mode'
 import { localizeHref, renderUiLocaleSwitcher, type UiLocale, uiText } from '../../i18n/ui-locale'
 
 export type AppShellOptions = {
@@ -20,6 +21,9 @@ export function renderAppShell(options: AppShellOptions): string {
   const studio = text.studio
   const decksHref = escapeAttribute(localizeHref('?view=decks', locale))
   const localeSwitcher = renderUiLocaleSwitcher(locale, options.currentHref ?? '?view=studio')
+  const audienceBackLink = options.mode === 'audience'
+    ? `<a class="audience-back-link" href="${escapeAttribute(studioUrl(options.currentHref ?? '?view=audience'))}">${text.common.backToStudio}</a>`
+    : ''
   const studioHeader = options.mode === 'studio'
     ? `<header class="app-header" data-testid="studio-topbar">
       <div class="studio-identity"><button id="rail-toggle" class="icon-control" type="button" aria-label="${studio.pageNavigation}" title="${studio.pageNavigation}"><span aria-hidden="true">☷</span></button><span class="studio-brand-copy"><b>CADENZA</b><small>SLIDE STUDIO</small></span></div>
@@ -126,7 +130,7 @@ export function renderAppShell(options: AppShellOptions): string {
       </div>
     </div>`
 
-  if (options.mode !== 'studio') return `<main class="app-shell" data-app-mode="${options.mode}">${presentationSurface}${options.mediaLightboxHtml}</main>`
+  if (options.mode !== 'studio') return `<main class="app-shell" data-app-mode="${options.mode}">${presentationSurface}${audienceBackLink}${options.mediaLightboxHtml}</main>`
 
   return `<main class="app-shell" data-app-mode="${options.mode}">
     ${studioHeader}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { audienceUrl, designLibraryUrl, resolveAppMode } from './app-mode'
+import { audienceUrl, designLibraryUrl, resolveAppMode, studioUrl } from './app-mode'
 
 describe('resolveAppMode', () => {
   it('opens Deck Library from the service root or its explicit URL', () => {
@@ -48,6 +48,20 @@ describe('audienceUrl', () => {
   it('removes Reveal receiver state from the shareable URL', () => {
     expect(audienceUrl(new URL('https://example.com/deck?receiver&progress=false#/3'))).toBe(
       'https://example.com/deck?progress=false&view=audience#/3',
+    )
+  })
+})
+
+describe('studioUrl', () => {
+  it('preserves the deck, locale, source, and current slide while returning to Studio', () => {
+    expect(studioUrl('https://example.com/deck?view=audience&source=demo&demo=en&lang=en#/10')).toBe(
+      'https://example.com/deck?view=studio&source=demo&demo=en&lang=en#/10',
+    )
+  })
+
+  it('removes internal receiver state', () => {
+    expect(studioUrl('https://example.com/deck?receiver&deck=demo#/3')).toBe(
+      'https://example.com/deck?deck=demo&view=studio#/3',
     )
   })
 })

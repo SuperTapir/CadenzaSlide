@@ -59,6 +59,7 @@ export function renderGallerySlidePreview(host: HTMLElement, authoredSlide?: HTM
   const focusSelector = galleryComponentSelectors[host.dataset.galleryFocus as GalleryComponentId]
   if (focusSelector) section.querySelector<HTMLElement>(focusSelector)?.setAttribute('data-gallery-focused', 'true')
   replaceExecutableMedia(section)
+  section.querySelectorAll<HTMLElement>('img, video').forEach(media => media.setAttribute('draggable', 'false'))
   slides.append(section)
   reveal.append(slides)
   destination.replaceChildren(reveal)

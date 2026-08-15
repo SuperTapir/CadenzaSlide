@@ -37,7 +37,7 @@ export function renderDeckLibrary(decks: readonly DeckLibraryEntry[], error?: st
           <a href="${chineseDemoHref}">${text.previewChineseDemo} <span aria-hidden="true">↗</span></a>
         </article>
         <article class="deck-library-card deck-library-demo" data-testid="system-demo-deck-en">
-          <span class="deck-library-card-kind">READ-ONLY / OUTLINE</span>
+          <span class="deck-library-card-kind">READ-ONLY / AUDIENCE</span>
           <h3>${text.englishDemo}</h3>
           <p>${text.englishDemoDescription}</p>
           <a href="${englishDemoHref}">${text.previewEnglishDemo} <span aria-hidden="true">↗</span></a>

@@ -13,11 +13,12 @@ test('keeps English UI chrome across Decks, Studio, Design Library, Overview, an
   expect(await chineseSlides.evaluateAll(slides => slides.every(slide => Boolean(slide.textContent?.trim())))).toBe(true)
 
   await page.goto('/?view=decks&lang=en')
-  await page.getByTestId('system-demo-deck-en').getByRole('link', { name: 'Preview English outline' }).click()
+  await page.getByTestId('system-demo-deck-en').getByRole('link', { name: 'Preview English demo' }).click()
   await expect(page).toHaveURL(/view=audience.*source=demo.*demo=en.*lang=en/)
   await expect(page.getByText('Compose With Intent', { exact: true })).toBeVisible()
   const englishSlides = page.locator('[data-slide-id]')
   await expect(englishSlides).toHaveCount(14)
+  await expect(page.locator('.outline-draft-slide')).toHaveCount(0)
   expect(await englishSlides.evaluateAll(slides => slides.every(slide => Boolean(slide.textContent?.trim())))).toBe(true)
   expect(await page.locator('body').innerText()).not.toMatch(/undefined|\[object Object\]/)
 
