@@ -48,19 +48,19 @@ Verifier 会把反复出现的经验转化为下一份演示的更好默认能�
 在本地 Deck Library 中选择 workspace deck，或直接打开内置示例。界面会跟随浏览器
 语言，也可以使用 `?lang=en` 与 `?lang=zh-CN` 固定语言。
 
-![使用英文界面的 CadenzaSlide Deck Library](docs/images/deck-library.jpg)
+![使用中文界面的 CadenzaSlide 演示文稿库](docs/images/zh-CN/deck-library.jpg)
 
 Studio 将完整创作闭环集中在同一个工作区：页面排序与分组、固定 16:9 画布、Speaker
 Notes、Layout 位置检查、面向 Agent 的精确修改队列以及放映入口。
 
-![包含页面导航、画布和创作控制的 CadenzaSlide Studio](docs/images/studio.jpg)
+![包含中文演示、页面导航、画布和创作控制的 CadenzaSlide Studio](docs/images/zh-CN/studio.jpg)
 
 Overview 按放映顺序展示完整叙事，用于检查节奏、重复和章节关系。Audience 使用同一份
 确定性 1280×720 渲染进行正式放映，不存在另一条容易产生偏差的导出路径。
 
 | Overview | Audience |
 | --- | --- |
-| ![展示完整 deck 的 CadenzaSlide Overview](docs/images/overview.jpg) | ![CadenzaSlide Audience 放映视图](docs/images/audience.jpg) |
+| ![展示完整中文演示的 CadenzaSlide Overview](docs/images/zh-CN/overview.jpg) | ![放映中文演示的 CadenzaSlide Audience 视图](docs/images/zh-CN/audience.jpg) |
 
 Deck 内容语言与应用界面语言彼此独立，因此中文或英文 deck 都可以运行在任一界面语言下，
 无需复制 renderer 或 presentation runtime。

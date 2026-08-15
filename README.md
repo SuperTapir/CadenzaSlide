@@ -62,13 +62,13 @@ Choose a workspace deck or open the built-in example from the local Deck
 Library. The interface can follow the browser language or be pinned with
 `?lang=en` and `?lang=zh-CN`.
 
-![CadenzaSlide Deck Library with English interface](docs/images/deck-library.jpg)
+![CadenzaSlide Deck Library with English interface](docs/images/en/deck-library.jpg)
 
 Studio keeps the complete authoring loop in one workspace: reorder slides,
 manage groups, inspect the fixed 16:9 canvas, edit speaker notes, review layout
 slots, queue precise Agent edits, and launch a presentation.
 
-![CadenzaSlide Studio with slide navigation, canvas, and authoring controls](docs/images/studio.jpg)
+![CadenzaSlide Studio with an English demo, slide navigation, canvas, and authoring controls](docs/images/en/studio.jpg)
 
 Overview shows the whole narrative in playback order for rhythm, repetition,
 and group review. Audience uses the same deterministic 1280×720 rendering for
@@ -76,7 +76,7 @@ the actual presentation instead of a separate export path.
 
 | Overview | Audience |
 | --- | --- |
-| ![CadenzaSlide Overview showing the complete deck](docs/images/overview.jpg) | ![CadenzaSlide Audience presentation view](docs/images/audience.jpg) |
+| ![CadenzaSlide Overview showing the English demo outline](docs/images/en/overview.jpg) | ![CadenzaSlide Audience view presenting the English demo](docs/images/en/audience.jpg) |
 
 The deck content and application language are independent. A Chinese or
 English deck can therefore run inside either interface without duplicating the
