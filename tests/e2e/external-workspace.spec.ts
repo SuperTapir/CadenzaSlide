@@ -7,7 +7,7 @@ import { createDefaultDeckMaster } from '../../src/core/deck-master'
 import { createWorkspaceServer } from '../../src/platform/node/workspace-server'
 
 const runtimeRoot = resolve(import.meta.dirname, '../..')
-const cli = resolve(runtimeRoot, 'src/apps/cli/cadenza.ts')
+const cli = resolve(runtimeRoot, 'src/apps/cli/cadenza-bin.ts')
 
 test.beforeAll(() => execFileSync('npm', ['run', 'build'], { cwd: runtimeRoot, stdio: 'pipe' }))
 

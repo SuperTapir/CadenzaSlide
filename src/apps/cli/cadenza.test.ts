@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { runCli, type CliEnvironment } from './cadenza'
 import type { WorkspaceReader } from '../../platform/node/workspace-repository'
 import { createDefaultDeckMaster } from '../../core/deck-master'
@@ -47,7 +47,7 @@ describe('cadenza CLI', () => {
     const { env, stdout } = fixture()
     expect(await runCli([], env)).toBe(0)
     const help = stdout.join('')
-    for (const command of ['init', 'new', 'list', 'inspect', 'visuals', 'verify', 'diff', 'open', 'overview', 'present']) {
+    for (const command of ['init', 'new', 'list', 'inspect', 'visuals', 'verify', 'diff', 'pack', 'unpack', 'open', 'associate', 'overview', 'present']) {
       expect(help).toContain(command)
     }
     expect(help).not.toContain('verify-run')
@@ -75,23 +75,23 @@ describe('cadenza CLI', () => {
   it('initializes a minimal external workspace without copying the renderer', () => {
     const parent = mkdtempSync(join(tmpdir(), 'cadenza-cli-'))
     const workspace = join(parent, 'talks')
-    const output = execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza.ts', 'init', workspace], { cwd: process.cwd(), encoding: 'utf8' })
+    const output = execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', 'init', workspace], { cwd: process.cwd(), encoding: 'utf8' })
     expect(JSON.parse(output)).toMatchObject({ ok: true, command: 'init', workspace })
     expect(JSON.parse(readFileSync(join(workspace, 'cadenza.config.json'), 'utf8'))).toEqual({ version: 1, decksDirectory: 'decks' })
     expect(existsSync(join(workspace, 'decks'))).toBe(true)
     expect(existsSync(join(workspace, 'package.json'))).toBe(false)
     writeFileSync(join(workspace, 'notes.txt'), 'keep')
-    expect(() => execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza.ts', 'init', workspace], { cwd: process.cwd(), stdio: 'pipe' })).toThrow()
+    expect(() => execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', 'init', workspace], { cwd: process.cwd(), stdio: 'pipe' })).toThrow()
     expect(readFileSync(join(workspace, 'notes.txt'), 'utf8')).toBe('keep')
   })
 
   it('creates a valid outline deck without requiring renderer source files', () => {
     const parent = mkdtempSync(join(tmpdir(), 'cadenza-cli-'))
     const workspace = join(parent, 'talks')
-    execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza.ts', 'init', workspace], { cwd: process.cwd() })
+    execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', 'init', workspace], { cwd: process.cwd() })
 
     const output = execFileSync(process.execPath, [
-      '--experimental-strip-types', 'src/apps/cli/cadenza.ts', '--workspace', workspace,
+      '--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', '--workspace', workspace,
       'new', 'product-story', '--title=Product Story',
     ], { cwd: process.cwd(), encoding: 'utf8' })
     const result = JSON.parse(output)
@@ -107,9 +107,38 @@ describe('cadenza CLI', () => {
       outline: [{ kind: 'slide', slideId: 'intro' }],
     })
     expect(() => execFileSync(process.execPath, [
-      '--experimental-strip-types', 'src/apps/cli/cadenza.ts', '--workspace', workspace,
+      '--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', '--workspace', workspace,
       'new', 'product-story',
     ], { cwd: process.cwd(), stdio: 'pipe' })).toThrow()
+  })
+
+  it('packs and unpacks a deck through the real CLI entrypoint', () => {
+    const parent = mkdtempSync(join(tmpdir(), 'cadenza-portable-cli-'))
+    const workspace = join(parent, 'talks')
+    execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', 'init', workspace], { cwd: process.cwd() })
+    execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', '--workspace', workspace, 'new', 'portable'], { cwd: process.cwd() })
+    const archive = join(parent, 'portable.cadenza')
+
+    const packed = JSON.parse(execFileSync(process.execPath, [
+      '--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', '--workspace', workspace,
+      'pack', 'portable', `--output=${archive}`,
+    ], { cwd: process.cwd(), encoding: 'utf8' }))
+    expect(packed).toMatchObject({ ok: true, command: 'pack', deckId: 'portable', output: archive })
+
+    const restored = join(parent, 'restored')
+    const unpacked = JSON.parse(execFileSync(process.execPath, [
+      '--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', 'unpack', archive, restored,
+    ], { cwd: process.cwd(), encoding: 'utf8' }))
+    expect(unpacked).toMatchObject({ ok: true, command: 'unpack', deckId: 'portable', workspace: restored })
+    expect(JSON.parse(readFileSync(join(restored, 'cadenza.config.json'), 'utf8'))).toMatchObject({ defaultDeck: 'portable' })
+  })
+
+  it('installs the native file association without requiring a workspace', async () => {
+    const { env, stdout } = fixture()
+    env.cwd = '/outside'
+    env.installFileAssociation = () => ({ appPath: '/Users/example/Applications/CadenzaSlide.app' })
+    expect(await runCli(['associate'], env)).toBe(0)
+    expect(JSON.parse(stdout[0])).toEqual({ ok: true, command: 'associate', appPath: '/Users/example/Applications/CadenzaSlide.app' })
   })
 
   it('queries production visual assets with semantic evidence for Agent authoring', async () => {
@@ -121,7 +150,7 @@ describe('cadenza CLI', () => {
   })
 
   it('loads the visual query through the real Node strip-types entrypoint', () => {
-    const output = execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza.ts', 'visuals', '增长趋势', '--motion=none', '--limit=1'], { cwd: process.cwd(), encoding: 'utf8' })
+    const output = execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', 'visuals', '增长趋势', '--motion=none', '--limit=1'], { cwd: process.cwd(), encoding: 'utf8' })
     expect(JSON.parse(output)).toMatchObject({ ok: true, matches: [{ assetId: 'icon:lucide-trending-up' }] })
   })
 
@@ -196,6 +225,29 @@ describe('cadenza CLI', () => {
     expect(await runCli(['open', '/work', '--no-browser'], env)).toBe(0)
     expect(JSON.parse(stdout[0])).toMatchObject({ workspace: '/work', command: 'open' })
     expect(opened).toEqual([])
+  })
+
+  it('opens a portable deck directly in a temporary read-only Studio', async () => {
+    const parent = mkdtempSync(join(tmpdir(), 'cadenza-portable-open-'))
+    const workspace = join(parent, 'talks')
+    const archive = join(parent, 'portable.cadenza')
+    execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', 'init', workspace], { cwd: process.cwd() })
+    execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', '--workspace', workspace, 'new', 'portable'], { cwd: process.cwd() })
+    execFileSync(process.execPath, ['--experimental-strip-types', 'src/apps/cli/cadenza-bin.ts', '--workspace', workspace, 'pack', 'portable', `--output=${archive}`], { cwd: process.cwd() })
+    const { env, stdout } = fixture()
+    env.cwd = parent
+    let temporaryRoot = ''
+    env.startView = async (root, view, deckId, options) => {
+      temporaryRoot = root
+      expect({ view, deckId, options }).toEqual({ view: 'studio', deckId: 'portable', options: { readOnly: true } })
+      return { origin: 'http://127.0.0.1:4312', url: 'http://127.0.0.1:4312/?view=studio&deck=portable', close: async () => {} }
+    }
+    env.openExternal = async () => {}
+
+    expect(await runCli(['open', archive], env)).toBe(0)
+    expect(JSON.parse(stdout[0])).toMatchObject({ command: 'open', source: 'archive', deckId: 'portable', readOnly: true })
+    expect(existsSync(join(temporaryRoot, 'decks', 'portable', 'deck.cadenza.json'))).toBe(true)
+    rmSync(dirname(temporaryRoot), { recursive: true, force: true })
   })
 
   it('closes the workspace server when opening the system browser fails', async () => {

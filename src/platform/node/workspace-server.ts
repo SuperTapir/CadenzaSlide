@@ -17,6 +17,11 @@ export interface WorkspaceServerOptions {
   port?: number
   publicRoot?: string
   watch?: boolean
+  readOnly?: boolean
+  closeWhenIdle?: boolean
+  idleTimeoutMs?: number
+  startupTimeoutMs?: number
+  onClose?(): void
 }
 
 export interface RunningWorkspaceServer {
@@ -30,6 +35,8 @@ export function createWorkspaceServer(options: WorkspaceServerOptions) {
   const repository = new WorkspaceRepository(root, reader)
   const sessionSnapshots = new Map(repository.list().map(deck => [deck.id, repository.load(deck.id)]))
   const eventClients = new Set<ServerResponse>()
+  let idleTimer: ReturnType<typeof setTimeout> | undefined
+  let closeServer = () => {}
   const server = createServer(async (request, response) => {
     try {
       const url = new URL(request.url ?? '/', 'http://cadenza.local')
@@ -41,8 +48,12 @@ export function createWorkspaceServer(options: WorkspaceServerOptions) {
       if (url.pathname === '/api/events' && request.method === 'GET') {
         response.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache', connection: 'keep-alive' })
         response.write('event: ready\ndata: {}\n\n')
+        if (idleTimer) { clearTimeout(idleTimer); idleTimer = undefined }
         eventClients.add(response)
-        request.on('close', () => eventClients.delete(response))
+        request.on('close', () => {
+          eventClients.delete(response)
+          if (options.closeWhenIdle && eventClients.size === 0) idleTimer = setTimeout(closeServer, options.idleTimeoutMs ?? 5000)
+        })
         return
       }
       const diffMatch = /^\/api\/decks\/([^/]+)\/diff$/.exec(url.pathname)
@@ -79,6 +90,7 @@ export function createWorkspaceServer(options: WorkspaceServerOptions) {
           return json(response, 200, JSON.parse(text))
         }
         if (request.method === 'PUT') {
+          if (options.readOnly) return jsonError(response, 403, 'workspace.read-only', 'Portable deck previews are read-only; unpack the archive to edit it')
           if (!existsSync(deckPath)) return jsonError(response, 404, 'deck.not-found', `Deck “${deckId}” not found`)
           const current = readFileSync(deckPath, 'utf8')
           if (request.headers['if-match'] !== etag(current)) return jsonError(response, 409, 'deck.conflict', 'Deck changed; refresh before saving')
@@ -114,6 +126,19 @@ export function createWorkspaceServer(options: WorkspaceServerOptions) {
     const payload = `event: workspace-change\ndata: ${JSON.stringify({ path: String(filename) })}\n\n`
     for (const client of eventClients) client.write(payload)
   })
+  let closing: Promise<void> | undefined
+  const close = () => closing ??= new Promise<void>((done, fail) => {
+    if (idleTimer) clearTimeout(idleTimer)
+    watcher?.close()
+    for (const client of eventClients) client.end()
+    server.close(error => {
+      options.onClose?.()
+      if (error) fail(error)
+      else done()
+    })
+    server.closeAllConnections()
+  })
+  closeServer = () => { void close() }
 
   return {
     listen: () => new Promise<RunningWorkspaceServer>((resolveReady, reject) => {
@@ -123,12 +148,8 @@ export function createWorkspaceServer(options: WorkspaceServerOptions) {
         const address = server.address()
         if (!address || typeof address === 'string') return reject(new Error('Workspace server did not bind a TCP port'))
         const origin = `http://${options.host ?? '127.0.0.1'}:${address.port}`
-        resolveReady({ origin, close: () => new Promise<void>((done, fail) => {
-          watcher?.close()
-          for (const client of eventClients) client.end()
-          server.close(error => error ? fail(error) : done())
-          server.closeAllConnections()
-        }) })
+        if (options.closeWhenIdle) idleTimer = setTimeout(closeServer, options.startupTimeoutMs ?? 30_000)
+        resolveReady({ origin, close })
       })
     }),
   }

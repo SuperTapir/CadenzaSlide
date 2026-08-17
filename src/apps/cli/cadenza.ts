@@ -1,9 +1,10 @@
 #!/usr/bin/env -S node --experimental-strip-types
 
-import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs'
 import { execFile, execFileSync } from 'node:child_process'
 import process from 'node:process'
-import { dirname, resolve } from 'node:path'
+import { basename, dirname, extname, join, relative, resolve } from 'node:path'
+import { tmpdir } from 'node:os'
 import { flattenOutline } from '../../core/deck-outline.ts'
 import { createWorkspaceServer } from '../../platform/node/workspace-server.ts'
 import { verifyDeckValue } from '../../verification/deck-verifier.ts'
@@ -12,12 +13,13 @@ import { summarizeDeckDiff } from '../../diff/deck-diff.ts'
 import { parseDeckDocument } from '../../core/deck-document.ts'
 import { runBrowserSmoke } from '../../platform/node/browser-smoke.ts'
 import { productionVisualAssets, rankVisualAssets, type VisualBehavior } from '../../visual-assets/catalog.ts'
-import { relative } from 'node:path'
 import {
   WorkspaceRepository,
   type WorkspaceReader,
 } from '../../platform/node/workspace-repository.ts'
 import { defaultRuntimeRoot, initializeDeck, initializeWorkspace, resolveRuntimeContext } from './runtime-context.ts'
+import { extractDeckArchive, packDeckArchive } from '../../platform/node/deck-archive.ts'
+import { installMacFileAssociation } from '../../platform/node/file-association.ts'
 
 export interface CliEnvironment {
   cwd: string
@@ -25,18 +27,19 @@ export interface CliEnvironment {
   reader: WorkspaceReader
   stdout(value: string): void
   stderr(value: string): void
-  startView?(root: string, view: WorkspaceView, deckId?: string): Promise<StartedWorkspaceView>
+  startView?(root: string, view: WorkspaceView, deckId?: string, options?: { readOnly?: boolean }): Promise<StartedWorkspaceView>
   openExternal?(url: string): Promise<void>
+  installFileAssociation?(): { appPath: string }
 }
 
-export type WorkspaceView = 'decks' | 'overview' | 'present'
+export type WorkspaceView = 'decks' | 'studio' | 'overview' | 'present'
 export interface StartedWorkspaceView {
   origin: string
   url: string
   close(): Promise<void>
 }
 
-const help = `Cadenza workspace CLI (no AI calls)\n\nUsage:\n  cadenza init [path]\n  cadenza [--workspace <path>] new <deck-id> [--title=<title>]\n  cadenza [--workspace <path>] list\n  cadenza inspect <deck-id>/slide:<slide-id>\n  cadenza visuals <intent> [--motion=none|enter|loop|emphasis] [--limit=5] [--avoid=asset-id,...]\n  cadenza verify [deck-id] [--slides=id-a,id-b] [--browser]\n  cadenza diff <deck-id>\n  cadenza open [path] [--no-browser]\n  cadenza overview <deck-id>\n  cadenza present <deck-id>\n`
+const help = `Cadenza workspace CLI (no AI calls)\n\nUsage:\n  cadenza init [path]\n  cadenza [--workspace <path>] new <deck-id> [--title=<title>]\n  cadenza [--workspace <path>] list\n  cadenza inspect <deck-id>/slide:<slide-id>\n  cadenza visuals <intent> [--motion=none|enter|loop|emphasis] [--limit=5] [--avoid=asset-id,...]\n  cadenza verify [deck-id] [--slides=id-a,id-b] [--browser]\n  cadenza diff <deck-id>\n  cadenza pack <deck-id> [--output=<file.cadenza>]\n  cadenza unpack <file.cadenza> [path]\n  cadenza open [workspace|file.cadenza] [--no-browser]\n  cadenza associate\n  cadenza overview <deck-id>\n  cadenza present <deck-id>\n`
 
 export async function runCli(args: readonly string[], environment: CliEnvironment) {
   if (args.length === 0 || args[0] === 'help' || args[0] === '--help' || args[0] === '-h') {
@@ -52,7 +55,22 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
       writeJson(environment.stdout, { ok: true, command: 'init', workspace })
       return 0
     }
+    if (args[0] === 'associate') {
+      const installed = (environment.installFileAssociation ?? installMacFileAssociation)()
+      writeJson(environment.stdout, { ok: true, command: 'associate', ...installed })
+      return 0
+    }
+    if (args[0] === 'unpack') {
+      const file = args[1]
+      if (!file) throw cliError('archive.file-required', 'unpack requires a .cadenza file')
+      const archive = resolve(environment.cwd, file)
+      const requestedTarget = args[2] && !args[2].startsWith('--') ? args[2] : basename(file, extname(file))
+      const result = await extractDeckArchive(archive, resolve(environment.cwd, requestedTarget))
+      writeJson(environment.stdout, { ok: true, command: 'unpack', deckId: result.deckId, workspace: result.workspaceRoot })
+      return 0
+    }
     const openWorkspace = args[0] === 'open' && args[1] && !args[1].startsWith('--') ? args[1] : undefined
+    if (openWorkspace?.toLowerCase().endsWith('.cadenza')) return await openPortableArchive(resolve(environment.cwd, openWorkspace), args, environment)
     const selectedWorkspace = parsed.workspace ?? openWorkspace
     const context = resolveRuntimeContext({ cwd: environment.cwd, runtimeRoot: environment.runtimeRoot, workspace: selectedWorkspace, reader: environment.reader })
     if (!context) throw cliError('cli.workspace-not-found', `No cadenza.config.json found from ${selectedWorkspace ?? environment.cwd}`)
@@ -145,6 +163,20 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
       writeJson(environment.stdout, { ok: true, workspace: root, deckId, source: summary.source, diff: summary.diff })
       return 0
     }
+    if (args[0] === 'pack') {
+      const deckId = args[1]
+      if (!deckId) throw cliError('cli.deck-required', 'pack requires a deck id')
+      const selected = repository.load(deckId)
+      const deckPath = repository.list().find(deck => deck.id === deckId)?.path
+      if (!deckPath) throw cliError('cli.deck-not-found', `Deck “${deckId}” not found`)
+      const verification = verifyWorkspaceDeck(selected, dirname(deckPath))
+      if (!verification.ok) throw cliError('archive.verify', 'Deck must pass file verification before packing')
+      const outputArgument = args.find(value => value.startsWith('--output='))?.slice('--output='.length)
+      const output = outputArgument ? resolve(environment.cwd, outputArgument) : resolve(root, `${deckId}.cadenza`)
+      const packed = await packDeckArchive({ deckDir: dirname(deckPath), output })
+      writeJson(environment.stdout, { ok: true, command: 'pack', ...packed })
+      return 0
+    }
     if (args[0] === 'open') {
       const started = environment.startView
         ? await environment.startView(root, 'decks')
@@ -190,10 +222,41 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
   }
 }
 
-export async function startWorkspaceView(root: string, view: WorkspaceView, deckId?: string, runtimeRoot = defaultRuntimeRoot): Promise<StartedWorkspaceView> {
-  const running = await createWorkspaceServer({ root, publicRoot: resolve(runtimeRoot, 'dist') }).listen()
+export async function startWorkspaceView(root: string, view: WorkspaceView, deckId?: string, runtimeRoot = defaultRuntimeRoot, options: { readOnly?: boolean, closeWhenIdle?: boolean, onClose?(): void } = {}): Promise<StartedWorkspaceView> {
+  const running = await createWorkspaceServer({ root, publicRoot: resolve(runtimeRoot, 'dist'), ...options }).listen()
   const url = workspaceViewUrl(running.origin, view, deckId)
   return { ...running, url }
+}
+
+async function openPortableArchive(archive: string, args: readonly string[], environment: CliEnvironment) {
+  const container = mkdtempSync(join(tmpdir(), 'cadenza-open-'))
+  const cleanup = () => rmSync(container, { recursive: true, force: true })
+  try {
+    const extracted = await extractDeckArchive(archive, join(container, 'workspace'))
+    if (!environment.startView) assertRuntimeBuilt(resolve(environment.runtimeRoot ?? defaultRuntimeRoot))
+    const running = environment.startView
+      ? await environment.startView(extracted.workspaceRoot, 'studio', extracted.deckId, { readOnly: true })
+      : await startWorkspaceView(extracted.workspaceRoot, 'studio', extracted.deckId, environment.runtimeRoot ?? defaultRuntimeRoot, { readOnly: true, closeWhenIdle: true, onClose: cleanup })
+    let closed = false
+    const started: StartedWorkspaceView = {
+      ...running,
+      close: async () => {
+        if (closed) return
+        closed = true
+        try { await running.close() } finally { cleanup() }
+      },
+    }
+    if (!args.includes('--no-browser')) {
+      try { await (environment.openExternal ?? openExternal)(started.url) }
+      catch (error) { await started.close(); throw error }
+    }
+    installShutdown(started)
+    writeJson(environment.stdout, { ok: true, command: 'open', source: 'archive', archive, deckId: extracted.deckId, readOnly: true, url: started.url })
+    return 0
+  } catch (error) {
+    cleanup()
+    throw error
+  }
 }
 
 export function workspaceViewUrl(origin: string, view: WorkspaceView, deckId?: string) {
@@ -291,8 +354,4 @@ export async function runNodeCli(args = process.argv.slice(2)) {
     stderr: value => process.stderr.write(value),
   })
   process.exitCode = exitCode
-}
-
-if (process.argv[1] && import.meta.url === new URL(process.argv[1], 'file:').href) {
-  await runNodeCli()
 }

@@ -11,6 +11,7 @@ licenses remain independent from the CadenzaSlide MIT license.
 - Archivo, IBM Plex Sans, IBM Plex Mono, Noto Sans SC, Noto Serif SC, and
   Source Serif 4 fonts — SIL Open Font License 1.1. See the corresponding
   files under [`licenses/`](licenses/).
+- fflate, version 0.8.3 — MIT. See [`licenses/FFLATE.txt`](licenses/FFLATE.txt).
 
 Package dependencies and their exact resolved versions are recorded in
 `package-lock.json`.

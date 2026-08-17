@@ -21,7 +21,7 @@
   },
   "scripts": {
     "assets:build": "node scripts/build-visual-assets.mjs",
-    "cadenza": "node --experimental-strip-types src/apps/cli/cadenza.ts",
+    "cadenza": "node --experimental-strip-types src/apps/cli/cadenza-bin.ts",
     "dev": "vite",
     "build": "tsc && vite build && vite build --config vite.cli.config.ts",
     "prepack": "npm run build",
@@ -45,6 +45,7 @@
     "@fontsource-variable/noto-serif-sc": "^5.3.0",
     "@fontsource-variable/source-serif-4": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.3.0",
+    "fflate": "^0.8.3",
     "playwright": "^1.62.1",
     "reveal.js": "^6.0.1"
   },

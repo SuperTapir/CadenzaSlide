@@ -16,6 +16,7 @@ test-results
 decks/*/.cadenza
 review
 *.local
+*.cadenza
 
 # Editor directories and files
 .vscode/*
