@@ -109,6 +109,23 @@ describe('workspace HTTP server', () => {
     expect((await fetch(url, { method: 'PUT', headers: { 'content-type': 'application/json', 'if-match': current.headers.get('etag') ?? '' }, body: JSON.stringify(unverifiable) })).status).toBe(422)
   })
 
+  it('serves portable archives read-only', async () => {
+    const root = makeWorkspace()
+    const server = await createWorkspaceServer({ root, watch: false, readOnly: true }).listen()
+    servers.push(server)
+    const url = `${server.origin}/api/decks/demo`
+    const initial = await fetch(url)
+    const deck = await initial.json()
+    deck.title = 'Must not persist'
+
+    const response = await fetch(url, {
+      method: 'PUT', headers: { 'content-type': 'application/json', 'if-match': initial.headers.get('etag') ?? '' }, body: JSON.stringify(deck),
+    })
+    expect(response.status).toBe(403)
+    expect(await response.json()).toMatchObject({ error: { code: 'workspace.read-only' } })
+    expect(JSON.parse(readFileSync(join(root, 'decks', 'demo', 'deck.cadenza.json'), 'utf8')).title).toBe('Demo')
+  })
+
   it('keeps an in-memory startup snapshot for diff without creating revision files', async () => {
     const root = makeWorkspace()
     const server = await createWorkspaceServer({ root, watch: false }).listen()
@@ -147,5 +164,22 @@ describe('workspace watch path filter', () => {
 
   it.each(['node_modules/a.js', 'dist/index.html', '.git/index'])('ignores %s', path => {
     expect(isWorkspaceWatchPath(path)).toBe(false)
+  })
+
+  it('closes an archive preview after its Studio event stream disconnects', async () => {
+    const root = makeWorkspace()
+    let closed = false
+    const server = await createWorkspaceServer({ root, watch: false, closeWhenIdle: true, idleTimeoutMs: 10, onClose: () => { closed = true } }).listen()
+    const events = await fetch(`${server.origin}/api/events`)
+    expect(events.status).toBe(200)
+    await events.body?.cancel()
+
+    await expect(Promise.race([
+      new Promise<boolean>(resolve => {
+        const check = () => closed ? resolve(true) : setTimeout(check, 10)
+        check()
+      }),
+      new Promise<boolean>(resolve => setTimeout(() => resolve(false), 500)),
+    ])).resolves.toBe(true)
   })
 })

@@ -128,6 +128,20 @@ cadenza overview product-launch
 cadenza present product-launch
 ```
 
+To share one deck as a single file, pack its document and local assets into a
+portable `.cadenza` archive:
+
+```bash
+cadenza pack product-launch
+cadenza open product-launch.cadenza   # read-only Studio preview
+cadenza unpack product-launch.cadenza product-launch-copy
+```
+
+On macOS, run `cadenza associate` once to register `.cadenza` files with
+CadenzaSlide. Finder can then open an archive directly. Unpack an archive into
+a normal workspace before editing it; the archive preview never becomes a
+second source of truth.
+
 ## CLI
 
 | Command | Purpose |
@@ -142,6 +156,10 @@ cadenza present product-launch
 | `cadenza overview <deck-id>` | Review the complete deck in order. |
 | `cadenza present <deck-id>` | Verify and launch the presentation. |
 | `cadenza diff <deck-id>` | Summarize deck changes. |
+| `cadenza pack <deck-id>` | Create one portable `.cadenza` ZIP containing the deck and its local assets. |
+| `cadenza unpack <file.cadenza> [path]` | Restore an archive as a standalone editable workspace. |
+| `cadenza open <file.cadenza>` | Open an archive directly in a temporary read-only Studio. |
+| `cadenza associate` | Register Finder double-click support for `.cadenza` files on macOS. |
 
 Run `cadenza --help` for the current command contract.
 
@@ -158,7 +176,9 @@ my-talk/
 
 The deck JSON is the source of truth. The runtime and workspace are separate,
 so a deck can move between machines without copying Cadenza source or build
-artifacts.
+artifacts. A `.cadenza` file is a deterministic ZIP transport containing
+`manifest.json`, `deck.cadenza.json`, and `assets/`; unpacking it restores the
+normal workspace representation.
 
 ## Development
 

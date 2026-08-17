@@ -8,6 +8,10 @@ Cadenza 安装目录和用户 workspace 是两个独立根目录。安装目录�
 
 本轮删除了只生成 brief 的 Create UI、旧 semantic component migration 和不产生 portable artifact 的假 `build` 命令。Host Agent 通过 Skill 直接写权威 workspace 文件；当前交付路径是安装侧 server-backed renderer，static export 不是隐式承诺。
 
+`.cadenza` 是单 deck 的可迁移 ZIP 容器，只包含版本化 manifest、`deck.cadenza.json` 与 deck-local `assets/`。`pack` 在通过文件验证后生成确定性 archive，`unpack` 将它恢复成独立 workspace；两者都拒绝覆盖已有目标。直接 `open` archive 时只解到临时 workspace，并通过只读 workspace server 打开对应 Studio，退出后清理。archive 是可逆传输格式，不是第二个权威状态，也不承担 static export。
+
+解包只接受 manifest、deck document 与 `assets/` 下的普通文件，拒绝绝对路径、父目录、反斜杠路径、重复目标、过量条目和超过 4 GiB 的展开数据。macOS 的 `associate` 命令安装处理 Finder open-document Apple Event 的轻量 applet；未安装 Cadenza 的接收方仍需先安装 runtime，完全免安装分享属于未来 self-contained HTML 的独立契约。
+
 ## 权威状态
 
 `decks/<deck-id>/deck.cadenza.json` 是唯一 deck 权威来源。`DeckDocument` 拥有 deck-local `master` 快照、slides、outline/group 与 speaker notes；播放位置、窗口连接和本地面板状态不进入文件。

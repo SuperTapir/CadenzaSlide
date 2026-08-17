@@ -111,6 +111,19 @@ cadenza overview product-launch
 cadenza present product-launch
 ```
 
+需要把一份 deck 作为单文件分享时，可以将文档与本地素材打包为可迁移的
+`.cadenza` 文件：
+
+```bash
+cadenza pack product-launch
+cadenza open product-launch.cadenza   # 在只读 Studio 中直接预览
+cadenza unpack product-launch.cadenza product-launch-copy
+```
+
+macOS 用户可以运行一次 `cadenza associate`，为 `.cadenza` 注册 Finder 文件关联，
+之后双击文件即可打开。需要修改时先将文件解包为正常 workspace；临时预览不会成为第二份
+权威状态。
+
 ## CLI
 
 | 命令 | 用途 |
@@ -125,6 +138,10 @@ cadenza present product-launch
 | `cadenza overview <deck-id>` | 按顺序复查完整演示。 |
 | `cadenza present <deck-id>` | 验证并启动演示。 |
 | `cadenza diff <deck-id>` | 汇总 deck 变更。 |
+| `cadenza pack <deck-id>` | 把 deck 与本地素材打包成一个可迁移的 `.cadenza` ZIP。 |
+| `cadenza unpack <file.cadenza> [path]` | 将单文件恢复成可编辑的独立 workspace。 |
+| `cadenza open <file.cadenza>` | 在临时只读 Studio 中直接打开单文件。 |
+| `cadenza associate` | 在 macOS 注册 `.cadenza` 的 Finder 双击打开能力。 |
 
 使用 `cadenza --help` 查看当前命令契约。
 
@@ -140,7 +157,8 @@ my-talk/
 ```
 
 Deck JSON 是唯一内容来源。Runtime 与 workspace 相互独立，因此迁移 deck
-时不需要复制 Cadenza 源码或构建产物。
+时不需要复制 Cadenza 源码或构建产物。`.cadenza` 是确定性 ZIP 传输格式，包含
+`manifest.json`、`deck.cadenza.json` 和 `assets/`；解包后仍恢复为正常 workspace。
 
 ## 开发
 
